@@ -24,7 +24,7 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 # Disable APPEND_SLASH to prevent issues with webhook POST requests
 APPEND_SLASH = False
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,13.60.195.151').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,sender.horizoneurope.io,13.60.195.151').split(',')
 
 
 # Application definition
