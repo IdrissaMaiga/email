@@ -1,0 +1,475 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Templater - Django</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TinyMCE Rich Text Editor -->
+    <script src="https://cdn.tiny.cloud/1/i7idxd1ss3d8d8dhyb63zcdozq8cgno2k9bymb5vrdaq8ynp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body class="bg-gray-100 pb-12">
+    <!-- Navigation -->
+    <nav class="bg-white shadow mb-6">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-900">Email Templater</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'email_dashboard' %}" class="text-gray-600 hover:text-gray-900">Email Monitor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Email Campaign Manager</h2>
+            <p class="text-gray-600">Send targeted email campaigns to your contacts with real-time tracking</p>
+        </div>
+
+        <!-- Contact Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-gray-100 rounded-lg">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Total Contacts</p>
+                        <p id="totalContacts" class="text-2xl font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Not Sent Yet</p>
+                        <p id="notSentContacts" class="text-2xl font-bold text-blue-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Delivered</p>
+                        <p id="deliveredContacts" class="text-2xl font-bold text-green-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-purple-100 rounded-lg">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-500">Opened</p>
+                        <p id="openedContacts" class="text-2xl font-bold text-purple-600">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaign Setup -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Campaign Setup</h3>
+        
+        <!-- Contact Filter Selection -->
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Target Audience</label>
+                <select id="contactFilter" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="not_sent">📧 Not Sent Yet</option>
+                    <option value="all">👥 All Contacts</option>
+                    <option value="sent">📤 Previously Sent</option>
+                    <option value="delivered">✅ Delivered</option>
+                    <option value="opened">👁️ Opened</option>
+                    <option value="clicked">🔗 Clicked</option>
+                    <option value="bounced">⚠️ Bounced</option>
+                    <option value="failed">❌ Failed</option>
+                </select>
+                <p class="text-sm text-gray-500 mt-2">Choose which contacts to target based on their engagement status</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Number of Contacts</label>
+                <div class="relative">
+                    <input type="number" id="contactLimit" min="1" placeholder="All contacts" 
+                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           onpaste="return false" onkeypress="return /[0-9]/.test(event.key)">
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <button type="button" id="clearLimit" class="text-gray-400 hover:text-gray-600" title="Clear limit">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Limit to first N contacts (leave empty for all)</p>
+                <p id="limitError" class="text-sm text-red-500 mt-1 hidden">Maximum available contacts exceeded</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email Subject</label>
+                <input type="text" id="emailSubject" value="EU Grant Advisory Platform - Beta Testing Invitation" 
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="Enter your email subject">
+            </div>
+        </div>
+        
+        <!-- Email Template -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email Template</label>
+           
+            <textarea id="emailTemplate" class="w-full">Dear {prospect_first_name} {prospect_last_name},
+
+My name is Roland Zonai, I am a technical due diligence expert of the European Innovation Bank (EIB) and an expert evaluator of the European Innovation Council (EIC). My EC Expert ID is EX2016D281325. I am writing to you regarding a new platform I have developed to address inefficiencies in the EU research funding application process, particularly for Horizon Europe and cascade funding programs.
+
+My evaluation of over 120 EIC Accelerator proposals and Horizon Europe RIA and IA consortiums has identified a recurring challenge: the significant resource expenditure required for research teams to identify and align with the most suitable EU funding instruments.
+
+To address this, I have engineered an EU Grant Advisory Platform and Innovation Funding Alert System. The objective is to provide a tool that systematically maps innovation projects to funding opportunities. It provides an automated monthly intelligence briefing which delivers curated data points on new funding calls, relevant procurement notices, scientific publications, and investment activities pertinent to your specified field of research.
+
+We are currently seeking a small group of research institutions and deeptech startups from {prospect_location_country} to participate in the beta testing phase of this platform to provide feedback on its functionality and utility. We noticed your role as {job_title} and we would like to invite you from {company_name} to participate. You can review the high-level overview of the platform and receive access credentials at the link below:
+https://horizoneurope.io
+
+Kindly let me know if you are open to participating. Would you be available for a brief introductory call next week?
+
+I look forward to the possibility of connecting.
+
+Best Regards,
+Roland Zonai
+Horizon Europe Funding Expert
+‪‪‪+36306500212‬‬‬
+‪‪https://www.linkedin.com/in/rolandzonai/</textarea>
+        </div>
+        
+        <!-- Send Button -->
+        <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-500">
+                <span id="csvStatus">Ready to send emails</span>
+            </div>
+            <button id="sendEmailsTracking" 
+                    class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+                <span>Send Campaign</span>
+            </button>
+        </div>
+        
+        <!-- Messages -->
+        <div id="messages" class="mt-6"></div>
+        </div>
+    </div>
+
+    <script>
+        let columns = [];
+        let editorInitialized = false;
+
+        // Get CSRF token for Django
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Initialize TinyMCE editor
+        function initializeEditor() {
+            // Check if TinyMCE is available
+            if (typeof tinymce === 'undefined') {
+                console.error('TinyMCE not loaded. Using fallback textarea.');
+                return;
+            }
+
+            tinymce.init({
+                selector: '#emailTemplate',
+                height: 400,
+                menubar: false,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                        'bold italic underline strikethrough | alignleft aligncenter ' +
+                        'alignright alignjustify | outdent indent | numlist bullist | ' +
+                        'forecolor backcolor removeformat | link table | ' +
+                        'fontsize fontfamily | code preview help',
+                font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; Georgia=georgia,palatino,serif; Helvetica=helvetica,arial,sans-serif; Times New Roman=times new roman,times,serif; Verdana=verdana,geneva,sans-serif',
+                font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
+                content_style: 'body { font-family:Arial,Helvetica,sans-serif; font-size:14px; margin: 16px; }',
+                branding: false,
+                promotion: false,
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        editorInitialized = true;
+                        console.log('TinyMCE editor initialized successfully');
+                    });
+                }
+            }).catch(function(error) {
+                console.error('TinyMCE initialization failed:', error);
+            });
+        }
+
+        // Load contact stats automatically on page load
+        function loadContactStats() {
+            // Fetch contact statistics from our API
+            fetch('/monitor/api/contact_stats/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('csvStatus').textContent = 'Error loading contact stats';
+                        console.error('Contact stats error:', data.error);
+                        return;
+                    }
+                    
+                    // Store the stats globally for filter updates
+                    window.contactStats = data;
+                    
+                    // Update the statistics cards
+                    document.getElementById('totalContacts').textContent = data.total_contacts || 0;
+                    document.getElementById('notSentContacts').textContent = data.not_sent || 0;
+                    document.getElementById('deliveredContacts').textContent = data.delivered || 0;
+                    document.getElementById('openedContacts').textContent = data.opened || 0;
+                    
+                    // Update status message based on current filter
+                    updateStatusMessage();
+                })
+                .catch(error => {
+                    document.getElementById('csvStatus').textContent = 'Ready to send emails';
+                    console.error('Failed to load contact stats:', error);
+                    
+                    // Set default values
+                    document.getElementById('totalContacts').textContent = '0';
+                    document.getElementById('notSentContacts').textContent = '0';
+                    document.getElementById('deliveredContacts').textContent = '0';
+                    document.getElementById('openedContacts').textContent = '0';
+                });
+        }
+
+        // Update status message based on selected filter
+        function updateStatusMessage() {
+            if (!window.contactStats) return;
+            
+            const filter = document.getElementById('contactFilter').value;
+            const stats = window.contactStats;
+            const limitInput = document.getElementById('contactLimit');
+            const limitError = document.getElementById('limitError');
+            const limit = limitInput.value ? parseInt(limitInput.value) : null;
+            
+            let count = 0;
+            let filterName = '';
+            
+            switch(filter) {
+                case 'all':
+                    count = stats.total_contacts;
+                    filterName = 'all contacts';
+                    break;
+                case 'not_sent':
+                    count = stats.not_sent;
+                    filterName = 'contacts not sent yet';
+                    break;
+                case 'sent':
+                    count = stats.sent;
+                    filterName = 'previously sent contacts';
+                    break;
+                case 'delivered':
+                    count = stats.delivered;
+                    filterName = 'delivered contacts';
+                    break;
+                case 'opened':
+                    count = stats.opened;
+                    filterName = 'opened contacts';
+                    break;
+                case 'clicked':
+                    count = stats.clicked;
+                    filterName = 'clicked contacts';
+                    break;
+                case 'bounced':
+                    count = stats.bounced;
+                    filterName = 'bounced contacts';
+                    break;
+                case 'failed':
+                    count = stats.failed;
+                    filterName = 'failed contacts';
+                    break;
+                case 'complained':
+                    count = stats.complained;
+                    filterName = 'complained contacts';
+                    break;
+                default:
+                    count = stats.total_contacts;
+                    filterName = 'contacts';
+            }
+            
+            // Update limit input max value and placeholder
+            limitInput.max = count;
+            limitInput.placeholder = `Max: ${count}`;
+            
+            // Validate the current limit value
+            let isValidLimit = true;
+            if (limit && (limit > count || limit < 1)) {
+                isValidLimit = false;
+                limitError.classList.remove('hidden');
+                limitError.textContent = limit > count ? 
+                    `Maximum available: ${count} contacts` : 
+                    'Minimum limit is 1';
+                limitInput.classList.add('border-red-500');
+                limitInput.classList.remove('border-gray-300');
+            } else {
+                limitError.classList.add('hidden');
+                limitInput.classList.remove('border-red-500');
+                limitInput.classList.add('border-gray-300');
+            }
+            
+            // Apply limit if specified and valid
+            let actualCount = count;
+            if (limit && limit <= count && limit > 0) {
+                actualCount = limit;
+                document.getElementById('csvStatus').textContent = `Ready to send emails to first ${actualCount} of ${count} ${filterName}`;
+            } else {
+                document.getElementById('csvStatus').textContent = `Ready to send emails to ${count} ${filterName}`;
+            }
+            
+            // Store validation state globally
+            window.isLimitValid = isValidLimit;
+        }
+
+        // Show message to user
+        function showMessage(message, isError = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageClass = isError ? 'bg-red-100 border border-red-400 text-red-700' : 'bg-green-100 border border-green-400 text-green-700';
+            messagesDiv.innerHTML = `<div class="${messageClass} px-4 py-3 rounded mb-4">${message}</div>`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messagesDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Load contacts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEditor();
+            loadContactStats();
+            
+            // Clear limit button functionality
+            document.getElementById('clearLimit').addEventListener('click', function() {
+                document.getElementById('contactLimit').value = '';
+                updateStatusMessage();
+            });
+        });
+
+        // Update status message when filter or limit changes
+        document.getElementById('contactFilter').addEventListener('change', updateStatusMessage);
+        document.getElementById('contactLimit').addEventListener('input', updateStatusMessage);
+
+        // Send emails with tracking
+        document.getElementById('sendEmailsTracking').addEventListener('click', function() {
+            const contactFilter = document.getElementById('contactFilter').value;
+            const subject = document.getElementById('emailSubject').value;
+            const limit = document.getElementById('contactLimit').value;
+            
+            // Validate limit before sending
+            if (!window.isLimitValid && limit) {
+                showMessage('Please enter a valid contact limit within the available range', true);
+                return;
+            }
+            
+            // Get content from TinyMCE editor
+            let template = '';
+            if (editorInitialized && tinymce.get('emailTemplate')) {
+                template = tinymce.get('emailTemplate').getContent();
+            } else {
+                template = document.getElementById('emailTemplate').value;
+            }
+
+            if (!template.trim() || template === '<p></p>') {
+                showMessage('Please enter an email template', true);
+                return;
+            }
+
+            // Show loading state
+            const button = document.getElementById('sendEmailsTracking');
+            const originalText = button.textContent;
+            button.textContent = 'Sending Emails...';
+            button.disabled = true;
+
+            const requestBody = {
+                template: template,
+                contact_filter: contactFilter,
+                subject: subject
+            };
+            
+            // Add limit if specified and valid
+            if (limit && parseInt(limit) > 0 && window.isLimitValid) {
+                requestBody.contact_limit = parseInt(limit);
+            }
+
+            fetch('/send_emails/', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showMessage(data.error, true);
+                } else {
+                    let message = data.message;
+                    if (data.failed_count > 0) {
+                        message += `<br><strong>Failed emails:</strong> ${data.failed_count}`;
+                        if (data.failed_emails && data.failed_emails.length > 0) {
+                            message += '<br><small>' + data.failed_emails.slice(0, 3).join(', ') + '</small>';
+                        }
+                    }
+                    showMessage(message);
+                    
+                    // Refresh contact stats after sending
+                    setTimeout(loadContactStats, 1000);
+                }
+            })
+            .catch(error => {
+                showMessage('Error: ' + error, true);
+            })
+            .finally(() => {
+                // Reset button state
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
