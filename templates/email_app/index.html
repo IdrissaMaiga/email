@@ -108,6 +108,7 @@
                     <option value="clicked">🔗 Clicked</option>
                     <option value="bounced">⚠️ Bounced</option>
                     <option value="failed">❌ Failed</option>
+                    <option value="custom">🎯 Custom Selection</option>
                 </select>
                 <p class="text-sm text-gray-500 mt-2">Choose which contacts to target based on their engagement status</p>
             </div>
@@ -135,6 +136,46 @@
                 <input type="text" id="emailSubject" value="EU Grant Advisory Platform - Beta Testing Invitation" 
                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                        placeholder="Enter your email subject">
+            </div>
+        </div>
+        
+        <!-- Custom Contact Selection (Hidden by default) -->
+        <div id="customContactSelection" class="bg-gray-50 rounded-lg p-6 mb-6 hidden">
+            <h4 class="text-lg font-medium text-gray-900 mb-4">🎯 Custom Contact Selection</h4>
+            
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="contactSearch" placeholder="Search by name, email, company..." 
+                           class="pl-10 w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+            
+            <!-- Selection Controls -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex space-x-2">
+                    <button type="button" id="selectAllFiltered" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg hover:bg-blue-200">
+                        Select All Visible
+                    </button>
+                    <button type="button" id="deselectAll" class="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-200">
+                        Deselect All
+                    </button>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <span id="selectedCount">0</span> selected
+                </div>
+            </div>
+            
+            <!-- Contacts List -->
+            <div id="contactsList" class="max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
+                <div id="contactsLoading" class="p-4 text-center text-gray-500">
+                    Loading contacts...
+                </div>
             </div>
         </div>
         
@@ -186,6 +227,9 @@ Horizon Europe Funding Expert
     <script>
         let columns = [];
         let editorInitialized = false;
+        let allContacts = [];
+        let filteredContacts = [];
+        let selectedContacts = new Set();
 
         // Get CSRF token for Django
         function getCookie(name) {
@@ -282,6 +326,22 @@ Horizon Europe Funding Expert
             if (!window.contactStats) return;
             
             const filter = document.getElementById('contactFilter').value;
+            
+            // Handle custom selection differently
+            if (filter === 'custom') {
+                const selectedCount = selectedContacts.size;
+                document.getElementById('csvStatus').textContent = selectedCount > 0 ? 
+                    `Ready to send emails to ${selectedCount} selected contacts` : 
+                    'Select contacts from the list below';
+                
+                // Hide limit controls for custom selection
+                document.getElementById('contactLimit').closest('div').style.display = 'none';
+                return;
+            } else {
+                // Show limit controls for other filters
+                document.getElementById('contactLimit').closest('div').style.display = 'block';
+            }
+            
             const stats = window.contactStats;
             const limitInput = document.getElementById('contactLimit');
             const limitError = document.getElementById('limitError');
@@ -365,6 +425,140 @@ Horizon Europe Funding Expert
             window.isLimitValid = isValidLimit;
         }
 
+        // Load contacts for custom selection
+        function loadContactsForSelection() {
+            fetch('/monitor/api/contacts/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error loading contacts:', data.error);
+                        return;
+                    }
+                    
+                    allContacts = data.contacts || [];
+                    filteredContacts = [...allContacts];
+                    renderContactsList();
+                })
+                .catch(error => {
+                    console.error('Failed to load contacts:', error);
+                    document.getElementById('contactsLoading').textContent = 'Failed to load contacts';
+                });
+        }
+
+        // Render contacts list
+        function renderContactsList() {
+            const contactsList = document.getElementById('contactsList');
+            
+            if (filteredContacts.length === 0) {
+                contactsList.innerHTML = '<div class="p-4 text-center text-gray-500">No contacts found</div>';
+                return;
+            }
+            
+            const contactsHTML = filteredContacts.map(contact => {
+                const isSelected = selectedContacts.has(contact.id);
+                const statusColor = getStatusColor(contact.email_status);
+                
+                return `
+                    <div class="contact-item p-3 border-b border-gray-200 hover:bg-gray-50 ${isSelected ? 'bg-blue-50' : ''}">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="contact_${contact.id}" 
+                                   class="contact-checkbox mr-3" 
+                                   ${isSelected ? 'checked' : ''}
+                                   data-contact-id="${contact.id}">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-medium text-gray-900">
+                                            ${contact.first_name} ${contact.last_name}
+                                        </p>
+                                        <p class="text-sm text-gray-600">${contact.email}</p>
+                                        ${contact.company_name ? `<p class="text-sm text-gray-500">${contact.company_name}</p>` : ''}
+                                        ${contact.job_title ? `<p class="text-xs text-gray-400">${contact.job_title}</p>` : ''}
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusColor}">
+                                            ${contact.email_status.replace('_', ' ').toUpperCase()}
+                                        </span>
+                                        ${contact.location_country ? `<p class="text-xs text-gray-400 mt-1">${contact.location_country}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            contactsList.innerHTML = contactsHTML;
+            
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.contact-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const contactId = parseInt(this.dataset.contactId);
+                    if (this.checked) {
+                        selectedContacts.add(contactId);
+                    } else {
+                        selectedContacts.delete(contactId);
+                    }
+                    updateSelectedCount();
+                    updateStatusMessage();
+                });
+            });
+        }
+
+        // Get status color for contact
+        function getStatusColor(status) {
+            switch(status) {
+                case 'not_sent': return 'bg-gray-100 text-gray-800';
+                case 'sent': return 'bg-blue-100 text-blue-800';
+                case 'delivered': return 'bg-green-100 text-green-800';
+                case 'opened': return 'bg-purple-100 text-purple-800';
+                case 'clicked': return 'bg-indigo-100 text-indigo-800';
+                case 'bounced': return 'bg-yellow-100 text-yellow-800';
+                case 'failed': return 'bg-red-100 text-red-800';
+                case 'complained': return 'bg-orange-100 text-orange-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        // Update selected count
+        function updateSelectedCount() {
+            document.getElementById('selectedCount').textContent = selectedContacts.size;
+        }
+
+        // Filter contacts based on search
+        function filterContacts(searchTerm) {
+            if (!searchTerm.trim()) {
+                filteredContacts = [...allContacts];
+            } else {
+                const term = searchTerm.toLowerCase();
+                filteredContacts = allContacts.filter(contact => 
+                    contact.first_name.toLowerCase().includes(term) ||
+                    contact.last_name.toLowerCase().includes(term) ||
+                    contact.email.toLowerCase().includes(term) ||
+                    (contact.company_name && contact.company_name.toLowerCase().includes(term)) ||
+                    (contact.job_title && contact.job_title.toLowerCase().includes(term)) ||
+                    (contact.location_country && contact.location_country.toLowerCase().includes(term))
+                );
+            }
+            renderContactsList();
+        }
+
+        // Toggle custom contact selection visibility
+        function toggleCustomSelection(show) {
+            const customSection = document.getElementById('customContactSelection');
+            if (show) {
+                customSection.classList.remove('hidden');
+                if (allContacts.length === 0) {
+                    loadContactsForSelection();
+                }
+            } else {
+                customSection.classList.add('hidden');
+                selectedContacts.clear();
+                updateSelectedCount();
+            }
+        }
+
         // Show message to user
         function showMessage(message, isError = false) {
             const messagesDiv = document.getElementById('messages');
@@ -387,6 +581,36 @@ Horizon Europe Funding Expert
                 document.getElementById('contactLimit').value = '';
                 updateStatusMessage();
             });
+            
+            // Contact filter change handler
+            document.getElementById('contactFilter').addEventListener('change', function() {
+                const isCustom = this.value === 'custom';
+                toggleCustomSelection(isCustom);
+                updateStatusMessage();
+            });
+            
+            // Contact search handler
+            document.getElementById('contactSearch').addEventListener('input', function() {
+                filterContacts(this.value);
+            });
+            
+            // Select all filtered contacts
+            document.getElementById('selectAllFiltered').addEventListener('click', function() {
+                filteredContacts.forEach(contact => {
+                    selectedContacts.add(contact.id);
+                });
+                renderContactsList();
+                updateSelectedCount();
+                updateStatusMessage();
+            });
+            
+            // Deselect all contacts
+            document.getElementById('deselectAll').addEventListener('click', function() {
+                selectedContacts.clear();
+                renderContactsList();
+                updateSelectedCount();
+                updateStatusMessage();
+            });
         });
 
         // Update status message when filter or limit changes
@@ -399,10 +623,18 @@ Horizon Europe Funding Expert
             const subject = document.getElementById('emailSubject').value;
             const limit = document.getElementById('contactLimit').value;
             
-            // Validate limit before sending
-            if (!window.isLimitValid && limit) {
-                showMessage('Please enter a valid contact limit within the available range', true);
-                return;
+            // Handle custom selection
+            if (contactFilter === 'custom') {
+                if (selectedContacts.size === 0) {
+                    showMessage('Please select at least one contact to send emails to', true);
+                    return;
+                }
+            } else {
+                // Validate limit for non-custom filters
+                if (!window.isLimitValid && limit) {
+                    showMessage('Please enter a valid contact limit within the available range', true);
+                    return;
+                }
             }
             
             // Get content from TinyMCE editor
@@ -426,13 +658,18 @@ Horizon Europe Funding Expert
 
             const requestBody = {
                 template: template,
-                contact_filter: contactFilter,
                 subject: subject
             };
             
-            // Add limit if specified and valid
-            if (limit && parseInt(limit) > 0 && window.isLimitValid) {
-                requestBody.contact_limit = parseInt(limit);
+            // Handle custom selection vs filter-based selection
+            if (contactFilter === 'custom') {
+                requestBody.selected_contact_ids = Array.from(selectedContacts);
+            } else {
+                requestBody.contact_filter = contactFilter;
+                // Add limit if specified and valid
+                if (limit && parseInt(limit) > 0 && window.isLimitValid) {
+                    requestBody.contact_limit = parseInt(limit);
+                }
             }
 
             fetch('/send_emails/', {
@@ -459,6 +696,15 @@ Horizon Europe Funding Expert
                     
                     // Refresh contact stats after sending
                     setTimeout(loadContactStats, 1000);
+                    
+                    // If custom selection, refresh the contacts list to show updated status
+                    if (contactFilter === 'custom') {
+                        setTimeout(() => {
+                            loadContactsForSelection();
+                            selectedContacts.clear();
+                            updateSelectedCount();
+                        }, 1000);
+                    }
                 }
             })
             .catch(error => {

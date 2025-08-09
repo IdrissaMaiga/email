@@ -33,8 +33,9 @@ def send_emails(request):
     
     template = data.get('template', '')
     subject = data.get('subject', 'Custom Email')
-    contact_filter = data.get('contact_filter', 'not_sent')  # Filter contacts by status
+    contact_filter = data.get('contact_filter')  # Filter contacts by status (optional for custom selection)
     contact_limit = data.get('contact_limit')  # Limit number of contacts to send to
+    selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
     
     # Get Resend API key from settings
     api_key = settings.RESEND_API_KEY
@@ -52,20 +53,32 @@ def send_emails(request):
             'error': 'Resend API key not configured in environment'
         }, status=500)
     
-    # Get contacts from database based on filter
-    if contact_filter == 'all':
-        contacts = Contact.objects.all()
+    # Get contacts based on selection method
+    if selected_contact_ids:
+        # Custom selection: get contacts by IDs
+        contacts = Contact.objects.filter(id__in=selected_contact_ids)
+        if not contacts.exists():
+            return JsonResponse({
+                'error': 'No contacts found with the selected IDs'
+            }, status=400)
     else:
-        contacts = Contact.objects.filter(email_status=contact_filter)
-    
-    # Apply limit if specified
-    if contact_limit and isinstance(contact_limit, int) and contact_limit > 0:
-        contacts = contacts[:contact_limit]
-    
-    if not contacts.exists():
-        return JsonResponse({
-            'error': f'No contacts found with status "{contact_filter}"'
-        }, status=400)
+        # Filter-based selection: get contacts by status filter
+        if not contact_filter:
+            contact_filter = 'not_sent'  # Default filter
+            
+        if contact_filter == 'all':
+            contacts = Contact.objects.all()
+        else:
+            contacts = Contact.objects.filter(email_status=contact_filter)
+        
+        # Apply limit if specified
+        if contact_limit and isinstance(contact_limit, int) and contact_limit > 0:
+            contacts = contacts[:contact_limit]
+        
+        if not contacts.exists():
+            return JsonResponse({
+                'error': f'No contacts found with status "{contact_filter}"'
+            }, status=400)
     
     # Configure Resend
     resend.api_key = api_key

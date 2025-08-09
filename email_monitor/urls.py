@@ -7,4 +7,5 @@ urlpatterns = [
     path('webhook/', views.webhook_endpoint, name='webhook_endpoint'),
     path('api/contact_email_content/', views.contact_email_content_api, name='contact_email_content_api'),
     path('api/contact_stats/', views.contact_stats_api, name='contact_stats_api'),
+    path('api/contacts/', views.contacts_api, name='contacts_api'),
 ]

@@ -358,3 +358,20 @@ def contact_stats_api(request):
         return JsonResponse(stats)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def contacts_api(request):
+    """API endpoint to get contacts list for custom selection"""
+    try:
+        # Get all contacts with essential fields for selection interface
+        contacts = Contact.objects.all().values(
+            'id', 'first_name', 'last_name', 'email', 'email_status',
+            'company_name', 'job_title', 'location_country'
+        ).order_by('first_name', 'last_name')
+        
+        return JsonResponse({
+            'contacts': list(contacts)
+        })
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

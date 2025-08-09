@@ -56,9 +56,34 @@ class Command(BaseCommand):
                                 'first_name': row.get('prospect_first_name', '').strip() or None,
                                 'last_name': row.get('prospect_last_name', '').strip() or None,
                                 'company_name': row.get('company_name', '').strip() or None,
+                                'company_industry': row.get('company_industry', '').strip() or None,
+                                'company_website': row.get('company_website', '').strip() or None,
+                                'company_description': row.get('company_description', '').strip() or None,
+                                'company_linkedin_url': row.get('company_linkedin_url', '').strip() or None,
+                                'company_headcount': row.get('company_headcount', '').strip() or None,
                                 'job_title': row.get('job_title', '').strip() or None,
+                                'linkedin_url': row.get('linkedin_url', '').strip() or None,
+                                'linkedin_headline': row.get('linkedin_headline', '').strip() or None,
+                                'linkedin_position': row.get('linkedin_position', '').strip() or None,
+                                'linkedin_summary': row.get('linkedin_summary', '').strip() or None,
+                                'phone_number': row.get('phone_number', '').strip() or None,
                                 'location_city': row.get('prospect_location_city', '').strip() or None,
                                 'location_country': row.get('prospect_location_country', '').strip() or None,
+                                'tailored_tone_first_line': row.get('tailored_tone_first_line', '').strip() or None,
+                                'tailored_tone_ps_statement': row.get('tailored_tone_ps_statement', '').strip() or None,
+                                'tailored_tone_subject': row.get('tailored_tone_subject', '').strip() or None,
+                                'custom_ai_1': row.get('custom_ai_1', '').strip() or None,
+                                'custom_ai_2': row.get('custom_ai_2', '').strip() or None,
+                                'profile_image_url': row.get('profile_image_url', '').strip() or None,
+                                'logo_image_url': row.get('logo_image_url', '').strip() or None,
+                                'funnel_unique_id': row.get('funnel_unique_id', '').strip() or None,
+                                'funnel_step': row.get('funnel_step', '').strip() or None,
+                                'sequence_unique_id': row.get('sequence_unique_id', '').strip() or None,
+                                'variation_unique_id': row.get('variation_unique_id', '').strip() or None,
+                                'emailsender': row.get('emailsender', '').strip() or None,
+                                'websitecontent': row.get('websitecontent', '').strip() or None,
+                                'leadscore': row.get('leadscore', '').strip() or None,
+                                'esp': row.get('ESP', '').strip() or None,
                                 'email_status': 'not_sent',  # Default status
                                 'csv_data': row  # Store the complete row data
                             }
@@ -70,24 +95,46 @@ class Command(BaseCommand):
                         else:
                             # Update existing contact with any new data
                             updated = False
-                            if not contact.first_name and row.get('prospect_first_name', '').strip():
-                                contact.first_name = row.get('prospect_first_name', '').strip()
-                                updated = True
-                            if not contact.last_name and row.get('prospect_last_name', '').strip():
-                                contact.last_name = row.get('prospect_last_name', '').strip()
-                                updated = True
-                            if not contact.company_name and row.get('company_name', '').strip():
-                                contact.company_name = row.get('company_name', '').strip()
-                                updated = True
-                            if not contact.job_title and row.get('job_title', '').strip():
-                                contact.job_title = row.get('job_title', '').strip()
-                                updated = True
-                            if not contact.location_city and row.get('prospect_location_city', '').strip():
-                                contact.location_city = row.get('prospect_location_city', '').strip()
-                                updated = True
-                            if not contact.location_country and row.get('prospect_location_country', '').strip():
-                                contact.location_country = row.get('prospect_location_country', '').strip()
-                                updated = True
+                            update_fields = [
+                                ('first_name', 'prospect_first_name'),
+                                ('last_name', 'prospect_last_name'),
+                                ('company_name', 'company_name'),
+                                ('company_industry', 'company_industry'),
+                                ('company_website', 'company_website'),
+                                ('company_description', 'company_description'),
+                                ('company_linkedin_url', 'company_linkedin_url'),
+                                ('company_headcount', 'company_headcount'),
+                                ('job_title', 'job_title'),
+                                ('linkedin_url', 'linkedin_url'),
+                                ('linkedin_headline', 'linkedin_headline'),
+                                ('linkedin_position', 'linkedin_position'),
+                                ('linkedin_summary', 'linkedin_summary'),
+                                ('phone_number', 'phone_number'),
+                                ('location_city', 'prospect_location_city'),
+                                ('location_country', 'prospect_location_country'),
+                                ('tailored_tone_first_line', 'tailored_tone_first_line'),
+                                ('tailored_tone_ps_statement', 'tailored_tone_ps_statement'),
+                                ('tailored_tone_subject', 'tailored_tone_subject'),
+                                ('custom_ai_1', 'custom_ai_1'),
+                                ('custom_ai_2', 'custom_ai_2'),
+                                ('profile_image_url', 'profile_image_url'),
+                                ('logo_image_url', 'logo_image_url'),
+                                ('funnel_unique_id', 'funnel_unique_id'),
+                                ('funnel_step', 'funnel_step'),
+                                ('sequence_unique_id', 'sequence_unique_id'),
+                                ('variation_unique_id', 'variation_unique_id'),
+                                ('emailsender', 'emailsender'),
+                                ('websitecontent', 'websitecontent'),
+                                ('leadscore', 'leadscore'),
+                                ('esp', 'ESP'),
+                            ]
+                            
+                            for model_field, csv_field in update_fields:
+                                current_value = getattr(contact, model_field)
+                                new_value = row.get(csv_field, '').strip() or None
+                                if not current_value and new_value:
+                                    setattr(contact, model_field, new_value)
+                                    updated = True
                             
                             # Always update CSV data
                             contact.csv_data = row
