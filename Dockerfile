@@ -30,8 +30,8 @@ RUN chmod +x /app/entrypoint.sh
 # Create directory for CSV files
 RUN mkdir -p /app/data
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Create directory for static files
+RUN mkdir -p /app/staticfiles
 
 # Create a non-root user
 RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app

@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 import os
+import sys
 import csv
 import logging
 
@@ -12,8 +13,17 @@ class EmailMonitorConfig(AppConfig):
 
     def ready(self):
         """This method is called when Django starts up"""
+        # Skip database operations during migrations or collectstatic
+        if os.environ.get('SKIP_DB_OPERATIONS') or \
+           any(cmd in os.sys.argv for cmd in ['collectstatic', 'migrate', 'makemigrations']):
+            return
+            
         # Import here to avoid circular imports
-        from .models import Contact
+        try:
+            from .models import Contact
+        except Exception as e:
+            logger.error(f"Error importing Contact model: {e}")
+            return
         
         # Path to the CSV file
         csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data.csv')
