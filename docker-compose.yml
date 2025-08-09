@@ -7,7 +7,7 @@ services:
       - "2001:8000"
     environment:
       - DJANGO_DEBUG=False
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,13.60.195.151
     volumes:
       - ./data:/app/data
       - ./data.csv:/app/data.csv
