@@ -523,6 +523,7 @@ def delete_contact(request, contact_id):
     }, status=405)
 
 
+@csrf_exempt
 def upload_csv(request):
     """View to upload and preview CSV contacts before batch creation"""
     # Handle RequestDataTooBig exception first
