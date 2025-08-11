@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.http import require_http_methods
 import json
-from django.views.decorators.http import require_http_methods
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.utils import timezone
@@ -542,17 +540,10 @@ def upload_csv(request):
         form = CSVUploadForm()  # Initialize form first
         
         if request.method == 'POST':
-            # Debug logging
-            print(f"POST data keys: {list(request.POST.keys())}")
-            print(f"FILES data keys: {list(request.FILES.keys())}")
             
             if 'preview_csv' in request.POST:
-                print("Processing CSV preview...")
                 # Handle CSV preview
                 form = CSVUploadForm(request.POST, request.FILES)
-                print(f"Form is valid: {form.is_valid()}")
-                if not form.is_valid():
-                    print(f"Form errors: {form.errors}")
                 
                 if form.is_valid():
                     try:
@@ -771,14 +762,11 @@ def upload_csv(request):
                         import json
                         try:
                             contacts_data = json.loads(selected_contacts_json)
-                            print(f"DEBUG: Processing {len(contacts_data)} selected contacts")
                         except json.JSONDecodeError:
-                            print("DEBUG: Failed to parse selected contacts JSON")
                             return JsonResponse({'success': False, 'error': 'Invalid selected contacts data'})
                     else:
                         # Fallback to session data if no selection (for backwards compatibility)
                         contacts_data = request.session.get('csv_contacts_preview', [])
-                        print(f"DEBUG: No selection data, using session data with {len(contacts_data)} contacts")
                     
                     if not contacts_data:
                         return JsonResponse({
@@ -801,8 +789,6 @@ def upload_csv(request):
                             location_city = contact_data.get('location_city', '').strip()
                             location_country = contact_data.get('location_country', '').strip()
                             
-                            print(f"DEBUG: Processing contact: {email}")
-                            
                             if not email:
                                 continue
                             
@@ -822,7 +808,6 @@ def upload_csv(request):
                             
                             if created:
                                 created_count += 1
-                                print(f"DEBUG: Created new contact: {email}")
                             else:
                                 # Update existing contact with new data (only if fields have values)
                                 updated = False
@@ -848,12 +833,10 @@ def upload_csv(request):
                                 if updated:
                                     contact.save()
                                     updated_count += 1
-                                    print(f"DEBUG: Updated existing contact: {email}")
                         
                         except Exception as e:
                             error_msg = f"Error with {contact_data.get('email', 'unknown')}: {str(e)}"
                             errors.append(error_msg)
-                            print(f"DEBUG: {error_msg}")
                     
                     # Clear session data
                     if 'csv_contacts_preview' in request.session:
@@ -886,8 +869,7 @@ def upload_csv(request):
                         'error': f'Error creating contacts: {str(e)}'
                     }, status=500)
             else:
-                # Debug: log when neither preview_csv nor create_batch is found
-                print(f"No recognized action in POST data. Available keys: {list(request.POST.keys())}")
+                # Return error for unrecognized actions
                 return JsonResponse({
                     'success': False,
                     'error': 'No valid action specified in request'

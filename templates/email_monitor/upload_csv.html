@@ -10,7 +10,15 @@
     <link rel="alternate icon" href="{% static 'favicon.ico' %}?v=20250811">
     <link rel="mask-icon" href="{% static 'favicon.svg' %}?v=20250811" color="#3B82F6">
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        // Disable Tailwind CDN production warning
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+            }
+        }
+    </script>
     <style>
         /* Ensure table cells have consistent height and alignment */
         .contact-table {
@@ -343,8 +351,6 @@
                 })
                 .then(response => {
                     clearTimeout(timeoutId);
-                    console.log('Response status:', response.status);
-                    console.log('Response headers:', response.headers.get('content-type'));
                     
                     // Handle specific error status codes
                     if (response.status === 413) {
@@ -361,7 +367,6 @@
                     return response.text(); // Get as text first to debug
                 })
                 .then(text => {
-                    console.log('Raw response:', text.substring(0, 500)); // Log first 500 chars
                     try {
                         return JSON.parse(text);
                     } catch (e) {
@@ -370,7 +375,6 @@
                     }
                 })
                 .then(data => {
-                    console.log('CSV Preview Response:', data); // Debug log
                     if (data.success) {
                         showPreview(data);
                         showMessage(`Preview loaded: ${data.total_contacts} contacts found (${data.create_count} new, ${data.update_count} updates)`);
