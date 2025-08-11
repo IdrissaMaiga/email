@@ -524,8 +524,12 @@ def delete_contact(request, contact_id):
 
 
 @csrf_exempt
+@require_http_methods(["GET", "POST"])
 def upload_csv(request):
     """View to upload and preview CSV contacts before batch creation"""
+    # Debug logging
+    logger.info(f"upload_csv called: method={request.method}, host={request.get_host()}, origin={request.META.get('HTTP_ORIGIN', 'None')}")
+    
     # Handle RequestDataTooBig exception first
     try:
         # This will trigger the exception if request body is too large
