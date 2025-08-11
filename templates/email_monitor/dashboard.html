@@ -13,10 +13,10 @@
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <script>
-        // Disable Tailwind CDN production warning
+        // Configure Tailwind CDN without underlines
         tailwind.config = {
-            corePlugins: {
-                preflight: false,
+            theme: {
+                extend: {}
             }
         }
     </script>
