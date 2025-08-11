@@ -27,7 +27,7 @@ APPEND_SLASH = False
 # Allow all hosts for development - NO SECURITY
 ALLOWED_HOSTS = ['*']
 
-# Disable all security features for development
+# COMPLETELY DISABLE ALL SECURITY FEATURES
 SECURE_SSL_REDIRECT = False
 SECURE_HSTS_SECONDS = 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
@@ -36,6 +36,19 @@ SECURE_CONTENT_TYPE_NOSNIFF = False
 SECURE_BROWSER_XSS_FILTER = False
 SECURE_REFERRER_POLICY = None
 X_FRAME_OPTIONS = None
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = False
+
+# DISABLE ALL REQUEST/RESPONSE PROCESSING
+USE_I18N = False
+USE_L10N = False
+USE_TZ = False
+
+# ALLOW ALL CONTENT TYPES AND ORIGINS
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Disable all security features for development
 # USE_X_FORWARDED_HOST = True
@@ -55,12 +68,8 @@ INSTALLED_APPS = [
     'email_monitor',
 ]
 
-# Minimal middleware for development - NO SECURITY
-MIDDLEWARE = [
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-]
+# COMPLETELY DISABLE ALL MIDDLEWARE - NO SECURITY AT ALL
+MIDDLEWARE = []
 
 ROOT_URLCONF = 'email_sender.urls'
 
@@ -107,34 +116,27 @@ else:
     }
 
 
-# File upload settings for large CSV files
-# Increase maximum file size for CSV uploads (100 MB)
-FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
+# File upload settings for large CSV files - MAXIMUM PERMISSIVE
+# Allow HUGE file sizes (1 GB)
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024  # 1 GB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024  # 1 GB
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000  # Very high limit
+DATA_UPLOAD_MAX_NUMBER_FILES = 1000  # Very high limit
 
-# Increase maximum request body size (100 MB)
-DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
-
-# Increase maximum number of fields (for large CSV files with many contacts)
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000  # Default is 1000
-
-# Maximum number of files that can be uploaded (default is 100)
-DATA_UPLOAD_MAX_NUMBER_FILES = 100
+# Disable all file upload security
+FILE_UPLOAD_PERMISSIONS = None
+FILE_UPLOAD_DIRECTORY_PERMISSIONS = None
 
 
 # Disable all password validation for development - NO SECURITY
 AUTH_PASSWORD_VALIDATORS = []
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
+# Internationalization - DISABLED FOR PERFORMANCE
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
+USE_I18N = False
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -201,5 +203,18 @@ LOGGING = {
     },
 }
 
-# Development server settings
+# Development server settings - COMPLETELY OPEN
 DEFAULT_PORT = 2001
+
+# DISABLE ALL REQUEST VALIDATION AND SECURITY
+SILENCED_SYSTEM_CHECKS = ['security.W001', 'security.W002', 'security.W003', 'security.W004', 'security.W005', 'security.W006', 'security.W007', 'security.W008', 'security.W009', 'security.W010', 'security.W011', 'security.W012', 'security.W013', 'security.W014', 'security.W015', 'security.W016', 'security.W017', 'security.W018', 'security.W019', 'security.W020', 'security.W021', 'security.W022']
+
+# FORCE TUNNEL COMPATIBILITY
+FORCE_SCRIPT_NAME = ''
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# DISABLE ALL CONTENT SECURITY
+CONTENT_SECURITY_POLICY = None
+FEATURE_POLICY = None
