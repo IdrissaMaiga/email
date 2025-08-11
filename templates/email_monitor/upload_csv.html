@@ -340,25 +340,35 @@
                 previewBtn.disabled = true;
                 previewSpinner.classList.remove('hidden');
                 
-                // Submit form
+                // Submit form with timeout handling
                 const formData = new FormData(this);
                 // Manually add the button name since fetch() doesn't include clicked button
                 formData.append('preview_csv', 'true');
+                
+                // Create AbortController for timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
                 
                 fetch(window.location.href, {
                     method: 'POST',
                     body: formData,
                     headers: {
                         'X-CSRFToken': getCookie('csrftoken')
-                    }
+                    },
+                    signal: controller.signal
                 })
                 .then(response => {
+                    clearTimeout(timeoutId);
                     console.log('Response status:', response.status);
                     console.log('Response headers:', response.headers.get('content-type'));
                     
                     // Handle specific error status codes
                     if (response.status === 413) {
                         throw new Error('File too large. Please reduce the CSV file size or try uploading fewer contacts at once.');
+                    }
+                    
+                    if (response.status === 504 || response.status === 502) {
+                        throw new Error('Server timeout. Your CSV file might be too large. Please try with a smaller file or contact support.');
                     }
                     
                     if (!response.ok) {
@@ -391,8 +401,16 @@
                     }
                 })
                 .catch(error => {
+                    clearTimeout(timeoutId);
                     console.error('Network/Parse Error:', error);
-                    showMessage('An error occurred while processing the CSV. Please check the browser console for details.', true);
+                    
+                    if (error.name === 'AbortError') {
+                        showMessage('Request timed out. Your CSV file might be too large. Please try with a smaller file.', true);
+                    } else if (error.message.includes('net::ERR_CONNECTION_ABORTED')) {
+                        showMessage('Connection was aborted. This usually happens with large files. Please try with a smaller CSV file or contact support.', true);
+                    } else {
+                        showMessage(`Error: ${error.message}. Please check the browser console for details.`, true);
+                    }
                 })
                 .finally(() => {
                     // Reset loading state
