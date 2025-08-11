@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
 from django.views.decorators.http import require_http_methods
@@ -149,7 +148,6 @@ def contacts_list(request):
     return render(request, 'email_monitor/contacts_list.html', context)
 
 
-@csrf_exempt
 def contact_email_content_api(request):
     """API endpoint to get email content for a specific contact"""
     email = request.GET.get('email')
@@ -245,7 +243,6 @@ def contact_email_content_api(request):
         return JsonResponse({'error': f'Failed to retrieve email content: {str(e)}'}, status=500)
 
 
-@csrf_exempt
 @require_http_methods(["POST"])
 def webhook_endpoint_1(request):
     """
@@ -254,7 +251,6 @@ def webhook_endpoint_1(request):
     """
     return webhook_handler(request, 'horizoneurope')
 
-@csrf_exempt
 @require_http_methods(["POST"])
 def webhook_endpoint_2(request):
     """
@@ -523,25 +519,9 @@ def delete_contact(request, contact_id):
     }, status=405)
 
 
-@csrf_exempt
 @require_http_methods(["GET", "POST"])
 def upload_csv(request):
     """View to upload and preview CSV contacts before batch creation"""
-    # Enhanced debug logging for tunnel access troubleshooting
-    logger.info(f"=== UPLOAD_CSV VIEW CALLED ===")
-    logger.info(f"Method: {request.method}")
-    logger.info(f"Host: {request.get_host()}")
-    logger.info(f"HTTP_HOST: {request.META.get('HTTP_HOST')}")
-    logger.info(f"HTTP_X_FORWARDED_HOST: {request.META.get('HTTP_X_FORWARDED_HOST')}")
-    logger.info(f"HTTP_X_FORWARDED_PROTO: {request.META.get('HTTP_X_FORWARDED_PROTO')}")
-    logger.info(f"HTTP_X_REAL_IP: {request.META.get('HTTP_X_REAL_IP')}")
-    logger.info(f"REMOTE_ADDR: {request.META.get('REMOTE_ADDR')}")
-    logger.info(f"User-Agent: {request.META.get('HTTP_USER_AGENT')}")
-    logger.info(f"Referer: {request.META.get('HTTP_REFERER')}")
-    logger.info(f"Origin: {request.META.get('HTTP_ORIGIN')}")
-    logger.info(f"Content-Type: {request.META.get('CONTENT_TYPE')}")
-    logger.info(f"@csrf_exempt decorator applied: True")
-    
     # Handle RequestDataTooBig exception first
     try:
         # This will trigger the exception if request body is too large
@@ -940,7 +920,6 @@ def upload_csv(request):
             return render(request, 'email_monitor/upload_csv.html', context)
 
 
-@csrf_exempt
 def update_contact_field_api(request):
     """API endpoint to update a single contact field inline"""
     if request.method != 'POST':
@@ -1022,7 +1001,6 @@ def update_contact_field_api(request):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
-@csrf_exempt
 def update_contact_batch_api(request):
     """API endpoint to update multiple contact fields at once"""
     if request.method != 'POST':

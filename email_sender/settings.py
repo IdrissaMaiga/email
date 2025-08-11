@@ -26,23 +26,6 @@ APPEND_SLASH = False
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,sender.horizoneurope.io,13.60.195.151,testserver').split(',')
 
-# CSRF Settings for tunnel access
-CSRF_TRUSTED_ORIGINS = [
-    'https://sender.horizoneurope.io',
-    'https://email.horizoneurope.io', 
-    'https://horizoneurope.io',
-    'http://localhost:2001',
-    'http://127.0.0.1:2001',
-]
-
-# CSRF Cookie Settings
-CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
-CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_DOMAIN = None  # Allow any domain
-CSRF_USE_SESSIONS = False
-CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
-
 # Reverse proxy/tunnel settings
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
@@ -65,8 +48,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'email_monitor.middleware.CSRFDebugMiddleware',  # Add debug middleware before CSRF
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -221,11 +202,6 @@ LOGGING = {
         'email_monitor': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
-            'propagate': True,
-        },
-        'django.middleware.csrf': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
             'propagate': True,
         },
     },

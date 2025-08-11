@@ -119,7 +119,6 @@
             <h3 class="text-lg font-medium text-gray-900 mb-4">📂 Upload CSV File</h3>
             
             <form id="csvUploadForm" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
                 
                 <div class="mb-6">
                     <label for="{{ form.csv_file.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
@@ -210,7 +209,6 @@
                 <!-- Process Selected Contacts Button (moved up) -->
                 <div class="flex justify-end mb-4">
                     <form id="batchCreateForm" method="post" class="inline">
-                        {% csrf_token %}
                         <button type="submit" name="create_batch" id="createBatchBtn"
                                 class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,22 +257,6 @@
     </div>
 
     <script>
-        // Get CSRF token
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
         // Show message
         function showMessage(message, isError = false) {
             const messagesDiv = document.getElementById('messages');
@@ -353,7 +335,6 @@
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),
                         'X-Forwarded-Proto': 'https',
                         'X-Real-IP': window.location.hostname,
                         'Cache-Control': 'no-cache'
@@ -832,10 +813,7 @@
             
             fetch(window.location.href, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
