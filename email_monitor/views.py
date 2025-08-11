@@ -527,8 +527,20 @@ def delete_contact(request, contact_id):
 @require_http_methods(["GET", "POST"])
 def upload_csv(request):
     """View to upload and preview CSV contacts before batch creation"""
-    # Debug logging
-    logger.info(f"upload_csv called: method={request.method}, host={request.get_host()}, origin={request.META.get('HTTP_ORIGIN', 'None')}")
+    # Enhanced debug logging for tunnel access troubleshooting
+    logger.info(f"=== UPLOAD_CSV VIEW CALLED ===")
+    logger.info(f"Method: {request.method}")
+    logger.info(f"Host: {request.get_host()}")
+    logger.info(f"HTTP_HOST: {request.META.get('HTTP_HOST')}")
+    logger.info(f"HTTP_X_FORWARDED_HOST: {request.META.get('HTTP_X_FORWARDED_HOST')}")
+    logger.info(f"HTTP_X_FORWARDED_PROTO: {request.META.get('HTTP_X_FORWARDED_PROTO')}")
+    logger.info(f"HTTP_X_REAL_IP: {request.META.get('HTTP_X_REAL_IP')}")
+    logger.info(f"REMOTE_ADDR: {request.META.get('REMOTE_ADDR')}")
+    logger.info(f"User-Agent: {request.META.get('HTTP_USER_AGENT')}")
+    logger.info(f"Referer: {request.META.get('HTTP_REFERER')}")
+    logger.info(f"Origin: {request.META.get('HTTP_ORIGIN')}")
+    logger.info(f"Content-Type: {request.META.get('CONTENT_TYPE')}")
+    logger.info(f"@csrf_exempt decorator applied: True")
     
     # Handle RequestDataTooBig exception first
     try:

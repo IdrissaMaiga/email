@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'email_monitor.middleware.CSRFDebugMiddleware',  # Add debug middleware before CSRF
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -220,6 +221,11 @@ LOGGING = {
         'email_monitor': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
+            'propagate': True,
+        },
+        'django.middleware.csrf': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
