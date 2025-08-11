@@ -26,6 +26,19 @@ APPEND_SLASH = False
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,sender.horizoneurope.io,13.60.195.151,testserver').split(',')
 
+# CSRF Settings for tunnel access
+CSRF_TRUSTED_ORIGINS = [
+    'https://sender.horizoneurope.io',
+    'https://email.horizoneurope.io', 
+    'https://horizoneurope.io',
+    'http://localhost:2001',
+    'http://127.0.0.1:2001',
+]
+
+# CSRF Cookie Settings
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
