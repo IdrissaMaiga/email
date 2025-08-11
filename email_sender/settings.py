@@ -24,7 +24,7 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 # Disable APPEND_SLASH to prevent issues with webhook POST requests
 APPEND_SLASH = False
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,sender.horizoneurope.io,13.60.195.151').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,email.horizoneurope.io,horizoneurope.io,sender.horizoneurope.io,13.60.195.151,testserver').split(',')
 
 
 # Application definition
@@ -95,6 +95,20 @@ else:
     }
 
 
+# File upload settings for large CSV files
+# Increase maximum file size for CSV uploads (100 MB)
+FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
+
+# Increase maximum request body size (100 MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
+
+# Increase maximum number of fields (for large CSV files with many contacts)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000  # Default is 1000
+
+# Maximum number of files that can be uploaded (default is 100)
+DATA_UPLOAD_MAX_NUMBER_FILES = 100
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -143,22 +157,28 @@ else:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SMTP Configuration from environment (legacy)
-SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.resend.com')
-SMTP_PORT = os.getenv('SMTP_PORT', '465')
-SMTP_USERNAME = os.getenv('SMTP_USERNAME', '')
-SMTP_EMAIL = os.getenv('SMTP_EMAIL', '')
-SMTP_SENDER_NAME = os.getenv('SMTP_SENDER_NAME', '')
-SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')
 
-# Resend API Configuration
-RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
 
-# CSV file path
-CSV_FILE_PATH = BASE_DIR / 'data.csv'
 
-# Resend Webhook Configuration
-RESEND_WEBHOOK_SECRET = os.getenv('RESEND_WEBHOOK_SECRET', '')
+# Multiple Email Sender Configurations
+EMAIL_SENDERS = {
+    'horizoneurope': {
+        'email': 'roland.zonai@horizoneurope.io',
+        'name': 'Roland Zonai - Horizon Europe IO',
+        'api_key': 're_Cs5WjBoq_KQVASjgHeJv5ru1Nkuomk3BY',
+        'domain': 'horizoneurope.io',
+        'webhook_url': 'sender.horizoneurope.io/webhook1/',
+        'webhook_secret': 'whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf'
+    },
+    'horizon_eu': {
+        'email': 'roland.zonai@horizon.eu.com',
+        'name': 'Roland Zonai - Horizon EU',
+        'api_key': 're_2g11XipG_PZyEkMWAkwJ2eTSMbZVbk5hz',
+        'domain': 'horizon.eu.com',
+        'webhook_url': 'sender.horizoneurope.io/webhook2/',
+        'webhook_secret': 'whsec_tAU54drStmKUyqSmDT2An08p0m3WuvSv'
+    }
+}
 
 # Logging configuration
 LOGGING = {

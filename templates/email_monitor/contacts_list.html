@@ -29,14 +29,30 @@
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-900">Contact Management</h2>
                 
-                <!-- View Options -->
+                <!-- Action Buttons -->
                 <div class="flex items-center space-x-4">
+                    <a href="{% url 'upload_csv' %}" 
+                       class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <span>Upload CSV</span>
+                    </a>
+                    
                     <button id="toggleFields" 
                             class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                         </svg>
                         <span id="toggleText">Show More Fields</span>
+                    </button>
+                    
+                    <button id="toggleEditControls" 
+                            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        <span id="toggleEditText">Show Edit Controls</span>
                     </button>
                 </div>
             </div>
@@ -50,12 +66,31 @@
                             <input type="text" name="search" value="{{ current_search|default:'' }}" 
                                    placeholder="Search by name, email, or company..." 
                                    class="flex-1 border border-gray-300 rounded-md px-3 py-2">
+                            
+                            <!-- Sort By Dropdown -->
+                            <select name="sort_by" class="border border-gray-300 rounded-md px-3 py-2">
+                                <option value="">Sort by...</option>
+                                <option value="name_asc" {% if current_sort == 'name_asc' %}selected{% endif %}>Name A-Z</option>
+                                <option value="name_desc" {% if current_sort == 'name_desc' %}selected{% endif %}>Name Z-A</option>
+                                <option value="id_asc" {% if current_sort == 'id_asc' %}selected{% endif %}>ID Low-High</option>
+                                <option value="id_desc" {% if current_sort == 'id_desc' %}selected{% endif %}>ID High-Low</option>
+                                <option value="date_asc" {% if current_sort == 'date_asc' %}selected{% endif %}>Date Old-New</option>
+                                <option value="date_desc" {% if current_sort == 'date_desc' %}selected{% endif %}>Date New-Old</option>
+                                <option value="email_asc" {% if current_sort == 'email_asc' %}selected{% endif %}>Email A-Z</option>
+                                <option value="email_desc" {% if current_sort == 'email_desc' %}selected{% endif %}>Email Z-A</option>
+                            </select>
+                            
+                            <!-- Hidden fields to maintain current status filter -->
+                            {% if current_status %}
+                            <input type="hidden" name="status" value="{{ current_status }}">
+                            {% endif %}
+                            
                             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                                 Search
                             </button>
-                            {% if current_search %}
+                            {% if current_search or current_sort or current_status %}
                             <a href="{% url 'contacts_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-                                Clear
+                                Clear All
                             </a>
                             {% endif %}
                         </form>
@@ -64,12 +99,12 @@
                 
                 <!-- Status Filter Buttons -->
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="{% url 'contacts_list' %}" 
+                    <a href="{% url 'contacts_list' %}{% if current_search or current_sort %}?{% endif %}{% if current_search %}search={{ current_search }}{% endif %}{% if current_search and current_sort %}&{% endif %}{% if current_sort %}sort_by={{ current_sort }}{% endif %}" 
                        class="px-3 py-1 rounded-full text-sm {% if not current_status %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
                         All ({{ status_counts.not_sent|add:status_counts.sent|add:status_counts.delivered|add:status_counts.opened|add:status_counts.clicked|add:status_counts.bounced|add:status_counts.complained|add:status_counts.failed }})
                     </a>
                     {% for status_code, status_name in status_choices %}
-                    <a href="?status={{ status_code }}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                    <a href="?status={{ status_code }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                        class="px-3 py-1 rounded-full text-sm {% if current_status == status_code %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
                         {% if status_code == 'not_sent' %}{{ status_name }} ({{ status_counts.not_sent|default:0 }})
                         {% elif status_code == 'sent' %}{{ status_name }} ({{ status_counts.sent|default:0 }})
@@ -92,43 +127,113 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact Info</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company & Location</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Activity</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            <!-- Extra fields (hidden by default) -->
-                            <th class="extra-field hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Industry</th>
-                            <th class="extra-field hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">LinkedIn</th>
-                            <th class="extra-field hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                            <th class="extra-field hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lead Score</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         {% for contact in page_obj %}
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50" data-contact-id="{{ contact.id }}">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ contact.full_name|default:"—" }}</div>
-                                <div class="text-sm text-gray-500">{{ contact.job_title|default:"—" }}</div>
+                                <div class="text-sm font-medium text-gray-900">{{ contact.id }}</div>
+                                <!-- Edit Mode Controls -->
+                                <div class="mt-2 hidden edit-controls">
+                                    <button class="edit-mode-btn text-blue-600 hover:text-blue-800 text-xs font-medium px-2 py-1 border border-blue-300 rounded"
+                                            onclick="toggleEditMode({{ contact.id }})">
+                                        <span class="edit-text">Edit</span>
+                                        <span class="cancel-text hidden">Cancel</span>
+                                    </button>
+                                    <button class="save-changes-btn hidden text-green-600 hover:text-green-800 text-xs font-medium px-2 py-1 border border-green-300 rounded ml-1"
+                                            onclick="saveAllChanges({{ contact.id }})">
+                                        Save All
+                                    </button>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ contact.email }}</div>
+                            <td class="px-6 py-4">
+                                <!-- Editable Name -->
+                                <div class="contact-field" data-field="full_name">
+                                    <span class="display-value text-sm font-medium text-gray-900 cursor-pointer hover:bg-gray-100 p-1 rounded">{{ contact.full_name|default:"Click to edit name" }}</span>
+                                    <input type="text" class="edit-input hidden w-full text-sm font-medium text-gray-900 border border-gray-300 rounded px-2 py-1" value="{{ contact.full_name|default:'' }}">
+                                </div>
+                                
+                                <!-- Editable Job Title -->
+                                <div class="contact-field mt-1" data-field="job_title">
+                                    <span class="display-value text-sm text-gray-500 cursor-pointer hover:bg-gray-100 p-1 rounded">{{ contact.job_title|default:"Click to edit job title" }}</span>
+                                    <input type="text" class="edit-input hidden w-full text-sm text-gray-500 border border-gray-300 rounded px-2 py-1" value="{{ contact.job_title|default:'' }}">
+                                </div>
+                                
+                                <!-- Editable Email -->
+                                <div class="contact-field mt-1" data-field="email">
+                                    <span class="display-value text-sm text-blue-600 cursor-pointer hover:bg-blue-50 p-1 rounded">{{ contact.email }}</span>
+                                    <input type="email" class="edit-input hidden w-full text-sm text-blue-600 border border-gray-300 rounded px-2 py-1" value="{{ contact.email }}">
+                                </div>
+                                
+                                <div class="text-xs text-gray-400 mt-1">📅 Added: {{ contact.created_at|date:"M d, Y H:i" }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ contact.company_name|default:"—" }}</div>
-                                <div class="extra-field hidden text-xs text-gray-500 mt-1">{{ contact.company_headcount|default:"" }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">
-                                    {% if contact.location_city and contact.location_country %}
-                                        {{ contact.location_city }}, {{ contact.location_country }}
-                                    {% elif contact.location_country %}
-                                        {{ contact.location_country }}
+                            <td class="px-6 py-4">
+                                <!-- Editable Company Name -->
+                                <div class="contact-field" data-field="company_name">
+                                    <span class="display-value text-sm text-gray-900 cursor-pointer hover:bg-gray-100 p-1 rounded">{{ contact.company_name|default:"Click to edit company" }}</span>
+                                    <input type="text" class="edit-input hidden w-full text-sm text-gray-900 border border-gray-300 rounded px-2 py-1" value="{{ contact.company_name|default:'' }}">
+                                </div>
+                                
+                                <!-- Editable Location -->
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <div class="contact-field inline" data-field="location_city">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">📍 {{ contact.location_city|default:"City" }}</span>
+                                        <input type="text" class="edit-input hidden w-20 text-xs border border-gray-300 rounded px-1" value="{{ contact.location_city|default:'' }}">
+                                    </div>
+                                    <span>, </span>
+                                    <div class="contact-field inline" data-field="location_country">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">{{ contact.location_country|default:"Country" }}</span>
+                                        <input type="text" class="edit-input hidden w-20 text-xs border border-gray-300 rounded px-1" value="{{ contact.location_country|default:'' }}">
+                                    </div>
+                                </div>
+                                
+                                <div class="text-xs text-gray-400 mt-1">
+                                    {% if contact.last_clicked %}
+                                        🔗 Clicked: {{ contact.last_clicked|date:"M d, H:i" }}
+                                    {% elif contact.last_opened %}
+                                        👁️ Opened: {{ contact.last_opened|date:"M d, H:i" }}
+                                    {% elif contact.last_email_sent %}
+                                        📧 Sent: {{ contact.last_email_sent|date:"M d, H:i" }}
                                     {% else %}
-                                        —
+                                        💤 No activity
                                     {% endif %}
+                                </div>
+                                
+                                <!-- Extra Company Info (hidden by default) -->
+                                <div class="extra-field hidden text-xs text-gray-500 mt-1">
+                                    <div class="contact-field" data-field="company_industry">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">🏭 {{ contact.company_industry|default:"Click to edit industry" }}</span>
+                                        <input type="text" class="edit-input hidden w-full text-xs border border-gray-300 rounded px-1" value="{{ contact.company_industry|default:'' }}">
+                                    </div>
+                                </div>
+                                <div class="extra-field hidden text-xs text-gray-500 mt-1">
+                                    <div class="contact-field" data-field="linkedin_url">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">🔗 {{ contact.linkedin_url|default:"Click to edit LinkedIn" }}</span>
+                                        <input type="url" class="edit-input hidden w-full text-xs border border-gray-300 rounded px-1" value="{{ contact.linkedin_url|default:'' }}">
+                                    </div>
+                                </div>
+                                <div class="extra-field hidden text-xs text-gray-500 mt-1">
+                                    <div class="contact-field" data-field="phone_number">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">📞 {{ contact.phone_number|default:"Click to edit phone" }}</span>
+                                        <input type="tel" class="edit-input hidden w-full text-xs border border-gray-300 rounded px-1" value="{{ contact.phone_number|default:'' }}">
+                                    </div>
+                                </div>
+                                <div class="extra-field hidden text-xs text-gray-500 mt-1">
+                                    <div class="contact-field" data-field="leadscore">
+                                        <span class="display-value cursor-pointer hover:bg-gray-100 p-1 rounded">⭐ Lead Score: {{ contact.leadscore|default:"Click to edit" }}</span>
+                                        <select class="edit-input hidden text-xs border border-gray-300 rounded px-1">
+                                            <option value="">-</option>
+                                            <option value="1" {% if contact.leadscore == '1' %}selected{% endif %}>1</option>
+                                            <option value="2" {% if contact.leadscore == '2' %}selected{% endif %}>2</option>
+                                            <option value="3" {% if contact.leadscore == '3' %}selected{% endif %}>3</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -144,62 +249,35 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {% if contact.last_clicked %}
-                                    Clicked: {{ contact.last_clicked|date:"M d, H:i" }}
-                                {% elif contact.last_opened %}
-                                    Opened: {{ contact.last_opened|date:"M d, H:i" }}
-                                {% elif contact.last_email_sent %}
-                                    Sent: {{ contact.last_email_sent|date:"M d, H:i" }}
-                                {% else %}
-                                    —
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {% if contact.email_status != 'not_sent' %}
-                                    <button onclick="viewEmailContent('{{ contact.email|escapejs }}', '{{ contact.full_name|escapejs }}')" 
-                                            class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1">
+                                <div class="flex items-center space-x-2">
+                                    <!-- View Email Button (if sent) -->
+                                    {% if contact.email_status != 'not_sent' %}
+                                        <button onclick="viewEmailContent('{{ contact.email|escapejs }}', '{{ contact.full_name|escapejs }}')" 
+                                                class="text-green-600 hover:text-green-800 text-sm font-medium flex items-center space-x-1"
+                                                title="View Email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                            <span class="hidden sm:inline">View</span>
+                                        </button>
+                                    {% endif %}
+                                    
+                                    <!-- Delete Button -->
+                                    <button onclick="deleteContact({{ contact.id }}, '{{ contact.full_name|default:contact.email|escapejs }}')" 
+                                            class="text-red-600 hover:text-red-800 text-sm font-medium flex items-center space-x-1"
+                                            title="Delete Contact">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
-                                        <span>View Email</span>
+                                        <span class="hidden sm:inline">Delete</span>
                                     </button>
-                                {% else %}
-                                    <span class="text-gray-400 text-sm">No email sent</span>
-                                {% endif %}
-                            </td>
-                            <!-- Extra fields (hidden by default) -->
-                            <td class="extra-field hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ contact.company_industry|default:"—" }}
-                            </td>
-                            <td class="extra-field hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {% if contact.linkedin_url %}
-                                    <a href="{{ contact.linkedin_url }}" target="_blank" class="text-blue-600 hover:text-blue-800">
-                                        <svg class="w-4 h-4 inline" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    </a>
-                                {% else %}
-                                    —
-                                {% endif %}
-                            </td>
-                            <td class="extra-field hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ contact.phone_number|default:"—" }}
-                            </td>
-                            <td class="extra-field hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <span class="{% if contact.leadscore %}
-                                    {% if contact.leadscore == '3' %}bg-green-100 text-green-800
-                                    {% elif contact.leadscore == '2' %}bg-yellow-100 text-yellow-800
-                                    {% elif contact.leadscore == '1' %}bg-red-100 text-red-800
-                                    {% else %}bg-gray-100 text-gray-800{% endif %}
-                                    px-2 py-1 rounded-full text-xs font-medium{% endif %}">
-                                    {{ contact.leadscore|default:"—" }}
-                                </span>
+                                </div>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="11" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
                                 {% if current_search or current_status %}
                                     No contacts found matching your criteria.
                                 {% else %}
@@ -228,13 +306,13 @@
             
             <nav class="flex space-x-1">
                 {% if page_obj.has_previous %}
-                    <a href="?page=1{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                    <a href="?page=1{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                        class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
                         </svg>
                     </a>
-                    <a href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                    <a href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                        class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -249,12 +327,12 @@
                             {{ page_num }}
                         </span>
                     {% elif page_num >= page_obj.number|add:'-2' and page_num <= page_obj.number|add:'2' %}
-                        <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                        <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                             {{ page_num }}
                         </a>
                     {% elif page_num == 1 or page_num == page_obj.paginator.num_pages %}
-                        <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                        <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                             {{ page_num }}
                         </a>
@@ -262,13 +340,13 @@
                 {% endfor %}
                 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                    <a href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                        class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}" 
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" 
                        class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
@@ -440,6 +518,353 @@ document.addEventListener('click', function(event) {
         closeEmailModal();
     }
 });
+
+// Get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Delete contact function
+function deleteContact(contactId, contactName) {
+    if (confirm(`Are you sure you want to delete "${contactName}"? This action cannot be undone.`)) {
+        fetch(`/monitor/contacts/delete/${contactId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Refresh the page to update the contacts list
+            } else {
+                alert(data.error || 'Failed to delete contact.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the contact.');
+        });
+    }
+}
+
+// Inline editing functionality
+let editingContacts = new Set(); // Track which contacts are in edit mode
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle edit controls visibility
+    const toggleEditBtn = document.getElementById('toggleEditControls');
+    const toggleEditText = document.getElementById('toggleEditText');
+    
+    if (toggleEditBtn) {
+        toggleEditBtn.addEventListener('click', function() {
+            const editControls = document.querySelectorAll('.edit-controls');
+            const isHidden = editControls[0]?.classList.contains('hidden');
+            
+            editControls.forEach(control => {
+                if (isHidden) {
+                    control.classList.remove('hidden');
+                } else {
+                    control.classList.add('hidden');
+                }
+            });
+            
+            toggleEditText.textContent = isHidden ? 'Hide Edit Controls' : 'Show Edit Controls';
+        });
+    }
+
+    // Add click event to all editable fields (single-click editing)
+    document.querySelectorAll('.contact-field').forEach(field => {
+        const displayValue = field.querySelector('.display-value');
+        const editInput = field.querySelector('.edit-input');
+        
+        if (displayValue && editInput) {
+            displayValue.addEventListener('click', function() {
+                const contactRow = field.closest('tr');
+                const contactId = contactRow.dataset.contactId;
+                
+                // If not in edit mode, enable single field editing
+                if (!editingContacts.has(contactId)) {
+                    enableSingleFieldEdit(field, editInput, displayValue);
+                }
+            });
+        }
+    });
+});
+
+function enableSingleFieldEdit(fieldElement, inputElement, displayElement) {
+    // Hide display value and show input
+    displayElement.style.display = 'none';
+    inputElement.classList.remove('hidden');
+    inputElement.focus();
+    
+    // Select all text if it's an input field
+    if (inputElement.tagName === 'INPUT') {
+        inputElement.select();
+    }
+    
+    // Handle save on blur or enter
+    const saveHandler = function() {
+        saveFieldValue(fieldElement, inputElement, displayElement);
+    };
+    
+    const keyHandler = function(e) {
+        if (e.key === 'Enter') {
+            saveFieldValue(fieldElement, inputElement, displayElement);
+        } else if (e.key === 'Escape') {
+            // Cancel edit
+            inputElement.classList.add('hidden');
+            displayElement.style.display = 'inline';
+        }
+    };
+    
+    inputElement.addEventListener('blur', saveHandler, { once: true });
+    inputElement.addEventListener('keydown', keyHandler, { once: true });
+}
+
+function toggleEditMode(contactId) {
+    const contactRow = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+    const editBtn = contactRow.querySelector('.edit-mode-btn');
+    const saveBtn = contactRow.querySelector('.save-changes-btn');
+    const editText = editBtn.querySelector('.edit-text');
+    const cancelText = editBtn.querySelector('.cancel-text');
+    
+    if (editingContacts.has(contactId)) {
+        // Exit edit mode
+        exitEditMode(contactId);
+    } else {
+        // Enter edit mode
+        enterEditMode(contactId);
+    }
+}
+
+function enterEditMode(contactId) {
+    editingContacts.add(contactId);
+    const contactRow = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+    const editBtn = contactRow.querySelector('.edit-mode-btn');
+    const saveBtn = contactRow.querySelector('.save-changes-btn');
+    const editText = editBtn.querySelector('.edit-text');
+    const cancelText = editBtn.querySelector('.cancel-text');
+    
+    // Update button appearance
+    editText.classList.add('hidden');
+    cancelText.classList.remove('hidden');
+    saveBtn.classList.remove('hidden');
+    contactRow.classList.add('bg-yellow-50', 'border', 'border-yellow-200');
+    
+    // Enable all fields in this row for editing
+    const fields = contactRow.querySelectorAll('.contact-field');
+    fields.forEach(field => {
+        const displayValue = field.querySelector('.display-value');
+        const editInput = field.querySelector('.edit-input');
+        
+        if (displayValue && editInput) {
+            displayValue.style.display = 'none';
+            editInput.classList.remove('hidden');
+            
+            // Store original value for cancel functionality
+            editInput.dataset.originalValue = editInput.value;
+        }
+    });
+}
+
+function exitEditMode(contactId) {
+    editingContacts.delete(contactId);
+    const contactRow = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+    const editBtn = contactRow.querySelector('.edit-mode-btn');
+    const saveBtn = contactRow.querySelector('.save-changes-btn');
+    const editText = editBtn.querySelector('.edit-text');
+    const cancelText = editBtn.querySelector('.cancel-text');
+    
+    // Update button appearance
+    editText.classList.remove('hidden');
+    cancelText.classList.add('hidden');
+    saveBtn.classList.add('hidden');
+    contactRow.classList.remove('bg-yellow-50', 'border', 'border-yellow-200');
+    
+    // Disable all fields in this row
+    const fields = contactRow.querySelectorAll('.contact-field');
+    fields.forEach(field => {
+        const displayValue = field.querySelector('.display-value');
+        const editInput = field.querySelector('.edit-input');
+        
+        if (displayValue && editInput) {
+            // Restore original values (cancel changes)
+            if (editInput.dataset.originalValue !== undefined) {
+                editInput.value = editInput.dataset.originalValue;
+                delete editInput.dataset.originalValue;
+            }
+            
+            editInput.classList.add('hidden');
+            displayValue.style.display = 'inline';
+        }
+    });
+}
+
+function saveAllChanges(contactId) {
+    const contactRow = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+    const fields = contactRow.querySelectorAll('.contact-field');
+    const updates = {};
+    
+    // Collect all changed values
+    fields.forEach(field => {
+        const fieldName = field.dataset.field;
+        const editInput = field.querySelector('.edit-input');
+        
+        if (editInput && editInput.dataset.originalValue !== undefined) {
+            const currentValue = editInput.value.trim();
+            const originalValue = editInput.dataset.originalValue;
+            
+            if (currentValue !== originalValue) {
+                updates[fieldName] = currentValue;
+            }
+        }
+    });
+    
+    // If no changes, just exit edit mode
+    if (Object.keys(updates).length === 0) {
+        exitEditMode(contactId);
+        return;
+    }
+    
+    // Save all changes via batch API
+    const saveBtn = contactRow.querySelector('.save-changes-btn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Saving...';
+    
+    fetch(`/monitor/api/update_contact_batch/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            contact_id: contactId,
+            updates: updates
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update all display values
+            Object.keys(updates).forEach(fieldName => {
+                const field = contactRow.querySelector(`[data-field="${fieldName}"]`);
+                const displayValue = field.querySelector('.display-value');
+                const newValue = updates[fieldName];
+                
+                if (newValue) {
+                    displayValue.textContent = newValue;
+                } else {
+                    // Show placeholder text for empty values
+                    const placeholders = {
+                        'full_name': 'Click to edit name',
+                        'job_title': 'Click to edit job title',
+                        'company_name': 'Click to edit company',
+                        'location_city': 'City',
+                        'location_country': 'Country',
+                        'company_industry': 'Click to edit industry',
+                        'linkedin_url': 'Click to edit LinkedIn',
+                        'phone_number': 'Click to edit phone',
+                        'leadscore': 'Click to edit'
+                    };
+                    displayValue.textContent = placeholders[fieldName] || 'Click to edit';
+                }
+            });
+            
+            // Show success indicator
+            contactRow.classList.add('bg-green-100');
+            setTimeout(() => {
+                contactRow.classList.remove('bg-green-100');
+                exitEditMode(contactId);
+            }, 1000);
+            
+        } else {
+            alert('Error updating contact: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating contact');
+    })
+    .finally(() => {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save All';
+    });
+}
+
+function saveFieldValue(fieldElement, inputElement, displayElement) {
+    const contactId = fieldElement.closest('tr').dataset.contactId;
+    const fieldName = fieldElement.dataset.field;
+    const newValue = inputElement.value.trim();
+    
+    // Update the contact field via AJAX
+    fetch(`/monitor/api/update_contact_field/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            contact_id: contactId,
+            field: fieldName,
+            value: newValue
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update display value
+            if (newValue) {
+                displayElement.textContent = newValue;
+            } else {
+                // Show placeholder text for empty values
+                const placeholders = {
+                    'full_name': 'Click to edit name',
+                    'job_title': 'Click to edit job title',
+                    'company_name': 'Click to edit company',
+                    'location_city': 'City',
+                    'location_country': 'Country',
+                    'company_industry': 'Click to edit industry',
+                    'linkedin_url': 'Click to edit LinkedIn',
+                    'phone_number': 'Click to edit phone',
+                    'leadscore': 'Click to edit'
+                };
+                displayElement.textContent = placeholders[fieldName] || 'Click to edit';
+            }
+            
+            // Show a brief success indicator
+            displayElement.classList.add('bg-green-100');
+            setTimeout(() => {
+                displayElement.classList.remove('bg-green-100');
+            }, 1000);
+        } else {
+            // Show error
+            alert('Error updating field: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating field');
+    })
+    .finally(() => {
+        // Hide input and show display
+        inputElement.classList.add('hidden');
+        displayElement.style.display = 'inline';
+    });
+}
 </script>
 
 </body>

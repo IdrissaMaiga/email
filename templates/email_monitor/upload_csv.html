@@ -1,0 +1,885 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Email Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ensure table cells have consistent height and alignment */
+        .contact-table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        
+        .contact-table td {
+            vertical-align: top;
+            min-height: 80px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* Fixed column widths to prevent collapsing */
+        .contact-table th:nth-child(1), .contact-table td:nth-child(1) { width: 60px; min-width: 60px; }
+        .contact-table th:nth-child(2), .contact-table td:nth-child(2) { width: 100px; min-width: 100px; }
+        .contact-table th:nth-child(3), .contact-table td:nth-child(3) { width: 200px; min-width: 200px; }
+        .contact-table th:nth-child(4), .contact-table td:nth-child(4) { width: 250px; min-width: 250px; }
+        .contact-table th:nth-child(5), .contact-table td:nth-child(5) { width: 180px; min-width: 180px; }
+        .contact-table th:nth-child(6), .contact-table td:nth-child(6) { width: 180px; min-width: 180px; }
+        .contact-table th:nth-child(7), .contact-table td:nth-child(7) { width: 200px; min-width: 200px; }
+        .contact-table th:nth-child(8), .contact-table td:nth-child(8) { width: 100px; min-width: 100px; }
+        
+        /* Make sure input fields are properly sized */
+        .editable-field {
+            min-height: 36px;
+            font-size: 14px;
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        
+        /* Ensure table doesn't overflow container */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            min-width: 1370px; /* Total width of all columns */
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Add scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        
+        /* Smooth transitions for row state changes */
+        .contact-row {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        /* Prevent text wrapping in status column */
+        .status-badge {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow mb-6">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-900">Email Monitor</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'email_dashboard' %}" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                    <a href="{% url 'contacts_list' %}" class="text-blue-600 font-semibold">Contacts</a>
+                    <a href="/" class="text-gray-600 hover:text-gray-900">Send Emails</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-full mx-auto px-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">{{ title }}</h2>
+                <a href="{% url 'contacts_list' %}" 
+                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                    ← Back to Contacts
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages" class="mb-6"></div>
+
+        <!-- Upload Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">📂 Upload CSV File</h3>
+            
+            <form id="csvUploadForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-6">
+                    <label for="{{ form.csv_file.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.csv_file.label }}
+                    </label>
+                    {{ form.csv_file }}
+                    {% if form.csv_file.help_text %}
+                        <p class="text-sm text-gray-500 mt-1">{{ form.csv_file.help_text }}</p>
+                    {% endif %}
+                    <div class="field-error text-red-600 text-sm mt-1 hidden" data-field="csv_file"></div>
+                </div>
+
+                <div class="flex space-x-4">
+                    <button type="submit" name="preview_csv" id="previewBtn"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <span>Preview Contacts</span>
+                        <div id="previewSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </button>
+                </div>
+            </form>
+
+            <!-- CSV Format Info -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h4 class="text-sm font-medium text-blue-900 mb-2">📋 Expected CSV Format</h4>
+                <p class="text-sm text-blue-700 mb-2">Your CSV file should contain the following columns:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-xs text-blue-600">
+                    <div>• VerifiedEmail (required)</div>
+                    <div>• prospect_first_name (required)</div>
+                    <div>• prospect_last_name (required)</div>
+                    <div>• job_title</div>
+                    <div>• company_name</div>
+                    <div>• prospect_location_city OR prospect_location</div>
+                    <div>• prospect_location_country</div>
+                    <div>• company_industry</div>
+                    <div>• company_website</div>
+                    <div>• linkedin_url</div>
+                    <div>• phone_number</div>
+                    <div>• leadscore (1, 2, or 3)</div>
+                </div>
+                <p class="text-xs text-blue-600 mt-2">+ many more optional fields for campaign personalization</p>
+                <div class="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-800">
+                    <strong>📏 File Size Limits:</strong> Maximum 100MB per CSV file. For optimal performance, keep files under 50MB.
+                    Large files may take longer to process.
+                </div>
+                <div class="mt-2 p-2 bg-green-100 rounded text-xs text-green-800">
+                    <strong>📍 Location Handling:</strong> Use either separate <code>prospect_location_city</code> + <code>prospect_location_country</code> fields, 
+                    or a single <code>prospect_location</code> field (e.g., "Warsaw, Poland"). The system will automatically split combined locations.
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Section (Hidden initially) -->
+        <div id="previewSection" class="bg-white rounded-lg shadow-sm p-6 hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium text-gray-900">👀 Contact Preview</h3>
+                <div id="previewStats" class="text-sm text-gray-600"></div>
+            </div>
+
+            <!-- Preview Errors -->
+            <div id="previewErrors" class="hidden mb-4 p-4 bg-red-50 rounded-lg">
+                <h4 class="text-sm font-medium text-red-900 mb-2">⚠️ Processing Errors</h4>
+                <ul id="errorsList" class="text-sm text-red-700 list-disc list-inside"></ul>
+            </div>
+
+            <!-- Contacts Table -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-sm text-gray-600">
+                        💡 <strong>Tip:</strong> Use horizontal scroll below to view all contact fields. You can edit any field directly in the table.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button type="button" id="selectAllNew" class="text-sm bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-lg font-medium">
+                            Select All New
+                        </button>
+                        <button type="button" id="selectAllUpdate" class="text-sm bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-lg font-medium">
+                            Select All Updates
+                        </button>
+                        <button type="button" id="deselectAll" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-lg font-medium">
+                            Deselect All
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Process Selected Contacts Button (moved up) -->
+                <div class="flex justify-end mb-4">
+                    <form id="batchCreateForm" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" name="create_batch" id="createBatchBtn"
+                                class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Process Selected Contacts</span>
+                            <div id="createSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="table-container mb-6">
+                <table class="contact-table min-w-full divide-y divide-gray-200 border border-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
+                                <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Status</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Email</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Company</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Job Title</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Location</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Contact rows will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Information Section -->
+            <div class="pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    <p class="mb-1">Review the contacts above. Use the selection buttons to choose which contacts to process:</p>
+                    <ul class="text-xs text-gray-500 ml-4">
+                        <li>• <span class="font-medium text-green-600">New contacts</span> will be created in the database</li>
+                        <li>• <span class="font-medium text-yellow-600">Update contacts</span> will have their existing records updated</li>
+                        <li>• You can edit any field before processing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Show message
+        function showMessage(message, isError = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageClass = isError ? 'bg-red-100 border border-red-400 text-red-700' : 'bg-green-100 border border-green-400 text-green-700';
+            messagesDiv.innerHTML = `<div class="${messageClass} px-4 py-3 rounded mb-4">${message}</div>`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messagesDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Clear field errors
+        function clearErrors() {
+            document.querySelectorAll('.field-error').forEach(error => {
+                error.classList.add('hidden');
+                error.textContent = '';
+            });
+        }
+
+        // Show field errors
+        function showErrors(errors) {
+            for (const [field, message] of Object.entries(errors)) {
+                const errorDiv = document.querySelector(`[data-field="${field}"]`);
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Handle CSV preview
+        document.getElementById('csvUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (e.submitter.name === 'preview_csv') {
+                const previewBtn = document.getElementById('previewBtn');
+                const previewSpinner = document.getElementById('previewSpinner');
+                const csvFileInput = document.querySelector('#id_csv_file');
+                
+                // Check file size before upload
+                if (csvFileInput.files.length > 0) {
+                    const file = csvFileInput.files[0];
+                    const maxSize = 50 * 1024 * 1024; // 50MB
+                    
+                    if (file.size > maxSize) {
+                        showMessage(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please keep CSV files under 50MB for optimal performance.`, true);
+                        return;
+                    }
+                    
+                    // Warn for large files
+                    if (file.size > 10 * 1024 * 1024) { // 10MB
+                        if (!confirm(`Large file detected (${(file.size / 1024 / 1024).toFixed(1)}MB). Processing may take longer. Continue?`)) {
+                            return;
+                        }
+                    }
+                }
+                
+                // Clear previous errors
+                clearErrors();
+                
+                // Show loading state
+                previewBtn.disabled = true;
+                previewSpinner.classList.remove('hidden');
+                
+                // Submit form
+                const formData = new FormData(this);
+                // Manually add the button name since fetch() doesn't include clicked button
+                formData.append('preview_csv', 'true');
+                
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers.get('content-type'));
+                    
+                    // Handle specific error status codes
+                    if (response.status === 413) {
+                        throw new Error('File too large. Please reduce the CSV file size or try uploading fewer contacts at once.');
+                    }
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.text(); // Get as text first to debug
+                })
+                .then(text => {
+                    console.log('Raw response:', text.substring(0, 500)); // Log first 500 chars
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        throw new Error('Server returned invalid JSON. Check server logs.');
+                    }
+                })
+                .then(data => {
+                    console.log('CSV Preview Response:', data); // Debug log
+                    if (data.success) {
+                        showPreview(data);
+                        showMessage(`Preview loaded: ${data.total_contacts} contacts found (${data.create_count} new, ${data.update_count} updates)`);
+                    } else {
+                        if (data.errors) {
+                            showErrors(data.errors);
+                            showMessage('Please correct the errors below.', true);
+                        } else {
+                            console.error('CSV Processing Error:', data.error); // Debug log
+                            showMessage(data.error || 'An error occurred while processing the CSV.', true);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Network/Parse Error:', error);
+                    showMessage('An error occurred while processing the CSV. Please check the browser console for details.', true);
+                })
+                .finally(() => {
+                    // Reset loading state
+                    previewBtn.disabled = false;
+                    previewSpinner.classList.add('hidden');
+                });
+            }
+        });
+
+        // Global variable to store CSV preview data
+        let csvPreviewData = null;
+
+        // Show preview data
+        function showPreview(data) {
+            // Store data globally for later use
+            csvPreviewData = data;
+            
+            const previewSection = document.getElementById('previewSection');
+            const previewStats = document.getElementById('previewStats');
+            const contactsTableBody = document.getElementById('contactsTableBody');
+            const previewErrors = document.getElementById('previewErrors');
+            const errorsList = document.getElementById('errorsList');
+
+            // Show stats
+            previewStats.innerHTML = `
+                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mr-2">
+                    ${data.total_contacts} Total
+                </span>
+                <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium mr-2">
+                    ${data.create_count} New
+                </span>
+                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                    ${data.update_count} Updates
+                </span>
+            `;
+
+            // Show errors if any
+            if (data.errors && data.errors.length > 0) {
+                errorsList.innerHTML = data.errors.map(error => `<li>${error}</li>`).join('');
+                previewErrors.classList.remove('hidden');
+            } else {
+                previewErrors.classList.add('hidden');
+            }
+
+            // Populate contacts table
+            contactsTableBody.innerHTML = data.contacts.map((contact, index) => {
+                const statusColor = contact.status === 'Create' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                return `
+                    <tr class="contact-row hover:bg-gray-50 border-b border-gray-200" data-index="${index}">
+                        <td class="px-4 py-4 text-center align-top border-r border-gray-200">
+                            <input type="checkbox" class="contact-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <span class="status-badge px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor}">
+                                ${contact.status}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <div class="flex flex-col space-y-2">
+                                <input type="text" 
+                                       class="editable-field text-sm font-medium text-gray-900 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                       data-field="first_name" 
+                                       value="${contact.first_name || ''}" 
+                                       placeholder="First Name">
+                                <input type="text" 
+                                       class="editable-field text-sm text-gray-700 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                       data-field="last_name" 
+                                       value="${contact.last_name || ''}" 
+                                       placeholder="Last Name">
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <input type="email" 
+                                   class="editable-field text-sm text-gray-900 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                   data-field="email" 
+                                   value="${contact.email}" 
+                                   placeholder="Email Address">
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <input type="text" 
+                                   class="editable-field text-sm text-gray-700 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                   data-field="company_name" 
+                                   value="${contact.company_name || ''}" 
+                                   placeholder="Company">
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <input type="text" 
+                                   class="editable-field text-sm text-gray-700 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                   data-field="job_title" 
+                                   value="${contact.job_title || ''}" 
+                                   placeholder="Job Title">
+                        </td>
+                        <td class="px-4 py-4 align-top border-r border-gray-200">
+                            <div class="flex flex-col space-y-2">
+                                <input type="text" 
+                                       class="editable-field text-sm text-gray-700 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                       data-field="location_city" 
+                                       value="${contact.location_city || ''}" 
+                                       placeholder="City">
+                                <input type="text" 
+                                       class="editable-field text-sm text-gray-700 border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                       data-field="location_country" 
+                                       value="${contact.location_country || ''}" 
+                                       placeholder="Country">
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center align-top">
+                            <button type="button" 
+                                    class="text-red-600 hover:text-red-900 text-sm font-medium exclude-contact px-2 py-1 rounded hover:bg-red-50 whitespace-nowrap" 
+                                    data-index="${index}">
+                                Exclude
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Show preview section
+            previewSection.classList.remove('hidden');
+            
+            // Add event listeners for the new functionality
+            setupPreviewInteractions();
+        }
+        
+        // Setup interactions for the preview table
+        function setupPreviewInteractions() {
+            // Remove any existing event listeners to prevent duplicates
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const newSelectAll = selectAllCheckbox.cloneNode(true);
+            selectAllCheckbox.parentNode.replaceChild(newSelectAll, selectAllCheckbox);
+            
+            // Select/Deselect All
+            newSelectAll.addEventListener('change', function() {
+                const contactCheckboxes = document.querySelectorAll('.contact-checkbox');
+                contactCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                    updateRowVisibility(checkbox.closest('tr'), this.checked);
+                });
+                updateStats();
+            });
+            
+            // Select All New contacts (toggle)
+            document.getElementById('selectAllNew').addEventListener('click', function() {
+                const contactCheckboxes = document.querySelectorAll('.contact-checkbox');
+                let newContactsSelected = 0;
+                let totalNewContacts = 0;
+                
+                // Count currently selected New contacts and total New contacts
+                contactCheckboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Create') {
+                        totalNewContacts++;
+                        if (checkbox.checked) {
+                            newContactsSelected++;
+                        }
+                    }
+                });
+                
+                // If all New contacts are selected, unselect them; otherwise select them
+                const shouldSelect = newContactsSelected < totalNewContacts;
+                
+                contactCheckboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Create') {
+                        checkbox.checked = shouldSelect;
+                        updateRowVisibility(row, shouldSelect);
+                    }
+                });
+                
+                // Update button text based on current state
+                this.textContent = shouldSelect ? 'Deselect All New' : 'Select All New';
+                
+                updateSelectAllState();
+                updateStats();
+            });
+            
+            // Select All Update contacts (toggle)
+            document.getElementById('selectAllUpdate').addEventListener('click', function() {
+                const contactCheckboxes = document.querySelectorAll('.contact-checkbox');
+                let updateContactsSelected = 0;
+                let totalUpdateContacts = 0;
+                
+                // Count currently selected Update contacts and total Update contacts
+                contactCheckboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Update') {
+                        totalUpdateContacts++;
+                        if (checkbox.checked) {
+                            updateContactsSelected++;
+                        }
+                    }
+                });
+                
+                // If all Update contacts are selected, unselect them; otherwise select them
+                const shouldSelect = updateContactsSelected < totalUpdateContacts;
+                
+                contactCheckboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Update') {
+                        checkbox.checked = shouldSelect;
+                        updateRowVisibility(row, shouldSelect);
+                    }
+                });
+                
+                // Update button text based on current state
+                this.textContent = shouldSelect ? 'Deselect All Updates' : 'Select All Updates';
+                
+                updateSelectAllState();
+                updateStats();
+            });
+            
+            // Deselect All contacts
+            document.getElementById('deselectAll').addEventListener('click', function() {
+                const contactCheckboxes = document.querySelectorAll('.contact-checkbox');
+                contactCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    updateRowVisibility(checkbox.closest('tr'), false);
+                });
+                newSelectAll.checked = false;
+                newSelectAll.indeterminate = false;
+                updateStats();
+            });
+            
+            // Individual checkbox changes
+            document.querySelectorAll('.contact-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateRowVisibility(this.closest('tr'), this.checked);
+                    updateSelectAllState();
+                    updateStats();
+                });
+            });
+            
+            // Exclude buttons
+            document.querySelectorAll('.exclude-contact').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const checkbox = row.querySelector('.contact-checkbox');
+                    checkbox.checked = false;
+                    updateRowVisibility(row, false);
+                    updateSelectAllState();
+                    updateStats();
+                });
+            });
+            
+            // Update field values when edited
+            document.querySelectorAll('.editable-field').forEach(field => {
+                field.addEventListener('change', function() {
+                    const row = this.closest('tr');
+                    const index = parseInt(row.dataset.index);
+                    const fieldName = this.dataset.field;
+                    const newValue = this.value;
+                    
+                    // Update the global data
+                    if (csvPreviewData && csvPreviewData.contacts[index]) {
+                        csvPreviewData.contacts[index][fieldName] = newValue;
+                        // Also update csv_data if it exists
+                        if (csvPreviewData.contacts[index].csv_data) {
+                            csvPreviewData.contacts[index].csv_data[fieldName] = newValue;
+                        }
+                    }
+                });
+            });
+            
+            function updateRowVisibility(row, isSelected) {
+                const inputs = row.querySelectorAll('.editable-field');
+                const excludeBtn = row.querySelector('.exclude-contact');
+                
+                if (isSelected) {
+                    row.classList.remove('opacity-50', 'bg-gray-100');
+                    row.classList.add('hover:bg-gray-50');
+                    inputs.forEach(input => {
+                        input.classList.remove('bg-gray-100');
+                        if (!input.readOnly) {
+                            input.disabled = false;
+                        }
+                    });
+                    excludeBtn.classList.remove('text-gray-400');
+                    excludeBtn.classList.add('text-red-600', 'hover:text-red-900');
+                } else {
+                    row.classList.add('opacity-50', 'bg-gray-100');
+                    row.classList.remove('hover:bg-gray-50');
+                    inputs.forEach(input => {
+                        input.classList.add('bg-gray-100');
+                        if (!input.readOnly) {
+                            input.disabled = true;
+                        }
+                    });
+                    excludeBtn.classList.remove('text-red-600', 'hover:text-red-900');
+                    excludeBtn.classList.add('text-gray-400');
+                }
+            }
+            
+            function updateSelectAllState() {
+                const allCheckboxes = document.querySelectorAll('.contact-checkbox');
+                const checkedBoxes = document.querySelectorAll('.contact-checkbox:checked');
+                const selectAll = document.getElementById('selectAll');
+                
+                selectAll.checked = allCheckboxes.length === checkedBoxes.length;
+                selectAll.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < allCheckboxes.length;
+            }
+            
+            function updateStats() {
+                const checkedBoxes = document.querySelectorAll('.contact-checkbox:checked');
+                const allNewBoxes = document.querySelectorAll('.contact-checkbox');
+                
+                let createCount = 0;
+                let updateCount = 0;
+                let totalNew = 0;
+                let totalUpdate = 0;
+                
+                // Count selected contacts
+                checkedBoxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Create') {
+                        createCount++;
+                    } else if (status === 'Update') {
+                        updateCount++;
+                    }
+                });
+                
+                // Count total contacts by type
+                allNewBoxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const statusSpan = row.querySelector('.status-badge');
+                    const status = statusSpan ? statusSpan.textContent.trim() : '';
+                    
+                    if (status === 'Create') {
+                        totalNew++;
+                    } else if (status === 'Update') {
+                        totalUpdate++;
+                    }
+                });
+                
+                const previewStats = document.getElementById('previewStats');
+                previewStats.innerHTML = `
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mr-2">
+                        ${checkedBoxes.length} Selected
+                    </span>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium mr-2">
+                        ${createCount}/${totalNew} New
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                        ${updateCount}/${totalUpdate} Updates
+                    </span>
+                `;
+                
+                // Update button text based on current selection state
+                updateButtonTexts(createCount, totalNew, updateCount, totalUpdate);
+            }
+            
+            function updateButtonTexts(createCount, totalNew, updateCount, totalUpdate) {
+                const selectAllNewBtn = document.getElementById('selectAllNew');
+                const selectAllUpdateBtn = document.getElementById('selectAllUpdate');
+                
+                // Update "Select All New" button text
+                if (createCount === totalNew && totalNew > 0) {
+                    selectAllNewBtn.textContent = 'Deselect All New';
+                    selectAllNewBtn.className = 'text-sm bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-lg font-medium';
+                } else {
+                    selectAllNewBtn.textContent = 'Select All New';
+                    selectAllNewBtn.className = 'text-sm bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-lg font-medium';
+                }
+                
+                // Update "Select All Update" button text
+                if (updateCount === totalUpdate && totalUpdate > 0) {
+                    selectAllUpdateBtn.textContent = 'Deselect All Updates';
+                    selectAllUpdateBtn.className = 'text-sm bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-lg font-medium';
+                } else {
+                    selectAllUpdateBtn.textContent = 'Select All Updates';
+                    selectAllUpdateBtn.className = 'text-sm bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-lg font-medium';
+                }
+            }
+            
+            // Initial stats update
+            updateStats();
+        }
+
+        // Handle batch creation
+        document.getElementById('batchCreateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const createBtn = document.getElementById('createBatchBtn');
+            const createSpinner = document.getElementById('createSpinner');
+            
+            // Get only selected contacts with updated field values
+            const selectedContacts = getSelectedContactsData();
+            
+            if (selectedContacts.length === 0) {
+                showMessage('Please select at least one contact to create.', true);
+                return;
+            }
+            
+            // Show loading state
+            createBtn.disabled = true;
+            createSpinner.classList.remove('hidden');
+            
+            // Submit form with selected contacts data
+            const formData = new FormData(this);
+            formData.append('create_batch', 'true');
+            formData.append('selected_contacts', JSON.stringify(selectedContacts));
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message);
+                    
+                    // Show any errors
+                    if (data.errors && data.errors.length > 0) {
+                        const errorMessages = data.errors.join('<br>');
+                        showMessage('Some contacts had errors:<br>' + errorMessages, true);
+                    }
+                    
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 3000);
+                } else {
+                    showMessage(data.error || 'An error occurred while creating contacts.', true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('An error occurred while creating contacts.', true);
+            })
+            .finally(() => {
+                // Reset loading state
+                createBtn.disabled = false;
+                createSpinner.classList.add('hidden');
+            });
+        });
+        
+        // Function to get selected contacts data with current field values
+        function getSelectedContactsData() {
+            const selectedContacts = [];
+            const checkedBoxes = document.querySelectorAll('.contact-checkbox:checked');
+            
+            checkedBoxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const index = parseInt(row.dataset.index);
+                
+                // Get the current field values from the form inputs
+                const contactData = {
+                    email: row.querySelector('[data-field="email"]').value,
+                    first_name: row.querySelector('[data-field="first_name"]').value,
+                    last_name: row.querySelector('[data-field="last_name"]').value,
+                    company_name: row.querySelector('[data-field="company_name"]').value,
+                    job_title: row.querySelector('[data-field="job_title"]').value,
+                    location_city: row.querySelector('[data-field="location_city"]').value,
+                    location_country: row.querySelector('[data-field="location_country"]').value,
+                    status: row.querySelector('.status-badge').textContent.trim()
+                };
+                
+                // Include additional data if available from the original data
+                if (csvPreviewData && csvPreviewData.contacts[index]) {
+                    const originalContact = csvPreviewData.contacts[index];
+                    contactData.existing_id = originalContact.existing_id;
+                    contactData.csv_data = { ...originalContact.csv_data };
+                    
+                    // Update csv_data with current edited values
+                    contactData.csv_data.company_name = contactData.company_name;
+                    contactData.csv_data.job_title = contactData.job_title;
+                    contactData.csv_data.location_city = contactData.location_city;
+                    contactData.csv_data.location_country = contactData.location_country;
+                }
+                
+                selectedContacts.push(contactData);
+            });
+            
+            return selectedContacts;
+        }
+    </script>
+</body>
+</html>

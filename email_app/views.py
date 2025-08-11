@@ -8,7 +8,7 @@ import re
 import os
 import json
 import resend
-from email_monitor.models import Contact
+from email_monitor.models import Contact, EmailTemplate
 
 # Store CSV data in memory (for simplicity; could use database or session for persistence)
 csv_data = None
@@ -17,6 +17,46 @@ csv_columns = []
 def index(request):
     """Render the main email templater page"""
     return render(request, 'email_app/index.html')
+
+@csrf_exempt
+def get_last_template(request):
+    """Get the last used email template"""
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Only GET method allowed'}, status=405)
+    
+    try:
+        template = EmailTemplate.get_last_used_template()
+        return JsonResponse({
+            'subject': template.subject,
+            'content': template.content,
+            'updated_at': template.updated_at.isoformat()
+        })
+    except Exception as e:
+        return JsonResponse({'error': f'Failed to load template: {str(e)}'}, status=500)
+
+@csrf_exempt
+def save_template(request):
+    """Save the current template as the last used one"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        subject = data.get('subject', '')
+        content = data.get('content', '')
+        
+        if not content:
+            return JsonResponse({'error': 'Template content is required'}, status=400)
+        
+        template = EmailTemplate.save_last_used_template(subject, content)
+        return JsonResponse({
+            'message': 'Template saved successfully',
+            'updated_at': template.updated_at.isoformat()
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': f'Failed to save template: {str(e)}'}, status=500)
 
 @csrf_exempt
 def send_emails(request):
@@ -34,13 +74,23 @@ def send_emails(request):
     template = data.get('template', '')
     subject = data.get('subject', 'Custom Email')
     contact_filter = data.get('contact_filter')  # Filter contacts by status (optional for custom selection)
-    contact_limit = data.get('contact_limit')  # Limit number of contacts to send to
+    contact_limit = data.get('contact_limit')  # Limit number of contacts to send to (deprecated, use range instead)
+    contact_range_start = data.get('contact_range_start')  # Start ID for contact range
+    contact_range_end = data.get('contact_range_end')  # End ID for contact range
     selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
+    sender_key = data.get('sender', 'horizoneurope')  # Which sender to use
     
-    # Get Resend API key from settings
-    api_key = settings.RESEND_API_KEY
-    from_email = settings.SMTP_EMAIL
-    sender_name = settings.SMTP_SENDER_NAME
+    # Get sender configuration
+    email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+    if sender_key not in email_senders:
+        return JsonResponse({
+            'error': f'Invalid sender selection: {sender_key}'
+        }, status=400)
+    
+    sender_config = email_senders[sender_key]
+    api_key = sender_config['api_key']
+    from_email = sender_config['email']
+    sender_name = sender_config['name']
     
     # Validation
     if not template:
@@ -71,13 +121,37 @@ def send_emails(request):
         else:
             contacts = Contact.objects.filter(email_status=contact_filter)
         
-        # Apply limit if specified
-        if contact_limit and isinstance(contact_limit, int) and contact_limit > 0:
+        # Apply ID range filter if specified
+        if contact_range_start or contact_range_end:
+            if contact_range_start and contact_range_end:
+                # Both start and end specified
+                contacts = contacts.filter(id__gte=contact_range_start, id__lte=contact_range_end)
+            elif contact_range_start:
+                # Only start specified (from start onwards)
+                contacts = contacts.filter(id__gte=contact_range_start)
+            elif contact_range_end:
+                # Only end specified (from 1 to end)
+                contacts = contacts.filter(id__lte=contact_range_end)
+        
+        # Apply legacy limit if specified and no range is used (for backward compatibility)
+        elif contact_limit and isinstance(contact_limit, int) and contact_limit > 0:
             contacts = contacts[:contact_limit]
         
+        # Order by ID for consistent results
+        contacts = contacts.order_by('id')
+        
         if not contacts.exists():
+            range_info = ""
+            if contact_range_start or contact_range_end:
+                if contact_range_start and contact_range_end:
+                    range_info = f" in ID range {contact_range_start}-{contact_range_end}"
+                elif contact_range_start:
+                    range_info = f" from ID {contact_range_start} onwards"
+                elif contact_range_end:
+                    range_info = f" up to ID {contact_range_end}"
+            
             return JsonResponse({
-                'error': f'No contacts found with status "{contact_filter}"'
+                'error': f'No contacts found with status "{contact_filter}"{range_info}'
             }, status=400)
     
     # Configure Resend
@@ -90,6 +164,13 @@ def send_emails(request):
         for contact in contacts:
             recipient_email = contact.email.strip()
             if not recipient_email:
+                continue
+            
+            # Validate email format
+            import re
+            email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+            if not re.match(email_pattern, recipient_email):
+                failed_emails.append(f"{recipient_email}: Invalid email format")
                 continue
             
             # Create contact data dictionary for template replacement
@@ -168,6 +249,12 @@ def send_emails(request):
         message = f'Emails sent successfully! ({emails_sent} emails sent with tracking enabled)'
         if failed_emails:
             message += f'. Failed: {len(failed_emails)} emails'
+        
+        # Save the template as the last used template
+        try:
+            EmailTemplate.save_last_used_template(subject, template)
+        except Exception as e:
+            print(f"Failed to save template: {e}")  # Log but don't fail the email sending
         
         return JsonResponse({
             'message': message,

@@ -8366,3 +8366,1608 @@ Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
 Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
 CSV import completed: 0 new contacts, 123 updated contacts
 Contact import check completed on server startup
+Received webhook payload: {'created_at': '2025-08-09T23:46:10.636Z', 'data': {'created_at': '2025-08-09 23:46:10.567479+00', 'email_id': '810f3d57-e5a4-459b-a127-c009761cfcb0', 'from': 'Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3291'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3291', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload: {'created_at': '2025-08-09T23:46:11.424Z', 'data': {'created_at': '2025-08-09 23:46:10.567479+00', 'email_id': '810f3d57-e5a4-459b-a127-c009761cfcb0', 'from': 'Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3291'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3291', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Updated contact: Leszek Jaroszewicz (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Wilco Burghout (wilco@kth.se)
+Updated contact: Jaroszewicz Leszek (leszek.jaroszewicz@wat.edu.pl)
+Updated contact: Marios Georgiou (marios@amc.com.cy)
+Updated contact: Marios Ccrn (marios@amc.com.cy)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Josef Kautzner (josef.kautzner@ikem.cz)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Mirko Bendig (mirko.bendig@iu.org)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Arnau Perdigo-Oliveras (arnau@perdigo.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Marcel Wulms (marcel@wulms.com)
+Updated contact: Viklicky Ondrej (ondrej.viklicky@ikem.cz)
+Updated contact: Ondrej Viklicky (ondrej.viklicky@ikem.cz)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Enrico Fiorini (enrico.fiorini@prebiomics.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Christian Koning (christian@supperservices.com)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Pierre-Yves Copy (py.copy@fruitofood.eu)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Mikko Vuolteenaho (mikko.vuolteenaho@senfit.com)
+Updated contact: Volker Schwerdtfeger (v.schwerdtfeger@quadral.com)
+Updated contact: David Chambeaud (david.chambeaud@aff.fr)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Maxence Chotard (maxence.chotard@eisox.com)
+Updated contact: Emmanuel Vincent-Ballereau (emmanuel.vincent@aenitis.fr)
+Updated contact: Tomas Tvrznik (tvrznik@ferrotherm.cz)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+Updated contact: Nafees Ahmed (nafees.ahmed@snellmanpro.fi)
+Updated contact: Veikko Ikalainen (veikko.ikalainen@efla.net)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Frank Steinbacher (f.steinbacher@eloaded.eu)
+Updated contact: Stefan Knasko (stefan.knasko@ics-cables.sk)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Alberto Bottini (a.bottini@intechgroup.eu)
+Updated contact: Rami Arvonen (rami.arvonen@ellego.fi)
+Updated contact: Evie Gryson (evie.gryson@ap.be)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Renate Bay (r.bay@asc-sensors.de)
+Updated contact: Novara Anna (a.novara@pantec.it)
+Updated contact: Thomas Weber (weber@elspecgroup.de)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Geert Detre (geert.detre@allfreez.be)
+Updated contact: Mattias Laser (mattias.laser@maxel.se)
+Updated contact: Ingus Veckagans (ingus.veckagans@bangaltd.lv)
+Updated contact: Sami Heikkinen (sami.heikkinen@finelcomp.fi)
+Updated contact: Sebastian Herberger (sebastian.herberger@mentalab.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Amandine Perez (amandine.perez@sunbloom.de)
+Updated contact: Walter Bric (w.bric@dea-ht.com)
+Updated contact: David Garcia Rams (david@jesiva.com)
+Updated contact: Gabriele Criscione (g.criscione@crelsrl.it)
+Updated contact: Markus Pedal (mpedal@nubert.de)
+Updated contact: Simon Rouhany (simon.rouhany@4smarts.eu)
+Updated contact: Mats Bruer (mats.bruer@flux.nu)
+Updated contact: Peter Brodin (brodin@intersonic.com)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Heiko Riekenberg (heiko@bikemap.net)
+Updated contact: Frederik Delrue (frederik@auflanbreton.be)
+Updated contact: Anna Cardelius (anna@hagabageri.se)
+Updated contact: Irma Bjoersell (irma@evertiq.com)
+Updated contact: Christof Goetz (christof@brainhero.eu)
+Updated contact: David Cantalupi (d.cantalupi@4cinnovation.it)
+Updated contact: Ludovic Wechsler (l.wechsler@beromet.com)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Robert Olofsson (robert.olofsson@metrum.se)
+Updated contact: Kenneth Hubner (kenneth.hubner@lse.se)
+Updated contact: Pierre-Yves Freminet (py.freminet@sofast-sogood.com)
+Updated contact: Christian Meier (christian.meier@stromkontor.org)
+Updated contact: Kris Struyf (kris.struyf@distracgroup.com)
+Updated contact: Daniel Schuetze (dschuetze@nubert.de)
+Updated contact: Antoine Lecestre (alecestre@alternativesenergies.com)
+Updated contact: Christian Breuninger (cbreuninger@wibre.de)
+Updated contact: Philipp Ampletzer (philipp.ampletzer@prodesign-europe.com)
+Updated contact: Petri Soronen (petri@psaudiodesign.com)
+Updated contact: Nicolas Lecornec (nlecornec@bienetreconfort.com)
+Updated contact: Benjamin Wenzel (b.wenzel@matesy.de)
+Updated contact: Jakob Odgaard (jakob@gryphon-audio.dk)
+CSV import completed: 0 new contacts, 123 updated contacts
+Contact import check completed on server startup
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Invalid webhook signature for sender: horizoneurope
+Invalid webhook signature for sender: horizon_eu
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Invalid webhook signature for sender: horizoneurope
+Invalid webhook signature for sender: horizoneurope
+Invalid webhook signature for sender: horizoneurope
+Invalid webhook signature for sender: horizoneurope
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Svix ID: msg_317abrtycbMRF1qiUFSMGYDjUp5
+Svix Timestamp: 1754877901
+Svix Signature: v1,x/ZGVccM55Ta9dSDwYp5GL0rL0DVZhVhNkQLcpjXHL4=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317abrtycbMRF1qiUFSMGYDjUp5.1754877901.{"created_at":"2025-08-11T02:00:36.383Z","data":{"created_at":"2025-08-11 02:00:35.439968+00","email_id":"1a5a9e58-7a4f-4e98-858b-e4f4e1a5d53f","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.delivered"}
+Signature verification error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+Traceback: Traceback (most recent call last):
+  File "C:\Users\user\Asztal\email_sender\email\email_monitor\views.py", line 414, in verify_webhook_signature
+    base64.b64decode(signing_secret.encode('utf-8')),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+
+Invalid webhook signature for sender: horizoneurope
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Svix ID: msg_317bAvFxr4omw7x9IhomAVetVfj
+Svix Timestamp: 1754877917
+Svix Signature: v1,uaTMQlEPz56MA00l6OYIxSE0qZM0lrckCkNi+zZ/cc0=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317bAvFxr4omw7x9IhomAVetVfj.1754877917.{"created_at":"2025-08-11T02:05:15.420Z","data":{"created_at":"2025-08-11 02:05:15.178323+00","email_id":"dc14c948-90ad-4664-ab29-a8bd862cac31","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.sent"}
+Signature verification error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+Traceback: Traceback (most recent call last):
+  File "C:\Users\user\Asztal\email_sender\email\email_monitor\views.py", line 414, in verify_webhook_signature
+    base64.b64decode(signing_secret.encode('utf-8')),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+
+Invalid webhook signature for sender: horizoneurope
+Svix ID: msg_317bAuei89UBoRoCWr9asHVCadD
+Svix Timestamp: 1754877921
+Svix Signature: v1,ANfTOa21qMmHeINvJt54UTwmwaPFNaRAQUMkpSN/mTs=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317bAuei89UBoRoCWr9asHVCadD.1754877921.{"created_at":"2025-08-11T02:05:16.229Z","data":{"created_at":"2025-08-11 02:05:15.178323+00","email_id":"dc14c948-90ad-4664-ab29-a8bd862cac31","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.delivered"}
+Signature verification error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+Traceback: Traceback (most recent call last):
+  File "C:\Users\user\Asztal\email_sender\email\email_monitor\views.py", line 414, in verify_webhook_signature
+    base64.b64decode(signing_secret.encode('utf-8')),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+
+Invalid webhook signature for sender: horizoneurope
+Svix ID: msg_317bAvFxr4omw7x9IhomAVetVfj
+Svix Timestamp: 1754877923
+Svix Signature: v1,qXuHMSZZZfHLZ//hI/rCctTDhlqjBA2kkwR4b4DbcYE=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317bAvFxr4omw7x9IhomAVetVfj.1754877923.{"created_at":"2025-08-11T02:05:15.420Z","data":{"created_at":"2025-08-11 02:05:15.178323+00","email_id":"dc14c948-90ad-4664-ab29-a8bd862cac31","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.sent"}
+Signature verification error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+Traceback: Traceback (most recent call last):
+  File "C:\Users\user\Asztal\email_sender\email\email_monitor\views.py", line 414, in verify_webhook_signature
+    base64.b64decode(signing_secret.encode('utf-8')),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+
+Invalid webhook signature for sender: horizoneurope
+Svix ID: msg_317abgbW6QQut0w5QYGP26AcKjP
+Svix Timestamp: 1754877931
+Svix Signature: v1,Nu8Vhj2wsJfIJflExpV0cN1k/6/QOmLK637f0BsOlMQ=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317abgbW6QQut0w5QYGP26AcKjP.1754877931.{"created_at":"2025-08-11T02:00:35.686Z","data":{"created_at":"2025-08-11 02:00:35.439968+00","email_id":"1a5a9e58-7a4f-4e98-858b-e4f4e1a5d53f","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.sent"}
+Signature verification error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+Traceback: Traceback (most recent call last):
+  File "C:\Users\user\Asztal\email_sender\email\email_monitor\views.py", line 414, in verify_webhook_signature
+    base64.b64decode(signing_secret.encode('utf-8')),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Invalid base64-encoded string: number of data characters (37) cannot be 1 more than a multiple of 4
+
+Invalid webhook signature for sender: horizoneurope
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Svix ID: msg_317bJmWamCReR0m2nhSuOfuCHRn
+Svix Timestamp: 1754877988
+Svix Signature: v1,H291aa9jVRHauv6ERZYqsqLTnjETy1UPZclwff6VHII=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Secret key after prefix removal: mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317bJmWamCReR0m2nhSuOfuCHRn.1754877988.{"created_at":"2025-08-11T02:06:26.935Z","data":{"created_at":"2025-08-11 02:06:26.668381+00","email_id":"8e139859-37f1-4691-8acc-1dcf27416dab","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.sent"}
+Expected signature: v1,H291aa9jVRHauv6ERZYqsqLTnjETy1UPZclwff6VHII=
+Signature match: True
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:06:26.935Z', 'data': {'created_at': '2025-08-11 02:06:26.668381+00', 'email_id': '8e139859-37f1-4691-8acc-1dcf27416dab', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Svix ID: msg_317bJsCDB1W1qWFQ1X5Z458UiWV
+Svix Timestamp: 1754877989
+Svix Signature: v1,jrKmZIv4Vd1m0tnqqssVbk94+XihBcb4o4JId65v8ks=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Secret key after prefix removal: mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317bJsCDB1W1qWFQ1X5Z458UiWV.1754877989.{"created_at":"2025-08-11T02:06:27.693Z","data":{"created_at":"2025-08-11 02:06:26.668381+00","email_id":"8e139859-37f1-4691-8acc-1dcf27416dab","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.delivered"}
+Expected signature: v1,jrKmZIv4Vd1m0tnqqssVbk94+XihBcb4o4JId65v8ks=
+Signature match: True
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:06:27.693Z', 'data': {'created_at': '2025-08-11 02:06:26.668381+00', 'email_id': '8e139859-37f1-4691-8acc-1dcf27416dab', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Svix ID: msg_317apOFQfAJJ1BHWiKJngTqqC3L
+Svix Timestamp: 1754878045
+Svix Signature: v1,6TEa2+7+AmCB3C2CusmHQi/LE+3x/3Ph23IAMw4bU3U=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Secret key after prefix removal: mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317apOFQfAJJ1BHWiKJngTqqC3L.1754878045.{"created_at":"2025-08-11T02:02:24.648Z","data":{"created_at":"2025-08-11 02:02:24.364185+00","email_id":"268eba56-e760-40da-9449-d049230e80ae","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.sent"}
+Expected signature: v1,6TEa2+7+AmCB3C2CusmHQi/LE+3x/3Ph23IAMw4bU3U=
+Signature match: True
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:02:24.648Z', 'data': {'created_at': '2025-08-11 02:02:24.364185+00', 'email_id': '268eba56-e760-40da-9449-d049230e80ae', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Svix ID: msg_317apWibDnTSsZzGO42TTHGGGhr
+Svix Timestamp: 1754878095
+Svix Signature: v1,aWS2kr1B2DAQcJz1iiWJ8KlMSjylfC/cvMCEdgFeb7Y=
+Webhook secret: whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Secret key after prefix removal: mxDD0UTbIirVJ1//WCon4NpRz4e0jotf
+Signed payload: msg_317apWibDnTSsZzGO42TTHGGGhr.1754878095.{"created_at":"2025-08-11T02:02:25.422Z","data":{"created_at":"2025-08-11 02:02:24.364185+00","email_id":"268eba56-e760-40da-9449-d049230e80ae","from":"Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>","headers":[{"name":"X-Entity-Ref-ID","value":"contact-3295"}],"subject":"EU Grant Advisory Platform - Beta Testing Invitation","tags":{"campaign":"email_campaign","contact_id":"3295","environment":"production"},"to":["maigadrisking@gmail.com"]},"type":"email.delivered"}
+Expected signature: v1,aWS2kr1B2DAQcJz1iiWJ8KlMSjylfC/cvMCEdgFeb7Y=
+Signature match: True
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:02:25.422Z', 'data': {'created_at': '2025-08-11 02:02:24.364185+00', 'email_id': '268eba56-e760-40da-9449-d049230e80ae', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:05:15.420Z', 'data': {'created_at': '2025-08-11 02:05:15.178323+00', 'email_id': 'dc14c948-90ad-4664-ab29-a8bd862cac31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:05:16.229Z', 'data': {'created_at': '2025-08-11 02:05:15.178323+00', 'email_id': 'dc14c948-90ad-4664-ab29-a8bd862cac31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:11:19.390Z', 'data': {'created_at': '2025-08-11 02:06:26.668381+00', 'email_id': '8e139859-37f1-4691-8acc-1dcf27416dab', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.196', 'timestamp': '2025-08-11T02:11:19.390Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:39:20.726Z', 'data': {'created_at': '2025-08-11 01:39:19.243192+00', 'email_id': '07760ab8-66a6-4248-b02c-9dbd5b60e27d', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:11:27.045Z', 'data': {'created_at': '2025-08-11 02:05:15.178323+00', 'email_id': 'dc14c948-90ad-4664-ab29-a8bd862cac31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.195', 'timestamp': '2025-08-11T02:11:27.045Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:11:31.155Z', 'data': {'created_at': '2025-08-11 02:02:24.364185+00', 'email_id': '268eba56-e760-40da-9449-d049230e80ae', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.196', 'timestamp': '2025-08-11T02:11:31.155Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:13:28.538Z', 'data': {'created_at': '2025-08-11 02:13:28.303539+00', 'email_id': '87aca012-d494-4f89-843a-5d9325d2dcd3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:13:29.288Z', 'data': {'created_at': '2025-08-11 02:13:28.303539+00', 'email_id': '87aca012-d494-4f89-843a-5d9325d2dcd3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:13:38.247Z', 'data': {'created_at': '2025-08-11 02:13:28.303539+00', 'email_id': '87aca012-d494-4f89-843a-5d9325d2dcd3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.196', 'timestamp': '2025-08-11T02:13:38.247Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:42:41.714Z', 'data': {'created_at': '2025-08-11 01:42:40.721569+00', 'email_id': '7579f876-a797-4cf4-ba69-92744a469156', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:39:19.478Z', 'data': {'created_at': '2025-08-11 01:39:19.243192+00', 'email_id': '07760ab8-66a6-4248-b02c-9dbd5b60e27d', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:39:39.512Z', 'data': {'created_at': '2025-08-11 01:39:19.243192+00', 'email_id': '07760ab8-66a6-4248-b02c-9dbd5b60e27d', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.195', 'timestamp': '2025-08-11T01:39:39.512Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:42:40.971Z', 'data': {'created_at': '2025-08-11 01:42:40.721569+00', 'email_id': '7579f876-a797-4cf4-ba69-92744a469156', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:46:15.846Z', 'data': {'created_at': '2025-08-11 01:46:15.595478+00', 'email_id': '85f811fc-6cc0-4810-adba-39ad586b9e84', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:46:16.636Z', 'data': {'created_at': '2025-08-11 01:46:15.595478+00', 'email_id': '85f811fc-6cc0-4810-adba-39ad586b9e84', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:54:25.167Z', 'data': {'created_at': '2025-08-11 01:54:24.910235+00', 'email_id': 'e38dd8a5-2700-4916-9843-640e9e418cb2', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:54:25.970Z', 'data': {'created_at': '2025-08-11 01:54:24.910235+00', 'email_id': 'e38dd8a5-2700-4916-9843-640e9e418cb2', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:55:46.741Z', 'data': {'created_at': '2025-08-11 01:55:46.495906+00', 'email_id': 'c5ffacbc-099c-4bdb-9af5-e8a3d128bc43', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T01:55:47.477Z', 'data': {'created_at': '2025-08-11 01:55:46.495906+00', 'email_id': 'c5ffacbc-099c-4bdb-9af5-e8a3d128bc43', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:00:36.383Z', 'data': {'created_at': '2025-08-11 02:00:35.439968+00', 'email_id': '1a5a9e58-7a4f-4e98-858b-e4f4e1a5d53f', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T02:00:35.686Z', 'data': {'created_at': '2025-08-11 02:00:35.439968+00', 'email_id': '1a5a9e58-7a4f-4e98-858b-e4f4e1a5d53f', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T02:43:51.124Z', 'data': {'created_at': '2025-08-10T14:01:57.247Z', 'id': 'a4f64df7-9a2a-4632-9de9-be6e039afeba', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T02:43:53.462Z', 'data': {'created_at': '2025-08-10T14:01:57.247Z', 'id': 'a4f64df7-9a2a-4632-9de9-be6e039afeba', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T02:43:54.360Z', 'data': {'created_at': '2025-08-10T14:01:57.247Z', 'id': 'a4f64df7-9a2a-4632-9de9-be6e039afeba', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T02:43:55.647Z', 'data': {'created_at': '2025-08-10T14:01:57.247Z', 'id': 'a4f64df7-9a2a-4632-9de9-be6e039afeba', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:09:24.025Z', 'data': {'created_at': '2025-08-10T14:01:57.247Z', 'id': 'a4f64df7-9a2a-4632-9de9-be6e039afeba', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'failed', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'failed', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'failed', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'failed'}, 'type': 'domain.deleted'}
+New webhook event: domain.deleted for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:10:58.480Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.created'}
+New webhook event: domain.created for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:49:46.457Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:50:35.866Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:51:08.478Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:51:50.367Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:52:28.615Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:53:04.850Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:53:43.535Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:54:24.191Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:55:00.759Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:55:38.802Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:56:18.702Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:56:50.678Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:57:28.360Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:58:03.983Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:58:38.389Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:59:15.113Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T12:59:50.399Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:01:02.630Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:02:12.064Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:02:20.527Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:02:53.547Z', 'data': {'created_at': '2025-08-11 13:02:53.270595+00', 'email_id': '4955f5fd-6375-4bfe-ac2a-2b4af04f6a0a', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:02:54.520Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:02:53.270595+00', 'email_id': '4955f5fd-6375-4bfe-ac2a-2b4af04f6a0a', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:02:56.556Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:05:02.938Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:05:08.435Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:09:11.800Z', 'data': {'created_at': '2025-08-11 13:09:11.547099+00', 'email_id': '81e44ab6-e115-459f-a140-b139e2c06c8d', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:09:13.004Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:09:11.547099+00', 'email_id': '81e44ab6-e115-459f-a140-b139e2c06c8d', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:20:23.808Z', 'data': {'created_at': '2025-08-11 13:20:23.555274+00', 'email_id': '42bbd675-b64d-4ea7-8096-e0f3fdd47fb5', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:20:24.535Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:20:23.555274+00', 'email_id': '42bbd675-b64d-4ea7-8096-e0f3fdd47fb5', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:21:16.252Z', 'data': {'created_at': '2025-08-11 13:21:16.006879+00', 'email_id': 'fdec2008-5d8e-4cc0-87f5-c79ac2211bb2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:21:18.518Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:21:16.006879+00', 'email_id': 'fdec2008-5d8e-4cc0-87f5-c79ac2211bb2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:23:19.558Z', 'data': {'created_at': '2025-08-11 13:23:19.312967+00', 'email_id': '4971d2c2-291f-4cdb-a1db-7be5a0e8a2ee', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:23:20.528Z', 'data': {'created_at': '2025-08-11 13:23:19.312967+00', 'email_id': '4971d2c2-291f-4cdb-a1db-7be5a0e8a2ee', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:23:25.131Z', 'data': {'created_at': '2025-08-11 13:23:19.312967+00', 'email_id': '4971d2c2-291f-4cdb-a1db-7be5a0e8a2ee', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.192', 'timestamp': '2025-08-11T13:23:25.131Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:23:50.842Z', 'data': {'created_at': '2025-08-11 13:23:50.594535+00', 'email_id': 'c1693b62-b34b-4383-ab6b-5dec383a9b88', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:23:51.561Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:23:50.594535+00', 'email_id': 'c1693b62-b34b-4383-ab6b-5dec383a9b88', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:26:34.329Z', 'data': {'created_at': '2025-08-11 13:26:34.106412+00', 'email_id': '6494ebb4-c4d0-4b1d-b3b0-e6190efc1824', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:26:35.212Z', 'data': {'created_at': '2025-08-11 13:26:34.106412+00', 'email_id': '6494ebb4-c4d0-4b1d-b3b0-e6190efc1824', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:27:30.378Z', 'data': {'created_at': '2025-08-11 13:27:30.139784+00', 'email_id': '4815215b-e4c9-4b8c-8d67-b59a082feb50', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:27:31.561Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:27:30.139784+00', 'email_id': '4815215b-e4c9-4b8c-8d67-b59a082feb50', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:33:11.391Z', 'data': {'audience_id': '137629c7-980c-43c5-a66e-fba962de24c6', 'created_at': '2025-08-11T13:33:11.363Z', 'email': 'maigadrisking@gmail.com', 'first_name': None, 'id': '8b41758a-8607-42e4-8b4c-1d3341ebd24d', 'last_name': None, 'unsubscribed': False, 'updated_at': '2025-08-11T13:33:11.364Z'}, 'type': 'contact.created'}
+New webhook event: contact.created for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:34:20.077Z', 'data': {'audience_id': '137629c7-980c-43c5-a66e-fba962de24c6', 'created_at': '2025-08-11T13:34:20.048Z', 'email': 'driskingmaiga@gmail.com', 'first_name': None, 'id': '9b4b2179-b56c-44ec-bf32-2249ae83595b', 'last_name': None, 'unsubscribed': False, 'updated_at': '2025-08-11T13:34:20.050Z'}, 'type': 'contact.created'}
+New webhook event: contact.created for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:10.261Z', 'data': {'created_at': '2025-08-11 13:35:06.578395+00', 'email_id': '29a28d64-fd8d-4a85-bcf1-52f1475f8d7b', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDZ9.CPd4hPRV8TSJ4dJ_gD1qPxYXkkdaCPXOZvt6Q6oX6CQ>'}, {'name': 'X-Entity-Ref-ID', 'value': 'f6fc596e-5311-4986-9417-8b7672176715'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:10.486Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:35:06.547789+00', 'email_id': '2c861f4d-d550-4483-8f61-6b25b186e968', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDZ9.CPd4hPRV8TSJ4dJ_gD1qPxYXkkdaCPXOZvt6Q6oX6CQ>'}, {'name': 'X-Entity-Ref-ID', 'value': '2f34a08a-d633-48b6-984a-788d2cb3bf05'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:09.839Z', 'data': {'created_at': '2025-08-11 13:35:06.547789+00', 'email_id': '2c861f4d-d550-4483-8f61-6b25b186e968', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDZ9.CPd4hPRV8TSJ4dJ_gD1qPxYXkkdaCPXOZvt6Q6oX6CQ>'}, {'name': 'X-Entity-Ref-ID', 'value': '2f34a08a-d633-48b6-984a-788d2cb3bf05'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:11.523Z', 'data': {'created_at': '2025-08-11 13:35:09.985808+00', 'email_id': '86eed55e-e515-42b3-89a7-32c8b84dedc5', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDl9.XP1ISTM8h65clsWvjehRhSFCRnA_xPX4Ic-F024UsYY>'}, {'name': 'X-Entity-Ref-ID', 'value': '8a4788bb-e4df-4b82-ace5-5591b3f9e975'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:10.920Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:35:06.578395+00', 'email_id': '29a28d64-fd8d-4a85-bcf1-52f1475f8d7b', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDZ9.CPd4hPRV8TSJ4dJ_gD1qPxYXkkdaCPXOZvt6Q6oX6CQ>'}, {'name': 'X-Entity-Ref-ID', 'value': 'f6fc596e-5311-4986-9417-8b7672176715'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:11.427Z', 'data': {'created_at': '2025-08-11 13:35:10.166478+00', 'email_id': '94dbdcc8-f860-4a82-abdc-269d4500a79c', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMTB9.RkhbDvhGEO4sowpJTEaRyCM9C1DJoKYOuZYGIrPBlLI>'}, {'name': 'X-Entity-Ref-ID', 'value': '7a6e4206-c16e-4def-8139-fde3caa8870a'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:12.138Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:35:10.166478+00', 'email_id': '94dbdcc8-f860-4a82-abdc-269d4500a79c', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMTB9.RkhbDvhGEO4sowpJTEaRyCM9C1DJoKYOuZYGIrPBlLI>'}, {'name': 'X-Entity-Ref-ID', 'value': '7a6e4206-c16e-4def-8139-fde3caa8870a'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:35:12.597Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'created_at': '2025-08-11 13:35:09.985808+00', 'email_id': '86eed55e-e515-42b3-89a7-32c8b84dedc5', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/test/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzMDl9.XP1ISTM8h65clsWvjehRhSFCRnA_xPX4Ic-F024UsYY>'}, {'name': 'X-Entity-Ref-ID', 'value': '8a4788bb-e4df-4b82-ace5-5591b3f9e975'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': '[TEST] I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T13:35:17.443Z', 'data': {'created_at': '2025-08-11 13:26:34.106412+00', 'email_id': '6494ebb4-c4d0-4b1d-b3b0-e6190efc1824', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.205', 'timestamp': '2025-08-11T13:35:17.443Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:36:17.356Z', 'data': {'broadcast_id': '8e84a504-42ce-4c31-9da3-4931c627b84e', 'created_at': '2025-08-11 13:36:08.945566+00', 'email_id': '015f34aa-bd03-4e2d-aac4-0ed8bfbabd6a', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': 'b72fffd9-a983-435a-b25b-ed3d7267e2dd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI4ZTg0YTUwNC00MmNlLTRjMzEtOWRhMy00OTMxYzYyN2I4NGUiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzNjgsImV4cCI6MTc4NjQ1NTM2OH0.qmyJog1-ZQMUXRgIeY1j-QDwSL-BrBjXsT6PWnex2AQ>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'I want the server so I can create a site like', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:36:17.534Z', 'data': {'broadcast_id': '8e84a504-42ce-4c31-9da3-4931c627b84e', 'created_at': '2025-08-11 13:36:08.945566+00', 'email_id': 'ed12ac22-cb4b-47de-a247-fed735e18b37', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': 'b72fffd9-a983-435a-b25b-ed3d7267e2dd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI4ZTg0YTUwNC00MmNlLTRjMzEtOWRhMy00OTMxYzYyN2I4NGUiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzNjgsImV4cCI6MTc4NjQ1NTM2OH0.qPhbh_nOE-D70Z1_a1ETJjAS1eGIsGXVwYxhj0xeArs>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:36:18.516Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '8e84a504-42ce-4c31-9da3-4931c627b84e', 'created_at': '2025-08-11 13:36:08.945566+00', 'email_id': '015f34aa-bd03-4e2d-aac4-0ed8bfbabd6a', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': 'b72fffd9-a983-435a-b25b-ed3d7267e2dd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI4ZTg0YTUwNC00MmNlLTRjMzEtOWRhMy00OTMxYzYyN2I4NGUiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzNjgsImV4cCI6MTc4NjQ1NTM2OH0.qmyJog1-ZQMUXRgIeY1j-QDwSL-BrBjXsT6PWnex2AQ>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'I want the server so I can create a site like', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:36:18.597Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '8e84a504-42ce-4c31-9da3-4931c627b84e', 'created_at': '2025-08-11 13:36:08.945566+00', 'email_id': 'ed12ac22-cb4b-47de-a247-fed735e18b37', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': 'b72fffd9-a983-435a-b25b-ed3d7267e2dd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI4ZTg0YTUwNC00MmNlLTRjMzEtOWRhMy00OTMxYzYyN2I4NGUiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTkzNjgsImV4cCI6MTc4NjQ1NTM2OH0.qPhbh_nOE-D70Z1_a1ETJjAS1eGIsGXVwYxhj0xeArs>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'I want the server so I can create a site like', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:38:03.205Z', 'data': {'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': 'e26967ca-2409-4a79-aad5-eca1280b2412', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.7ACLOSuohPEgXmWweqrRvOyTHZjFSbXDq2saoEWiAVk>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:38:03.208Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': '75decdb1-f168-49d9-b097-ee56e773fdb9', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.ipbM2I28smJWmuXi3k_s1V5rG_EPmQj0U_vnsFWF1tc>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:38:02.438Z', 'data': {'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': 'e26967ca-2409-4a79-aad5-eca1280b2412', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.7ACLOSuohPEgXmWweqrRvOyTHZjFSbXDq2saoEWiAVk>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:38:02.462Z', 'data': {'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': '75decdb1-f168-49d9-b097-ee56e773fdb9', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.ipbM2I28smJWmuXi3k_s1V5rG_EPmQj0U_vnsFWF1tc>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:38:05.315Z', 'data': {'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': 'e26967ca-2409-4a79-aad5-eca1280b2412', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.7ACLOSuohPEgXmWweqrRvOyTHZjFSbXDq2saoEWiAVk>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'open': {'ipAddress': '66.249.92.137', 'timestamp': '2025-08-11T13:38:05.315Z', 'userAgent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246 Mozilla/5.0'}, 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:49:12.310Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:49:47.064Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'pending', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'pending'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:50:26.698Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:58:50.262Z', 'data': {'broadcast_id': '47f8b587-324c-4cba-9f74-83eb46097759', 'created_at': '2025-08-11 13:58:48.262496+00', 'email_id': '4ed1c2df-e618-400f-aa13-cbdfccd6a268', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '67da7837-9266-4706-ac8d-b7d9eda0e541'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI0N2Y4YjU4Ny0zMjRjLTRjYmEtOWY3NC04M2ViNDYwOTc3NTkiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA3MjgsImV4cCI6MTc4NjQ1NjcyOH0.1HKAw1BK5pkZrZFxbpBZFuc8X-64CNM4Xyer9GKy9So>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Hello   Bro I am here', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:58:51.027Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '47f8b587-324c-4cba-9f74-83eb46097759', 'created_at': '2025-08-11 13:58:48.262496+00', 'email_id': '4ed1c2df-e618-400f-aa13-cbdfccd6a268', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '67da7837-9266-4706-ac8d-b7d9eda0e541'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI0N2Y4YjU4Ny0zMjRjLTRjYmEtOWY3NC04M2ViNDYwOTc3NTkiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA3MjgsImV4cCI6MTc4NjQ1NjcyOH0.1HKAw1BK5pkZrZFxbpBZFuc8X-64CNM4Xyer9GKy9So>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Hello   Bro I am here', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:58:50.242Z', 'data': {'broadcast_id': '47f8b587-324c-4cba-9f74-83eb46097759', 'created_at': '2025-08-11 13:58:48.262496+00', 'email_id': '43dfb013-14ec-446a-a834-6d6ff9b5ccfa', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '67da7837-9266-4706-ac8d-b7d9eda0e541'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI0N2Y4YjU4Ny0zMjRjLTRjYmEtOWY3NC04M2ViNDYwOTc3NTkiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA3MjgsImV4cCI6MTc4NjQ1NjcyOH0.lA_OWVQtopYMfIIoz-4KCYgH0abngnv1BoWM0CEofJI>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Hello   Bro I am here', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+New webhook event: email.bounced for driskingmaiga@gmail.com
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T13:58:51.020Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '47f8b587-324c-4cba-9f74-83eb46097759', 'created_at': '2025-08-11 13:58:48.262496+00', 'email_id': '43dfb013-14ec-446a-a834-6d6ff9b5ccfa', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '67da7837-9266-4706-ac8d-b7d9eda0e541'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI0N2Y4YjU4Ny0zMjRjLTRjYmEtOWY3NC04M2ViNDYwOTc3NTkiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA3MjgsImV4cCI6MTc4NjQ1NjcyOH0.lA_OWVQtopYMfIIoz-4KCYgH0abngnv1BoWM0CEofJI>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Hello   Bro I am here', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:00:31.392Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:00:31.597Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:00:31.834Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:00:31.911Z', 'data': {'created_at': '2025-08-11T12:10:05.172Z', 'id': '472e12a7-0d9e-4b22-b7c3-3a561691b7da', 'name': 'horizon.eu.com', 'records': [{'name': 'send.horizon', 'priority': 10, 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'MX', 'value': 'feedback-smtp.eu-west-1.amazonses.com'}, {'name': 'send.horizon', 'record': 'SPF', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'v=spf1 include:amazonses.com ~all'}, {'name': 'resend._domainkey.horizon', 'record': 'DKIM', 'status': 'verified', 'ttl': 'Auto', 'type': 'TXT', 'value': 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIRBJAWn9/k94RKdB53DJdladqD4I0n3S9LpmprKtQeIdc6kSrLO/zlh1W/lz3leJ8fwg/EKHstTGp1nTBHfg1sFfx72iObUex+MGvsB2V7XUG7oXXzFJzEgJSs0NK4p5lSOa5htT5suz2QgjUjAlPS2huf9m57u/iMMH08E0B1wIDAQAB'}], 'region': 'eu-west-1', 'status': 'verified'}, 'type': 'domain.updated'}
+New webhook event: domain.updated for None
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:02:30.704Z', 'data': {'broadcast_id': '34f777a3-2cec-44a3-a7f9-4d92f5485c72', 'created_at': '2025-08-11 14:02:24.920377+00', 'email_id': 'f578fa79-1f2b-461a-9acb-d53967e9b04f', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '8fa5b284-e03f-44de-afed-e2efe2548517'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiIzNGY3NzdhMy0yY2VjLTQ0YTMtYTdmOS00ZDkyZjU0ODVjNzIiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA5NDQsImV4cCI6MTc4NjQ1Njk0NH0.AkNz01CoQP64-UwAwz7zlNH4MFF9HEwg2P78vU6cc9Y>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:02:30.700Z', 'data': {'broadcast_id': '34f777a3-2cec-44a3-a7f9-4d92f5485c72', 'created_at': '2025-08-11 14:02:24.920377+00', 'email_id': 'b97409c1-8317-4409-942b-3d7d14dece0f', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '8fa5b284-e03f-44de-afed-e2efe2548517'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiIzNGY3NzdhMy0yY2VjLTQ0YTMtYTdmOS00ZDkyZjU0ODVjNzIiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA5NDQsImV4cCI6MTc4NjQ1Njk0NH0.4fnz6vG2Byfbirxa3dQtzFN2LDAtqQS_hv_yTD87n2c>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:02:32.967Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '34f777a3-2cec-44a3-a7f9-4d92f5485c72', 'created_at': '2025-08-11 14:02:24.920377+00', 'email_id': 'f578fa79-1f2b-461a-9acb-d53967e9b04f', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '8fa5b284-e03f-44de-afed-e2efe2548517'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiIzNGY3NzdhMy0yY2VjLTQ0YTMtYTdmOS00ZDkyZjU0ODVjNzIiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA5NDQsImV4cCI6MTc4NjQ1Njk0NH0.AkNz01CoQP64-UwAwz7zlNH4MFF9HEwg2P78vU6cc9Y>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:02:33.164Z', 'data': {'bounce': {'message': "The recipient's email provider sent a bounce message because the message you sent contains content that the provider doesn't allow. You might be able to send a message to the same recipient if you change the content of the message.", 'subType': 'ContentRejected', 'type': 'Transient'}, 'broadcast_id': '34f777a3-2cec-44a3-a7f9-4d92f5485c72', 'created_at': '2025-08-11 14:02:24.920377+00', 'email_id': 'b97409c1-8317-4409-942b-3d7d14dece0f', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '8fa5b284-e03f-44de-afed-e2efe2548517'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiIzNGY3NzdhMy0yY2VjLTQ0YTMtYTdmOS00ZDkyZjU0ODVjNzIiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjA5NDQsImV4cCI6MTc4NjQ1Njk0NH0.4fnz6vG2Byfbirxa3dQtzFN2LDAtqQS_hv_yTD87n2c>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.bounced'}
+New webhook event: email.bounced for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:02:46.928Z', 'data': {'broadcast_id': '62d9dfe0-d9c7-4477-a897-4627093e8e13', 'created_at': '2025-08-11 13:37:59.117262+00', 'email_id': 'e26967ca-2409-4a79-aad5-eca1280b2412', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '64dc9ddd-5c4e-4697-bc2f-684adc027dbd'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiI2MmQ5ZGZlMC1kOWM3LTQ0NzctYTg5Ny00NjI3MDkzZThlMTMiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MTk0NzksImV4cCI6MTc4NjQ1NTQ3OX0.7ACLOSuohPEgXmWweqrRvOyTHZjFSbXDq2saoEWiAVk>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'open': {'ipAddress': '66.249.93.164', 'timestamp': '2025-08-11T14:02:46.928Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:05:53.494Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'e7b91b2a-4d34-45a6-aa17-51f2566baa26', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.GyMEAPjbL_7HZdrChdAtEBSeBULWsv0q6IS4W8LgjSU>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:05:53.494Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'b30b96df-30b0-40d8-a6b8-63362f85fa66', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.G-2g0sHg_awIwKduwkXRYoyk1VgTWKetlMb31k1WYuw>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:05:54.338Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'e7b91b2a-4d34-45a6-aa17-51f2566baa26', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.GyMEAPjbL_7HZdrChdAtEBSeBULWsv0q6IS4W8LgjSU>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:05:55.386Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'b30b96df-30b0-40d8-a6b8-63362f85fa66', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.G-2g0sHg_awIwKduwkXRYoyk1VgTWKetlMb31k1WYuw>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:07:49.349Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'e7b91b2a-4d34-45a6-aa17-51f2566baa26', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI4YjQxNzU4YS04NjA3LTQyZTQtOGI0Yy0xZDMzNDFlYmQyNGQiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.GyMEAPjbL_7HZdrChdAtEBSeBULWsv0q6IS4W8LgjSU>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'open': {'ipAddress': '66.249.93.165', 'timestamp': '2025-08-11T14:07:49.349Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'Test Email', 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:10:53.136Z', 'data': {'created_at': '2025-08-11 14:10:52.881397+00', 'email_id': '7fec1335-dd96-46a8-8ccc-70b3fadffdf4', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:10:54.778Z', 'data': {'created_at': '2025-08-11 14:10:52.881397+00', 'email_id': '7fec1335-dd96-46a8-8ccc-70b3fadffdf4', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:11:00.520Z', 'data': {'broadcast_id': 'c2c61dba-7f17-4677-8d56-779480e6467d', 'created_at': '2025-08-11 14:05:47.977387+00', 'email_id': 'b30b96df-30b0-40d8-a6b8-63362f85fa66', 'from': 'Roland.zonai <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'Precedence', 'value': 'bulk'}, {'name': 'X-Entity-Ref-ID', 'value': '00a70884-f2f1-4112-ae94-e7247adc5d06'}, {'name': 'List-Unsubscribe', 'value': '<https://unsubscribe.resend.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiI5YjRiMjE3OS1iNTZjLTQ0ZWMtYmYzMi0yMjQ5YWU4MzU5NWIiLCJhdWRpZW5jZUlkIjoiMTM3NjI5YzctOTgwYy00M2M1LWE2NmUtZmJhOTYyZGUyNGM2IiwiYnJvYWRjYXN0SWQiOiJjMmM2MWRiYS03ZjE3LTQ2NzctOGQ1Ni03Nzk0ODBlNjQ2N2QiLCJ0ZWFtSWQiOiI2MGY2ZTk0ZC04NWZhLTQ1MzEtYWEwZC1mNjQ2MTkyNzA0NzEiLCJpYXQiOjE3NTQ5MjExNDcsImV4cCI6MTc4NjQ1NzE0N30.G-2g0sHg_awIwKduwkXRYoyk1VgTWKetlMb31k1WYuw>'}, {'name': 'List-Unsubscribe-Post', 'value': 'List-Unsubscribe=One-Click'}], 'open': {'ipAddress': '66.249.93.168', 'timestamp': '2025-08-11T14:11:00.520Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'Test Email', 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:11:19.970Z', 'data': {'created_at': '2025-08-11 14:10:52.881397+00', 'email_id': '7fec1335-dd96-46a8-8ccc-70b3fadffdf4', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.169', 'timestamp': '2025-08-11T14:11:19.970Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T14:17:42.319Z', 'data': {'created_at': '2025-08-11 14:17:42.069943+00', 'email_id': 'c5f23a12-cc7f-4e4a-a21b-794c508bc290', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['servicezonzani@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for servicezonzani@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T14:17:43.162Z', 'data': {'created_at': '2025-08-11 14:17:42.069943+00', 'email_id': 'c5f23a12-cc7f-4e4a-a21b-794c508bc290', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['servicezonzani@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for servicezonzani@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-11T14:18:59.264Z', 'data': {'created_at': '2025-08-11 14:17:42.069943+00', 'email_id': 'c5f23a12-cc7f-4e4a-a21b-794c508bc290', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'open': {'ipAddress': '66.249.93.192', 'timestamp': '2025-08-11T14:18:59.264Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['servicezonzani@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for servicezonzani@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:19:25.736Z', 'data': {'created_at': '2025-08-11 14:19:25.450333+00', 'email_id': '73b7da59-8118-49ce-bbac-f0bf7163fd40', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['servicezonzani@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for servicezonzani@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-11T14:19:26.724Z', 'data': {'created_at': '2025-08-11 14:19:25.450333+00', 'email_id': '73b7da59-8118-49ce-bbac-f0bf7163fd40', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-3295'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '3295', 'environment': 'production'}, 'to': ['servicezonzani@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for servicezonzani@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Database reset completed - Deleted 3291 contacts and 123 email events
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts

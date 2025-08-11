@@ -27,65 +27,138 @@
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Email Campaign Manager</h2>
-            <p class="text-gray-600">Send targeted email campaigns to your contacts with real-time tracking</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Email Campaign Manager</h2>
+                    <p class="text-gray-600">Send targeted email campaigns to your contacts with real-time tracking</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div id="refreshIndicator" class="hidden">
+                        <div class="flex items-center text-sm text-blue-600">
+                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                            Updating stats...
+                        </div>
+                    </div>
+                    <button id="manualRefresh" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100" title="Refresh statistics">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Contact Statistics -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow-sm p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-3 md:gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-3">
                 <div class="flex items-center">
-                    <div class="p-2 bg-gray-100 rounded-lg">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-1.5 bg-gray-100 rounded-lg">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-500">Total Contacts</p>
-                        <p id="totalContacts" class="text-2xl font-bold text-gray-900">-</p>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Total Contacts</p>
+                        <p id="totalContacts" class="text-lg font-bold text-gray-900">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="bg-white rounded-lg shadow-sm p-3">
                 <div class="flex items-center">
-                    <div class="p-2 bg-blue-100 rounded-lg">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-1.5 bg-blue-100 rounded-lg">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-500">Not Sent Yet</p>
-                        <p id="notSentContacts" class="text-2xl font-bold text-blue-600">-</p>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Not Sent Yet</p>
+                        <p id="notSentContacts" class="text-lg font-bold text-blue-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="bg-white rounded-lg shadow-sm p-3">
                 <div class="flex items-center">
-                    <div class="p-2 bg-green-100 rounded-lg">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-1.5 bg-yellow-100 rounded-lg">
+                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Sent</p>
+                        <p id="sentContacts" class="text-lg font-bold text-yellow-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3">
+                <div class="flex items-center">
+                    <div class="p-1.5 bg-green-100 rounded-lg">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-500">Delivered</p>
-                        <p id="deliveredContacts" class="text-2xl font-bold text-green-600">-</p>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Delivered</p>
+                        <p id="deliveredContacts" class="text-lg font-bold text-green-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="bg-white rounded-lg shadow-sm p-3">
                 <div class="flex items-center">
-                    <div class="p-2 bg-purple-100 rounded-lg">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-1.5 bg-purple-100 rounded-lg">
+                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-500">Opened</p>
-                        <p id="openedContacts" class="text-2xl font-bold text-purple-600">-</p>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Opened</p>
+                        <p id="openedContacts" class="text-lg font-bold text-purple-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3">
+                <div class="flex items-center">
+                    <div class="p-1.5 bg-indigo-100 rounded-lg">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Clicked</p>
+                        <p id="clickedContacts" class="text-lg font-bold text-indigo-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3">
+                <div class="flex items-center">
+                    <div class="p-1.5 bg-red-100 rounded-lg">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Bounced</p>
+                        <p id="bouncedFailedContacts" class="text-lg font-bold text-red-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3">
+                <div class="flex items-center">
+                    <div class="p-1.5 bg-orange-100 rounded-lg">
+                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-500">Complained</p>
+                        <p id="complainedContacts" class="text-lg font-bold text-orange-600">-</p>
                     </div>
                 </div>
             </div>
@@ -96,7 +169,7 @@
             <h3 class="text-xl font-semibold text-gray-900 mb-6">Campaign Setup</h3>
         
         <!-- Contact Filter Selection -->
-        <div class="grid md:grid-cols-3 gap-6 mb-6">
+        <div class="grid md:grid-cols-4 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Target Audience</label>
                 <select id="contactFilter" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -114,21 +187,42 @@
             </div>
             
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Number of Contacts</label>
-                <div class="relative">
-                    <input type="number" id="contactLimit" min="1" placeholder="All contacts" 
-                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           onpaste="return false" onkeypress="return /[0-9]/.test(event.key)">
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <button type="button" id="clearLimit" class="text-gray-400 hover:text-gray-600" title="Clear limit">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Contact Selection Range</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="relative">
+                        <input type="number" id="contactRangeStart" min="1" placeholder="Start ID" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                               onpaste="return false" onkeypress="return /[0-9]/.test(event.key)">
+                        <label class="absolute -top-2 left-2 bg-white px-1 text-xs text-gray-500">From ID</label>
+                    </div>
+                    <div class="relative">
+                        <input type="number" id="contactRangeEnd" min="1" placeholder="End ID" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                               onpaste="return false" onkeypress="return /[0-9]/.test(event.key)">
+                        <label class="absolute -top-2 left-2 bg-white px-1 text-xs text-gray-500">To ID</label>
                     </div>
                 </div>
-                <p class="text-sm text-gray-500 mt-2">Limit to first N contacts (leave empty for all)</p>
-                <p id="limitError" class="text-sm text-red-500 mt-1 hidden">Maximum available contacts exceeded</p>
+                <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Select contacts by ID range (e.g., 1 to 100)</p>
+                    <button type="button" id="clearRange" class="text-sm text-gray-400 hover:text-gray-600" title="Clear range">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p id="rangeError" class="text-sm text-red-500 mt-1 hidden">Invalid range specified</p>
+                <div id="rangeInfo" class="text-sm text-blue-600 mt-1 hidden">
+                    <span id="rangeCount">0</span> contacts in range
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Sender Email</label>
+                <select id="senderSelect" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="horizoneurope">📧 roland.zonai@horizoneurope.io</option>
+                    <option value="horizon_eu">📧 roland.zonai@horizon.eu.com</option>
+                </select>
+                <p class="text-sm text-gray-500 mt-2">Choose which email address to send from</p>
             </div>
             
             <div>
@@ -183,26 +277,7 @@
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">Email Template</label>
            
-            <textarea id="emailTemplate" class="w-full">Dear {prospect_first_name} {prospect_last_name},
-
-My name is Roland Zonai, I am a technical due diligence expert of the European Innovation Bank (EIB) and an expert evaluator of the European Innovation Council (EIC). My EC Expert ID is EX2016D281325. I am writing to you regarding a new platform I have developed to address inefficiencies in the EU research funding application process, particularly for Horizon Europe and cascade funding programs.
-
-My evaluation of over 120 EIC Accelerator proposals and Horizon Europe RIA and IA consortiums has identified a recurring challenge: the significant resource expenditure required for research teams to identify and align with the most suitable EU funding instruments.
-
-To address this, I have engineered an EU Grant Advisory Platform and Innovation Funding Alert System. The objective is to provide a tool that systematically maps innovation projects to funding opportunities. It provides an automated monthly intelligence briefing which delivers curated data points on new funding calls, relevant procurement notices, scientific publications, and investment activities pertinent to your specified field of research.
-
-We are currently seeking a small group of research institutions and deeptech startups from {prospect_location_country} to participate in the beta testing phase of this platform to provide feedback on its functionality and utility. We noticed your role as {job_title} and we would like to invite you from {company_name} to participate. You can review the high-level overview of the platform and receive access credentials at the link below:
-https://horizoneurope.io
-
-Kindly let me know if you are open to participating. Would you be available for a brief introductory call next week?
-
-I look forward to the possibility of connecting.
-
-Best Regards,
-Roland Zonai
-Horizon Europe Funding Expert
-‪‪‪+36306500212‬‬‬
-‪‪https://www.linkedin.com/in/rolandzonai/</textarea>
+            <textarea id="emailTemplate" class="w-full"></textarea>
         </div>
         
         <!-- Send Button -->
@@ -278,6 +353,8 @@ Horizon Europe Funding Expert
                     editor.on('init', function () {
                         editorInitialized = true;
                         console.log('TinyMCE editor initialized successfully');
+                        // Load template content after editor is ready
+                        loadLastTemplate();
                     });
                 }
             }).catch(function(error) {
@@ -285,8 +362,50 @@ Horizon Europe Funding Expert
             });
         }
 
+        // Load the last used template
+        function loadLastTemplate() {
+            fetch('/api/get_template/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.log('No saved template found, using default');
+                        return;
+                    }
+                    
+                    // Set the subject
+                    document.getElementById('emailSubject').value = data.subject;
+                    
+                    // Set the template content
+                    if (editorInitialized && tinymce.get('emailTemplate')) {
+                        // TinyMCE is ready, set content through editor
+                        tinymce.get('emailTemplate').setContent(data.content);
+                    } else {
+                        // TinyMCE not ready yet, set textarea value directly
+                        document.getElementById('emailTemplate').value = data.content;
+                        
+                        // Also try to set it after a delay in case TinyMCE initializes later
+                        setTimeout(() => {
+                            if (tinymce.get('emailTemplate')) {
+                                tinymce.get('emailTemplate').setContent(data.content);
+                            }
+                        }, 1000);
+                    }
+                    
+                    console.log('Loaded last used template');
+                })
+                .catch(error => {
+                    console.log('Failed to load template:', error);
+                });
+        }
+
         // Load contact stats automatically on page load
         function loadContactStats() {
+            // Show refresh indicator
+            const refreshIndicator = document.getElementById('refreshIndicator');
+            if (refreshIndicator) {
+                refreshIndicator.classList.remove('hidden');
+            }
+            
             // Fetch contact statistics from our API
             fetch('/monitor/api/contact_stats/')
                 .then(response => response.json())
@@ -303,8 +422,12 @@ Horizon Europe Funding Expert
                     // Update the statistics cards
                     document.getElementById('totalContacts').textContent = data.total_contacts || 0;
                     document.getElementById('notSentContacts').textContent = data.not_sent || 0;
+                    document.getElementById('sentContacts').textContent = data.sent || 0;
                     document.getElementById('deliveredContacts').textContent = data.delivered || 0;
                     document.getElementById('openedContacts').textContent = data.opened || 0;
+                    document.getElementById('clickedContacts').textContent = data.clicked || 0;
+                    document.getElementById('bouncedFailedContacts').textContent = (data.bounced || 0) + (data.failed || 0);
+                    document.getElementById('complainedContacts').textContent = data.complained || 0;
                     
                     // Update status message based on current filter
                     updateStatusMessage();
@@ -316,8 +439,18 @@ Horizon Europe Funding Expert
                     // Set default values
                     document.getElementById('totalContacts').textContent = '0';
                     document.getElementById('notSentContacts').textContent = '0';
+                    document.getElementById('sentContacts').textContent = '0';
                     document.getElementById('deliveredContacts').textContent = '0';
                     document.getElementById('openedContacts').textContent = '0';
+                    document.getElementById('clickedContacts').textContent = '0';
+                    document.getElementById('bouncedFailedContacts').textContent = '0';
+                    document.getElementById('complainedContacts').textContent = '0';
+                })
+                .finally(() => {
+                    // Hide refresh indicator
+                    if (refreshIndicator) {
+                        refreshIndicator.classList.add('hidden');
+                    }
                 });
         }
 
@@ -334,18 +467,23 @@ Horizon Europe Funding Expert
                     `Ready to send emails to ${selectedCount} selected contacts` : 
                     'Select contacts from the list below';
                 
-                // Hide limit controls for custom selection
-                document.getElementById('contactLimit').closest('div').style.display = 'none';
+                // Hide range controls for custom selection
+                document.getElementById('contactRangeStart').closest('div').parentElement.style.display = 'none';
                 return;
             } else {
-                // Show limit controls for other filters
-                document.getElementById('contactLimit').closest('div').style.display = 'block';
+                // Show range controls for other filters
+                document.getElementById('contactRangeStart').closest('div').parentElement.style.display = 'block';
             }
             
             const stats = window.contactStats;
-            const limitInput = document.getElementById('contactLimit');
-            const limitError = document.getElementById('limitError');
-            const limit = limitInput.value ? parseInt(limitInput.value) : null;
+            const rangeStartInput = document.getElementById('contactRangeStart');
+            const rangeEndInput = document.getElementById('contactRangeEnd');
+            const rangeError = document.getElementById('rangeError');
+            const rangeInfo = document.getElementById('rangeInfo');
+            const rangeCount = document.getElementById('rangeCount');
+            
+            const startId = rangeStartInput.value ? parseInt(rangeStartInput.value) : null;
+            const endId = rangeEndInput.value ? parseInt(rangeEndInput.value) : null;
             
             let count = 0;
             let filterName = '';
@@ -392,37 +530,80 @@ Horizon Europe Funding Expert
                     filterName = 'contacts';
             }
             
-            // Update limit input max value and placeholder
-            limitInput.max = count;
-            limitInput.placeholder = `Max: ${count}`;
+            // Validate the range
+            let isValidRange = true;
+            let rangeSize = count;
             
-            // Validate the current limit value
-            let isValidLimit = true;
-            if (limit && (limit > count || limit < 1)) {
-                isValidLimit = false;
-                limitError.classList.remove('hidden');
-                limitError.textContent = limit > count ? 
-                    `Maximum available: ${count} contacts` : 
-                    'Minimum limit is 1';
-                limitInput.classList.add('border-red-500');
-                limitInput.classList.remove('border-gray-300');
+            if (startId || endId) {
+                // Check if both values are provided and valid
+                if (startId && endId) {
+                    if (startId > endId) {
+                        isValidRange = false;
+                        rangeError.classList.remove('hidden');
+                        rangeError.textContent = 'Start ID must be less than or equal to End ID';
+                        rangeInfo.classList.add('hidden');
+                    } else if (startId < 1 || endId < 1) {
+                        isValidRange = false;
+                        rangeError.classList.remove('hidden');
+                        rangeError.textContent = 'IDs must be greater than 0';
+                        rangeInfo.classList.add('hidden');
+                    } else {
+                        rangeSize = endId - startId + 1;
+                        rangeError.classList.add('hidden');
+                        rangeInfo.classList.remove('hidden');
+                        rangeCount.textContent = rangeSize;
+                    }
+                } else if (startId && !endId) {
+                    rangeError.classList.add('hidden');
+                    rangeInfo.classList.remove('hidden');
+                    rangeCount.textContent = `${startId} onwards`;
+                } else if (!startId && endId) {
+                    rangeError.classList.add('hidden');
+                    rangeInfo.classList.remove('hidden');
+                    rangeCount.textContent = `1 to ${endId}`;
+                    rangeSize = endId;
+                }
+                
+                // Add visual feedback for inputs
+                if (isValidRange) {
+                    rangeStartInput.classList.remove('border-red-500');
+                    rangeStartInput.classList.add('border-gray-300');
+                    rangeEndInput.classList.remove('border-red-500');
+                    rangeEndInput.classList.add('border-gray-300');
+                } else {
+                    rangeStartInput.classList.add('border-red-500');
+                    rangeStartInput.classList.remove('border-gray-300');
+                    rangeEndInput.classList.add('border-red-500');
+                    rangeEndInput.classList.remove('border-gray-300');
+                }
             } else {
-                limitError.classList.add('hidden');
-                limitInput.classList.remove('border-red-500');
-                limitInput.classList.add('border-gray-300');
+                rangeError.classList.add('hidden');
+                rangeInfo.classList.add('hidden');
+                rangeStartInput.classList.remove('border-red-500');
+                rangeStartInput.classList.add('border-gray-300');
+                rangeEndInput.classList.remove('border-red-500');
+                rangeEndInput.classList.add('border-gray-300');
             }
             
-            // Apply limit if specified and valid
-            let actualCount = count;
-            if (limit && limit <= count && limit > 0) {
-                actualCount = limit;
-                document.getElementById('csvStatus').textContent = `Ready to send emails to first ${actualCount} of ${count} ${filterName}`;
+            // Update status message
+            if (startId || endId) {
+                if (isValidRange) {
+                    if (startId && endId) {
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID ${startId}-${endId} (${rangeSize} contacts) from ${filterName}`;
+                    } else if (startId) {
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts from ID ${startId} onwards from ${filterName}`;
+                    } else {
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID 1-${endId} from ${filterName}`;
+                    }
+                } else {
+                    document.getElementById('csvStatus').textContent = `Invalid range specified for ${filterName}`;
+                }
             } else {
                 document.getElementById('csvStatus').textContent = `Ready to send emails to ${count} ${filterName}`;
             }
             
             // Store validation state globally
-            window.isLimitValid = isValidLimit;
+            window.isRangeValid = isValidRange;
         }
 
         // Load contacts for custom selection
@@ -575,12 +756,26 @@ Horizon Europe Funding Expert
         document.addEventListener('DOMContentLoaded', function() {
             initializeEditor();
             loadContactStats();
+            loadLastTemplate();
             
-            // Clear limit button functionality
-            document.getElementById('clearLimit').addEventListener('click', function() {
-                document.getElementById('contactLimit').value = '';
+            // Set up periodic refresh of contact stats every 30 seconds
+            setInterval(loadContactStats, 30000);
+            
+            // Manual refresh button
+            document.getElementById('manualRefresh').addEventListener('click', function() {
+                loadContactStats();
+            });
+            
+            // Clear range button functionality
+            document.getElementById('clearRange').addEventListener('click', function() {
+                document.getElementById('contactRangeStart').value = '';
+                document.getElementById('contactRangeEnd').value = '';
                 updateStatusMessage();
             });
+            
+            // Range input change handlers
+            document.getElementById('contactRangeStart').addEventListener('input', updateStatusMessage);
+            document.getElementById('contactRangeEnd').addEventListener('input', updateStatusMessage);
             
             // Contact filter change handler
             document.getElementById('contactFilter').addEventListener('change', function() {
@@ -613,15 +808,15 @@ Horizon Europe Funding Expert
             });
         });
 
-        // Update status message when filter or limit changes
+        // Update status message when filter or range changes
         document.getElementById('contactFilter').addEventListener('change', updateStatusMessage);
-        document.getElementById('contactLimit').addEventListener('input', updateStatusMessage);
 
         // Send emails with tracking
         document.getElementById('sendEmailsTracking').addEventListener('click', function() {
             const contactFilter = document.getElementById('contactFilter').value;
             const subject = document.getElementById('emailSubject').value;
-            const limit = document.getElementById('contactLimit').value;
+            const rangeStart = document.getElementById('contactRangeStart').value;
+            const rangeEnd = document.getElementById('contactRangeEnd').value;
             
             // Handle custom selection
             if (contactFilter === 'custom') {
@@ -630,9 +825,9 @@ Horizon Europe Funding Expert
                     return;
                 }
             } else {
-                // Validate limit for non-custom filters
-                if (!window.isLimitValid && limit) {
-                    showMessage('Please enter a valid contact limit within the available range', true);
+                // Validate range for non-custom filters
+                if (!window.isRangeValid && (rangeStart || rangeEnd)) {
+                    showMessage('Please enter a valid ID range', true);
                     return;
                 }
             }
@@ -658,7 +853,8 @@ Horizon Europe Funding Expert
 
             const requestBody = {
                 template: template,
-                subject: subject
+                subject: subject,
+                sender: document.getElementById('senderSelect').value
             };
             
             // Handle custom selection vs filter-based selection
@@ -666,9 +862,10 @@ Horizon Europe Funding Expert
                 requestBody.selected_contact_ids = Array.from(selectedContacts);
             } else {
                 requestBody.contact_filter = contactFilter;
-                // Add limit if specified and valid
-                if (limit && parseInt(limit) > 0 && window.isLimitValid) {
-                    requestBody.contact_limit = parseInt(limit);
+                // Add range if specified and valid
+                if ((rangeStart || rangeEnd) && window.isRangeValid) {
+                    if (rangeStart) requestBody.contact_range_start = parseInt(rangeStart);
+                    if (rangeEnd) requestBody.contact_range_end = parseInt(rangeEnd);
                 }
             }
 
@@ -694,8 +891,11 @@ Horizon Europe Funding Expert
                     }
                     showMessage(message);
                     
-                    // Refresh contact stats after sending
-                    setTimeout(loadContactStats, 1000);
+                    // Refresh contact stats after sending - multiple attempts to catch webhook updates
+                    setTimeout(loadContactStats, 500);   // Quick refresh
+                    setTimeout(loadContactStats, 2000);  // Medium refresh 
+                    setTimeout(loadContactStats, 5000);  // Longer refresh to catch webhook updates
+                    setTimeout(loadContactStats, 10000); // Final refresh for slow webhooks
                     
                     // If custom selection, refresh the contacts list to show updated status
                     if (contactFilter === 'custom') {

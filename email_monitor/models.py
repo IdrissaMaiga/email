@@ -211,3 +211,70 @@ class EmailCampaign(models.Model):
         if self.sent_count == 0:
             return 0
         return round((self.bounced_count / self.sent_count) * 100, 2)
+
+
+class EmailTemplate(models.Model):
+    """Model to store the last used email template"""
+    
+    TEMPLATE_TYPES = [
+        ('default', 'Default Template'),
+        ('last_used', 'Last Used Template'),
+    ]
+    
+    template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, unique=True, 
+                                   help_text="Type of template (default or last used)")
+    subject = models.TextField(default="EU Grant Advisory Platform - Beta Testing Invitation", 
+                              help_text="Email subject")
+    content = models.TextField(help_text="Email template content")
+    updated_at = models.DateTimeField(default=timezone.now, help_text="When template was last updated")
+    
+    class Meta:
+        ordering = ['-updated_at']
+    
+    def __str__(self):
+        return f"{self.get_template_type_display()} - {self.subject[:50]}"
+    
+    @classmethod
+    def get_last_used_template(cls):
+        """Get the last used template, or create default if none exists"""
+        template, created = cls.objects.get_or_create(
+            template_type='last_used',
+            defaults={
+                'subject': "EU Grant Advisory Platform - Beta Testing Invitation",
+                'content': """Dear {prospect_first_name} {prospect_last_name},
+
+My name is Roland Zonai, I am a technical due diligence expert of the European Innovation Bank (EIB) and an expert evaluator of the European Innovation Council (EIC). My EC Expert ID is EX2016D281325. I am writing to you regarding a new platform I have developed to address inefficiencies in the EU research funding application process, particularly for Horizon Europe and cascade funding programs.
+
+My evaluation of over 120 EIC Accelerator proposals and Horizon Europe RIA and IA consortiums has identified a recurring challenge: the significant resource expenditure required for research teams to identify and align with the most suitable EU funding instruments.
+
+To address this, I have engineered an EU Grant Advisory Platform and Innovation Funding Alert System. The objective is to provide a tool that systematically maps innovation projects to funding opportunities. It provides an automated monthly intelligence briefing which delivers curated data points on new funding calls, relevant procurement notices, scientific publications, and investment activities pertinent to your specified field of research.
+
+We are currently seeking a small group of research institutions and deeptech startups from {prospect_location_country} to participate in the beta testing phase of this platform to provide feedback on its functionality and utility. We noticed your role as {job_title} and we would like to invite you from {company_name} to participate. You can review the high-level overview of the platform and receive access credentials at the link below:
+https://horizoneurope.io
+
+Kindly let me know if you are open to participating. Would you be available for a brief introductory call next week?
+
+I look forward to the possibility of connecting.
+
+Best Regards,
+Roland Zonai
+Horizon Europe Funding Expert
+‪‪+36306500212‬‬
+‪https://www.linkedin.com/in/rolandzonai/"""
+            }
+        )
+        return template
+    
+    @classmethod
+    def save_last_used_template(cls, subject, content):
+        """Save the template as the last used one"""
+        template, created = cls.objects.get_or_create(
+            template_type='last_used',
+            defaults={'subject': subject, 'content': content}
+        )
+        if not created:
+            template.subject = subject
+            template.content = content
+            template.updated_at = timezone.now()
+            template.save()
+        return template
