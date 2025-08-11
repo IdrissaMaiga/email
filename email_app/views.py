@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.utils import timezone
 import pandas as pd
@@ -18,7 +17,6 @@ def index(request):
     """Render the main email templater page"""
     return render(request, 'email_app/index.html')
 
-@csrf_exempt
 def get_last_template(request):
     """Get the last used email template"""
     if request.method != 'GET':
@@ -34,7 +32,6 @@ def get_last_template(request):
     except Exception as e:
         return JsonResponse({'error': f'Failed to load template: {str(e)}'}, status=500)
 
-@csrf_exempt
 def save_template(request):
     """Save the current template as the last used one"""
     if request.method != 'POST':
@@ -58,7 +55,6 @@ def save_template(request):
     except Exception as e:
         return JsonResponse({'error': f'Failed to save template: {str(e)}'}, status=500)
 
-@csrf_exempt
 def send_emails(request):
     """Send emails using Resend API with click and open tracking enabled"""
     from email_monitor.models import Contact
@@ -269,7 +265,6 @@ def send_emails(request):
         }, status=500)
 
 
-@csrf_exempt
 def contact_stats_api(request):
     """API endpoint to get contact statistics"""
     from email_monitor.models import Contact

@@ -535,29 +535,12 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Get CSRF token
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 // Delete contact function
 function deleteContact(contactId, contactName) {
     if (confirm(`Are you sure you want to delete "${contactName}"? This action cannot be undone.`)) {
         fetch(`/monitor/contacts/delete/${contactId}/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json'
             }
         })
@@ -764,8 +747,7 @@ function saveAllChanges(contactId) {
     fetch(`/monitor/api/update_contact_batch/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             contact_id: contactId,
@@ -830,8 +812,7 @@ function saveFieldValue(fieldElement, inputElement, displayElement) {
     fetch(`/monitor/api/update_contact_field/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             contact_id: contactId,
@@ -989,8 +970,7 @@ function confirmDatabaseReset() {
     fetch('/monitor/api/reset_database/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             confirmation: confirmationInput.value.trim()

@@ -312,22 +312,6 @@
         let filteredContacts = [];
         let selectedContacts = new Set();
 
-        // Get CSRF token for Django
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
         // Initialize TinyMCE editor
         function initializeEditor() {
             // Check if TinyMCE is available
@@ -878,8 +862,7 @@
             fetch('/send_emails/', {
                 method: 'POST',
                 headers: { 
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestBody)
             })
