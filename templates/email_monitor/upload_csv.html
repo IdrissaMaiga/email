@@ -353,7 +353,10 @@
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRFToken': getCookie('csrftoken')
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Forwarded-Proto': 'https',
+                        'X-Real-IP': window.location.hostname,
+                        'Cache-Control': 'no-cache'
                     },
                     signal: controller.signal
                 })
