@@ -68,8 +68,11 @@ INSTALLED_APPS = [
     'email_monitor',
 ]
 
-# COMPLETELY DISABLE ALL MIDDLEWARE - NO SECURITY AT ALL
+# MINIMAL MIDDLEWARE FOR ADMIN TO WORK - NO SECURITY AT ALL
 MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'email_monitor.permissive_middleware.AllowAllMiddleware',  # Allow everything through
 ]
 
