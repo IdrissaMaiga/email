@@ -50,10 +50,10 @@ USE_TZ = False
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# Disable all security features for development
-# USE_X_FORWARDED_HOST = True
-# USE_X_FORWARDED_PORT = True
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# COMPLETELY ENABLE TUNNEL SUPPORT
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -69,7 +69,9 @@ INSTALLED_APPS = [
 ]
 
 # COMPLETELY DISABLE ALL MIDDLEWARE - NO SECURITY AT ALL
-MIDDLEWARE = []
+MIDDLEWARE = [
+    'email_monitor.permissive_middleware.AllowAllMiddleware',  # Allow everything through
+]
 
 ROOT_URLCONF = 'email_sender.urls'
 

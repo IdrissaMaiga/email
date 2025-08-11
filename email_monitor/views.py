@@ -243,7 +243,6 @@ def contact_email_content_api(request):
         return JsonResponse({'error': f'Failed to retrieve email content: {str(e)}'}, status=500)
 
 
-@require_http_methods(["POST"])
 def webhook_endpoint_1(request):
     """
     Webhook endpoint for roland.zonai@horizoneurope.io
@@ -251,7 +250,6 @@ def webhook_endpoint_1(request):
     """
     return webhook_handler(request, 'horizoneurope')
 
-@require_http_methods(["POST"])
 def webhook_endpoint_2(request):
     """
     Webhook endpoint for roland.zonai@horizon.eu.com
@@ -519,7 +517,6 @@ def delete_contact(request, contact_id):
     }, status=405)
 
 
-@require_http_methods(["GET", "POST"])
 def upload_csv(request):
     """View to upload and preview CSV contacts before batch creation"""
     # Handle RequestDataTooBig exception first
@@ -1092,7 +1089,6 @@ def update_contact_batch_api(request):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
-@require_http_methods(["POST"])
 def reset_database_api(request):
     """Reset database data - clears all contacts and email events"""
     try:
