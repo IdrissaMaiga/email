@@ -401,6 +401,21 @@
         // Load the last used template for a specific sender
         function loadLastTemplate(sender = null) {
             const currentSender = sender || getSavedSender();
+            
+            // Prevent excessive API calls with cooldown
+            const now = Date.now();
+            const templateKey = `loadTemplate_${currentSender}`;
+            if (window.lastTemplateLoadTime && window.lastTemplateLoadTime[templateKey] && 
+                (now - window.lastTemplateLoadTime[templateKey]) < 3000) {
+                console.log('Skipping template reload - too frequent');
+                return;
+            }
+            
+            if (!window.lastTemplateLoadTime) {
+                window.lastTemplateLoadTime = {};
+            }
+            window.lastTemplateLoadTime[templateKey] = now;
+            
             fetch(`/api/get_template/?sender=${currentSender}`)
                 .then(response => response.json())
                 .then(data => {
@@ -447,9 +462,17 @@
                 content = document.getElementById('emailTemplate').value;
             }
             
-            if (!content.trim()) {
+            if (!content.trim() && !subject.trim()) {
                 return; // Don't save empty templates
             }
+            
+            // Prevent duplicate saves with same content
+            const templateKey = `${currentSender}_${subject}_${content}`;
+            if (window.lastSavedTemplateKey === templateKey) {
+                return; // Same content, skip save
+            }
+            
+            window.lastSavedTemplateKey = templateKey;
             
             fetch('/api/save_template/', {
                 method: 'POST',
@@ -472,6 +495,8 @@
             })
             .catch(error => {
                 console.error('Failed to save template:', error);
+                // Reset the saved key so we can try again
+                window.lastSavedTemplateKey = null;
             });
         }
 
@@ -579,6 +604,14 @@
 
         // Load contact stats automatically on page load
         function loadContactStats() {
+            // Prevent excessive API calls with cooldown
+            const now = Date.now();
+            if (window.lastStatsLoadTime && (now - window.lastStatsLoadTime) < 2000) {
+                console.log('Skipping stats reload - too frequent');
+                return;
+            }
+            window.lastStatsLoadTime = now;
+            
             // Show refresh indicator
             const refreshIndicator = document.getElementById('refreshIndicator');
             if (refreshIndicator) {
@@ -957,25 +990,28 @@
                 loadContactStats();
             });
             
-            // Sender selection change handler
-            document.getElementById('senderSelect').addEventListener('change', function() {
-                const newSender = this.value;
-                saveSender(newSender);
-                updateUIForSender(newSender);
-                
-                // Refresh data for new sender
-                loadContactStats();
-                
-                // If custom selection is open, reload contacts for new sender
-                const customSection = document.getElementById('customContactSelection');
-                if (!customSection.classList.contains('hidden')) {
-                    selectedContacts.clear();
-                    updateSelectedCount();
-                    loadContactsForSelection();
-                }
-                
-                console.log(`Switched to sender: ${getSenderInfo(newSender).name}`);
-            });
+            // Sender selection change handler (only if element exists)
+            const senderSelect = document.getElementById('senderSelect');
+            if (senderSelect) {
+                senderSelect.addEventListener('change', function() {
+                    const newSender = this.value;
+                    saveSender(newSender);
+                    updateUIForSender(newSender);
+                    
+                    // Refresh data for new sender
+                    loadContactStats();
+                    
+                    // If custom selection is open, reload contacts for new sender
+                    const customSection = document.getElementById('customContactSelection');
+                    if (!customSection.classList.contains('hidden')) {
+                        selectedContacts.clear();
+                        updateSelectedCount();
+                        loadContactsForSelection();
+                    }
+                    
+                    console.log(`Switched to sender: ${getSenderInfo(newSender).name}`);
+                });
+            }
             
             // Clear range button functionality
             document.getElementById('clearRange').addEventListener('click', function() {
@@ -1020,21 +1056,31 @@
 
             // Auto-save template when subject or content changes
             let autoSaveTimeout;
+            let lastAutoSaveTime = 0;
+            const AUTO_SAVE_COOLDOWN = 5000; // 5 seconds minimum between saves
             
             // Auto-save subject changes
             document.getElementById('emailSubject').addEventListener('input', function() {
                 clearTimeout(autoSaveTimeout);
                 autoSaveTimeout = setTimeout(() => {
-                    saveCurrentTemplate();
-                    showAutoSaveIndicator();
-                }, 1000); // Save 1 second after user stops typing
+                    const now = Date.now();
+                    if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                        saveCurrentTemplate();
+                        showAutoSaveIndicator();
+                        lastAutoSaveTime = now;
+                    }
+                }, 2000); // Save 2 seconds after user stops typing
             });
             
             // Also save subject when user clicks away (blur event)
             document.getElementById('emailSubject').addEventListener('blur', function() {
                 clearTimeout(autoSaveTimeout);
-                saveCurrentTemplate();
-                showAutoSaveIndicator();
+                const now = Date.now();
+                if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                    saveCurrentTemplate();
+                    showAutoSaveIndicator();
+                    lastAutoSaveTime = now;
+                }
             });
             
             // Auto-save template content changes (for TinyMCE)
@@ -1043,17 +1089,28 @@
                     tinymce.get('emailTemplate').on('input', function() {
                         clearTimeout(autoSaveTimeout);
                         autoSaveTimeout = setTimeout(() => {
-                            saveCurrentTemplate();
-                            showAutoSaveIndicator();
-                        }, 2000); // Save 2 seconds after user stops typing
+                            const now = Date.now();
+                            if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                                saveCurrentTemplate();
+                                showAutoSaveIndicator();
+                                lastAutoSaveTime = now;
+                            }
+                        }, 3000); // Save 3 seconds after user stops typing
                     });
                     
                     // Also save on blur (when user clicks away)
                     tinymce.get('emailTemplate').on('blur', function() {
                         clearTimeout(autoSaveTimeout);
-                        saveCurrentTemplate();
-                        showAutoSaveIndicator();
+                        const now = Date.now();
+                        if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                            saveCurrentTemplate();
+                            showAutoSaveIndicator();
+                            lastAutoSaveTime = now;
+                        }
                     });
+                } else {
+                    // Retry setup if editor not ready yet
+                    setTimeout(setupAutoSaveForEditor, 1000);
                 }
             }
             
@@ -1074,9 +1131,6 @@
             // Set up auto-save when editor is ready
             setTimeout(setupAutoSaveForEditor, 2000);
         });
-
-        // Update status message when filter or range changes
-        document.getElementById('contactFilter').addEventListener('change', updateStatusMessage);
 
         // Send emails with tracking
         document.getElementById('sendEmailsTracking').addEventListener('click', function() {
