@@ -25,7 +25,7 @@
                     <h1 class="text-xl font-semibold text-gray-900">Email Templater</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{% url 'email_dashboard' %}" class="text-gray-600 hover:text-gray-900">Email Monitor</a>
+                    <a href="{% url 'contacts_list' %}" class="text-gray-600 hover:text-gray-900" onclick="updateContactsLinkWithSender(event, this)">Email Monitor</a>
                 </div>
             </div>
         </div>
@@ -46,6 +46,12 @@
                             Updating stats...
                         </div>
                     </div>
+                    <div id="autoSaveIndicator" class="hidden">
+                        <div class="flex items-center text-sm text-green-600">
+                            <div class="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
+                            Auto-saved
+                        </div>
+                    </div>
                     <button id="manualRefresh" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100" title="Refresh statistics">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -56,116 +62,163 @@
         </div>
 
         <!-- Contact Statistics -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-3 md:gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-gray-100 rounded-lg">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-9 gap-3 md:gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-gray-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Total Contacts</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Contact Records</p>
                         <p id="totalContacts" class="text-lg font-bold text-gray-900">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-blue-100 rounded-lg">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-indigo-100 rounded-lg flex-shrink-0">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Not Sent Yet</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Email Events</p>
+                        <p id="totalEmailEvents" class="text-lg font-bold text-indigo-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('not_sent')" title="View all contacts that haven't been sent emails yet">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-blue-100 rounded-lg flex-shrink-0">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Not Sent Yet</p>
                         <p id="notSentContacts" class="text-lg font-bold text-blue-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-yellow-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('sent')" title="View all contacts that have been sent emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-yellow-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Sent</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Sent</p>
                         <p id="sentContacts" class="text-lg font-bold text-yellow-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-green-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('delivered')" title="View all contacts with delivered emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-green-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Delivered</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Delivered</p>
                         <p id="deliveredContacts" class="text-lg font-bold text-green-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-purple-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('opened')" title="View all contacts who opened emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-purple-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Opened</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Opened</p>
                         <p id="openedContacts" class="text-lg font-bold text-purple-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-indigo-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('clicked')" title="View all contacts who clicked links in emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-indigo-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Clicked</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Clicked</p>
                         <p id="clickedContacts" class="text-lg font-bold text-indigo-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-red-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('bounced')" title="View all contacts with bounced emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-red-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Bounced</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Bounced</p>
                         <p id="bouncedFailedContacts" class="text-lg font-bold text-red-600">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg shadow-sm p-3">
-                <div class="flex items-center">
-                    <div class="p-1.5 bg-orange-100 rounded-lg">
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('complained')" title="View all contacts who complained about emails">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-orange-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"></path>
                         </svg>
                     </div>
-                    <div class="ml-2">
-                        <p class="text-xs font-medium text-gray-500">Complained</p>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Complained</p>
                         <p id="complainedContacts" class="text-lg font-bold text-orange-600">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm p-3 min-h-[80px] flex items-center cursor-pointer hover:shadow-md transition-shadow duration-200" onclick="navigateToContactsWithStatus('failed')" title="View all contacts with failed email deliveries">
+                <div class="flex items-center w-full">
+                    <div class="p-1.5 bg-red-100 rounded-lg flex-shrink-0">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-2 min-w-0 flex-1">
+                        <p class="text-xs font-medium text-gray-500 truncate">Failed</p>
+                        <p id="failedContacts" class="text-lg font-bold text-red-600">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Explanation -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-blue-900 mb-1">Statistics Explanation</h4>
+                    <div class="text-sm text-blue-800">
+                        <span class="font-semibold">Contact Records:</span> People/companies in your database • 
+                        <span class="font-semibold">Email Events:</span> Tracked email activities (sent, delivered, opened, etc.) • 
+                        <span class="font-semibold">Status Counts:</span> Based on latest email events from this sender
                     </div>
                 </div>
             </div>
@@ -176,7 +229,7 @@
             <h3 class="text-xl font-semibold text-gray-900 mb-6">Campaign Setup</h3>
         
         <!-- Contact Filter Selection -->
-        <div class="grid md:grid-cols-4 gap-6 mb-6">
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Target Audience</label>
                 <select id="contactFilter" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -222,22 +275,14 @@
                     <span id="rangeCount">0</span> contacts in range
                 </div>
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Sender Email</label>
-                <select id="senderSelect" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="horizoneurope">📧 roland.zonai@horizoneurope.io</option>
-                    <option value="horizon_eu">📧 roland.zonai@horizon.eu.com</option>
-                </select>
-                <p class="text-sm text-gray-500 mt-2">Choose which email address to send from</p>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Email Subject</label>
-                <input type="text" id="emailSubject" value="EU Grant Advisory Platform - Beta Testing Invitation" 
-                       class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                       placeholder="Enter your email subject">
-            </div>
+        </div>
+        
+        <!-- Email Subject -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email Subject</label>
+            <input type="text" id="emailSubject" value="EU Grant Advisory Platform - Beta Testing Invitation" 
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="Enter your email subject">
         </div>
         
         <!-- Custom Contact Selection (Hidden by default) -->
@@ -353,13 +398,14 @@
             });
         }
 
-        // Load the last used template
-        function loadLastTemplate() {
-            fetch('/api/get_template/')
+        // Load the last used template for a specific sender
+        function loadLastTemplate(sender = null) {
+            const currentSender = sender || getSavedSender();
+            fetch(`/api/get_template/?sender=${currentSender}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        console.log('No saved template found, using default');
+                        console.log(`No saved template found for sender ${currentSender}, using default`);
                         return;
                     }
                     
@@ -382,11 +428,153 @@
                         }, 1000);
                     }
                     
-                    console.log('Loaded last used template');
+                    console.log(`Loaded last used template for sender: ${currentSender}`);
                 })
                 .catch(error => {
                     console.log('Failed to load template:', error);
                 });
+        }
+
+        // Save the current template for a specific sender
+        function saveCurrentTemplate(sender = null) {
+            const currentSender = sender || getSavedSender();
+            const subject = document.getElementById('emailSubject').value;
+            
+            let content = '';
+            if (editorInitialized && tinymce.get('emailTemplate')) {
+                content = tinymce.get('emailTemplate').getContent();
+            } else {
+                content = document.getElementById('emailTemplate').value;
+            }
+            
+            if (!content.trim()) {
+                return; // Don't save empty templates
+            }
+            
+            fetch('/api/save_template/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: subject,
+                    content: content,
+                    sender: currentSender
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Failed to save template:', data.error);
+                } else {
+                    console.log(`Template saved for sender: ${currentSender}`);
+                }
+            })
+            .catch(error => {
+                console.error('Failed to save template:', error);
+            });
+        }
+
+        // Sender management functions
+        function getSavedSender() {
+            return localStorage.getItem('selectedSender') || 'horizoneurope';
+        }
+
+        function saveSender(sender) {
+            localStorage.setItem('selectedSender', sender);
+        }
+
+        function applySenderToUI() {
+            const savedSender = getSavedSender();
+            const senderSelect = document.getElementById('senderSelect');
+            if (senderSelect) {
+                senderSelect.value = savedSender;
+            }
+            
+            // Update UI elements based on sender
+            updateUIForSender(savedSender);
+        }
+
+        function updateUIForSender(sender) {
+            // Update page title to show current sender
+            const senderInfo = getSenderInfo(sender);
+            document.title = `Email Campaign Manager - ${senderInfo.name}`;
+            
+            // Add sender selector after the header section
+            const headerSection = document.querySelector('.bg-white.rounded-lg.shadow-sm.p-6.mb-6');
+            if (headerSection && !document.getElementById('senderIndicator')) {
+                const senderIndicator = document.createElement('div');
+                senderIndicator.id = 'senderIndicator';
+                senderIndicator.className = 'bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4 mb-6';
+                senderIndicator.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
+                            <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
+                                <option value="horizoneurope">roland.zonai@horizoneurope.io</option>
+                                <option value="horizon_eu">roland.zonai@horizon.eu.com</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                headerSection.parentNode.insertBefore(senderIndicator, headerSection.nextSibling);
+                
+                // Add event listener to the new selector
+                const activeSenderSelect = document.getElementById('activeSenderSelect');
+                activeSenderSelect.value = sender;
+                activeSenderSelect.addEventListener('change', function() {
+                    const oldSender = getSavedSender();
+                    const newSender = this.value;
+                    
+                    // Save current template for the old sender before switching
+                    saveCurrentTemplate(oldSender);
+                    
+                    // Switch to new sender
+                    saveSender(newSender);
+                    
+                    // Update the main sender selector to match
+                    const mainSenderSelect = document.getElementById('senderSelect');
+                    if (mainSenderSelect) {
+                        mainSenderSelect.value = newSender;
+                    }
+                    
+                    // Load template for new sender
+                    setTimeout(() => {
+                        loadLastTemplate(newSender);
+                    }, 200); // Small delay to ensure save completes first
+                    
+                    // Refresh data for new sender
+                    loadContactStats();
+                    
+                    // If custom selection is open, reload contacts for new sender
+                    const customSection = document.getElementById('customContactSelection');
+                    if (!customSection.classList.contains('hidden')) {
+                        selectedContacts.clear();
+                        updateSelectedCount();
+                        loadContactsForSelection();
+                    }
+                    
+                    console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                });
+            } else if (document.getElementById('senderIndicator')) {
+                const activeSenderSelect = document.getElementById('activeSenderSelect');
+                if (activeSenderSelect) {
+                    activeSenderSelect.value = sender;
+                }
+            }
+        }
+
+        function getSenderInfo(sender) {
+            const senderMap = {
+                'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
+                'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
+            };
+            return senderMap[sender] || senderMap['horizoneurope'];
         }
 
         // Load contact stats automatically on page load
@@ -397,8 +585,11 @@
                 refreshIndicator.classList.remove('hidden');
             }
             
-            // Fetch contact statistics from our API
-            fetch('/monitor/api/contact_stats/')
+            // Get current sender for filtering
+            const currentSender = getSavedSender();
+            
+            // Fetch contact statistics from our API with sender filter
+            fetch(`/monitor/api/contact_stats/?sender=${currentSender}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -412,6 +603,7 @@
                     
                     // Update the statistics cards
                     document.getElementById('totalContacts').textContent = data.total_contacts || 0;
+                    document.getElementById('totalEmailEvents').textContent = data.total_email_events || 0;
                     document.getElementById('notSentContacts').textContent = data.not_sent || 0;
                     document.getElementById('sentContacts').textContent = data.sent || 0;
                     document.getElementById('deliveredContacts').textContent = data.delivered || 0;
@@ -419,6 +611,7 @@
                     document.getElementById('clickedContacts').textContent = data.clicked || 0;
                     document.getElementById('bouncedFailedContacts').textContent = (data.bounced || 0) + (data.failed || 0);
                     document.getElementById('complainedContacts').textContent = data.complained || 0;
+                    document.getElementById('failedContacts').textContent = data.failed || 0;
                     
                     // Update status message based on current filter
                     updateStatusMessage();
@@ -429,6 +622,7 @@
                     
                     // Set default values
                     document.getElementById('totalContacts').textContent = '0';
+                    document.getElementById('totalEmailEvents').textContent = '0';
                     document.getElementById('notSentContacts').textContent = '0';
                     document.getElementById('sentContacts').textContent = '0';
                     document.getElementById('deliveredContacts').textContent = '0';
@@ -436,6 +630,7 @@
                     document.getElementById('clickedContacts').textContent = '0';
                     document.getElementById('bouncedFailedContacts').textContent = '0';
                     document.getElementById('complainedContacts').textContent = '0';
+                    document.getElementById('failedContacts').textContent = '0';
                 })
                 .finally(() => {
                     // Hide refresh indicator
@@ -599,7 +794,9 @@
 
         // Load contacts for custom selection
         function loadContactsForSelection() {
-            fetch('/monitor/api/contacts/')
+            const currentSender = getSavedSender();
+            
+            fetch(`/monitor/api/contacts/?sender=${currentSender}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -745,6 +942,9 @@
 
         // Load contacts when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Apply saved sender first
+            applySenderToUI();
+            
             initializeEditor();
             loadContactStats();
             loadLastTemplate();
@@ -755,6 +955,26 @@
             // Manual refresh button
             document.getElementById('manualRefresh').addEventListener('click', function() {
                 loadContactStats();
+            });
+            
+            // Sender selection change handler
+            document.getElementById('senderSelect').addEventListener('change', function() {
+                const newSender = this.value;
+                saveSender(newSender);
+                updateUIForSender(newSender);
+                
+                // Refresh data for new sender
+                loadContactStats();
+                
+                // If custom selection is open, reload contacts for new sender
+                const customSection = document.getElementById('customContactSelection');
+                if (!customSection.classList.contains('hidden')) {
+                    selectedContacts.clear();
+                    updateSelectedCount();
+                    loadContactsForSelection();
+                }
+                
+                console.log(`Switched to sender: ${getSenderInfo(newSender).name}`);
             });
             
             // Clear range button functionality
@@ -797,6 +1017,62 @@
                 updateSelectedCount();
                 updateStatusMessage();
             });
+
+            // Auto-save template when subject or content changes
+            let autoSaveTimeout;
+            
+            // Auto-save subject changes
+            document.getElementById('emailSubject').addEventListener('input', function() {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(() => {
+                    saveCurrentTemplate();
+                    showAutoSaveIndicator();
+                }, 1000); // Save 1 second after user stops typing
+            });
+            
+            // Also save subject when user clicks away (blur event)
+            document.getElementById('emailSubject').addEventListener('blur', function() {
+                clearTimeout(autoSaveTimeout);
+                saveCurrentTemplate();
+                showAutoSaveIndicator();
+            });
+            
+            // Auto-save template content changes (for TinyMCE)
+            function setupAutoSaveForEditor() {
+                if (editorInitialized && tinymce.get('emailTemplate')) {
+                    tinymce.get('emailTemplate').on('input', function() {
+                        clearTimeout(autoSaveTimeout);
+                        autoSaveTimeout = setTimeout(() => {
+                            saveCurrentTemplate();
+                            showAutoSaveIndicator();
+                        }, 2000); // Save 2 seconds after user stops typing
+                    });
+                    
+                    // Also save on blur (when user clicks away)
+                    tinymce.get('emailTemplate').on('blur', function() {
+                        clearTimeout(autoSaveTimeout);
+                        saveCurrentTemplate();
+                        showAutoSaveIndicator();
+                    });
+                }
+            }
+            
+            // Show auto-save indicator
+            function showAutoSaveIndicator() {
+                const indicator = document.getElementById('autoSaveIndicator');
+                if (indicator) {
+                    indicator.classList.remove('hidden');
+                    indicator.innerHTML = '<div class="flex items-center text-sm text-green-600"><div class="w-2 h-2 bg-green-600 rounded-full mr-2"></div>Auto-saved</div>';
+                    
+                    // Hide after 3 seconds
+                    setTimeout(() => {
+                        indicator.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+            
+            // Set up auto-save when editor is ready
+            setTimeout(setupAutoSaveForEditor, 2000);
         });
 
         // Update status message when filter or range changes
@@ -845,7 +1121,7 @@
             const requestBody = {
                 template: template,
                 subject: subject,
-                sender: document.getElementById('senderSelect').value
+                sender: getSavedSender() // Use saved sender instead of dropdown value
             };
             
             // Handle custom selection vs filter-based selection
@@ -906,6 +1182,24 @@
                 button.disabled = false;
             });
         });
+
+        // Function to navigate to contacts page with status filter
+        function navigateToContactsWithStatus(status) {
+            const currentSender = getSavedSender();
+            const url = new URL('/monitor/', window.location.origin);
+            url.searchParams.set('status', status);
+            url.searchParams.set('sender', currentSender);
+            window.location.href = url.toString();
+        }
+
+        // Function to update contacts link with current sender
+        function updateContactsLinkWithSender(event, linkElement) {
+            event.preventDefault();
+            const currentSender = getSavedSender();
+            const url = new URL('/monitor/', window.location.origin);
+            url.searchParams.set('sender', currentSender);
+            window.location.href = url.toString();
+        }
     </script>
 </body>
 </html>

@@ -12,6 +12,14 @@
     <link rel="mask-icon" href="{% static 'favicon.svg' %}?v=20250811" color="#3B82F6">
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        // Configure Tailwind CDN without underlines
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
   
 </head>
 <body class="bg-gray-100">
@@ -23,9 +31,8 @@
                     <h1 class="text-xl font-semibold text-gray-900">Email Monitor</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{% url 'email_dashboard' %}" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="{% url 'contacts_list' %}" class="text-blue-600 font-semibold">Contacts</a>
-                    <a href="/" class="text-gray-600 hover:text-gray-900">Send Emails</a>
+                    <a href="/" class="text-gray-600 hover:text-gray-900" onclick="updateIndexLinkWithSender(event, this)">Send Emails</a>
                 </div>
             </div>
         </div>
@@ -71,6 +78,24 @@
                         </svg>
                         <span>Reset DB</span>
                     </button>
+                </div>
+            </div>
+            
+            <!-- Active Sender Indicator -->
+            <div id="senderIndicatorSection" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg flex-shrink-0 mr-3">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
+                        <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
+                            <option value="horizoneurope">roland.zonai@horizoneurope.io</option>
+                            <option value="horizon_eu">roland.zonai@horizon.eu.com</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             
@@ -420,8 +445,14 @@
                 </div>
                 
                 <!-- Email Body -->
-                <div class="border rounded-lg p-4 bg-white max-h-96 overflow-y-auto">
+                <div class="border rounded-lg p-4 bg-white max-h-96 overflow-y-auto mb-4">
                     <div id="emailBody" class="prose prose-sm max-w-none"></div>
+                </div>
+                
+                <!-- Recent Events History -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3">📧 Recent Email Events (Last 3)</h4>
+                    <div id="emailEventHistory" class="space-y-2"></div>
                 </div>
             </div>
             
@@ -439,7 +470,92 @@
 </div>
 
 <script>
+// Sender management functions (shared across pages)
+function getSavedSender() {
+    return localStorage.getItem('selectedSender') || 'horizoneurope';
+}
+
+function getSenderInfo(sender) {
+    const senderMap = {
+        'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
+        'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
+    };
+    return senderMap[sender] || senderMap['horizoneurope'];
+}
+
+function updatePageForSender(sender) {
+    const senderInfo = getSenderInfo(sender);
+    document.title = `Contacts - ${senderInfo.name}`;
+}
+
+function addSenderFilterToForms() {
+    const currentSender = getSavedSender();
+    
+    // Add sender filter to all forms
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        // Check if sender input already exists
+        if (!form.querySelector('input[name="sender"]')) {
+            const senderInput = document.createElement('input');
+            senderInput.type = 'hidden';
+            senderInput.name = 'sender';
+            senderInput.value = currentSender;
+            form.appendChild(senderInput);
+        } else {
+            // Update existing sender input
+            form.querySelector('input[name="sender"]').value = currentSender;
+        }
+    });
+}
+
+// Function to update index link with current sender
+function updateIndexLinkWithSender(event, linkElement) {
+    event.preventDefault();
+    const currentSender = getSavedSender();
+    // Index page will automatically pick up sender from localStorage, so just navigate
+    window.location.href = '/';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Get sender from URL parameter first, then fallback to localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlSender = urlParams.get('sender');
+    let currentSender = urlSender || getSavedSender();
+    
+    // If we got sender from URL, save it to localStorage for consistency
+    if (urlSender) {
+        localStorage.setItem('selectedSender', urlSender);
+    }
+    
+    // Initialize activeSenderSelect
+    const activeSenderSelect = document.getElementById('activeSenderSelect');
+    
+    if (activeSenderSelect) {
+        activeSenderSelect.value = currentSender;
+        
+        // Add change handler for active sender
+        activeSenderSelect.addEventListener('change', function() {
+            const selectedSender = this.value;
+            localStorage.setItem('selectedSender', selectedSender);
+            
+            console.log(`Sender changed to: ${getSenderInfo(selectedSender).name}`);
+            
+            // Reload the page with the new sender filter
+            const currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('sender', selectedSender);
+            window.location.href = currentUrl.toString();
+        });
+    }
+    
+    // Apply saved sender first
+    updatePageForSender(currentSender);
+    
+    // Add sender filter to all forms initially
+    addSenderFilterToForms();
+    
+    console.log(`Contacts page loaded for sender: ${getSenderInfo(currentSender).name}`);
+
+    // Rest of existing JavaScript...
     const toggleBtn = document.getElementById('toggleFields');
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleText = document.getElementById('toggleText');
@@ -489,7 +605,8 @@ function viewEmailContent(email, contactName) {
     modalTitle.textContent = `Email Content - ${contactName}`;
     
     // Fetch email content
-    fetch(`/monitor/api/contact_email_content/?email=${encodeURIComponent(email)}`)
+    const currentSender = getSavedSender();
+    fetch(`/monitor/api/contact_email_content/?email=${encodeURIComponent(email)}&sender=${currentSender}`)
         .then(response => response.json())
         .then(data => {
             loading.classList.add('hidden');
@@ -515,6 +632,72 @@ function viewEmailContent(email, contactName) {
                 } else {
                     emailBody.innerHTML = '<p class="text-gray-500 italic">No email content available</p>';
                 }
+                
+                // Display recent events history
+                const emailEventHistory = document.getElementById('emailEventHistory');
+                if (data.recent_events && data.recent_events.length > 0) {
+                    const eventsHTML = data.recent_events.map((event, index) => {
+                        const eventDate = new Date(event.created_at).toLocaleString();
+                        const isLatest = index === 0;
+                        
+                        // Format event type for display
+                        const eventTypeDisplay = event.event_type.replace('email.', '').charAt(0).toUpperCase() + 
+                                               event.event_type.replace('email.', '').slice(1);
+                        
+                        // Get status color
+                        let statusColor = 'bg-gray-100 text-gray-800';
+                        if (event.event_type === 'email.clicked') statusColor = 'bg-purple-100 text-purple-800';
+                        else if (event.event_type === 'email.opened') statusColor = 'bg-green-100 text-green-800';
+                        else if (event.event_type === 'email.delivered') statusColor = 'bg-blue-100 text-blue-800';
+                        else if (event.event_type === 'email.sent') statusColor = 'bg-yellow-100 text-yellow-800';
+                        else if (event.event_type === 'email.bounced' || event.event_type === 'email.failed') statusColor = 'bg-red-100 text-red-800';
+                        else if (event.event_type === 'email.complained') statusColor = 'bg-orange-100 text-orange-800';
+                        
+                        // Additional details
+                        let additionalInfo = '';
+                        if (event.click_url) {
+                            additionalInfo = `<div class="text-xs text-blue-600 mt-1">🔗 Clicked: ${event.click_url}</div>`;
+                        } else if (event.bounce_reason) {
+                            additionalInfo = `<div class="text-xs text-red-600 mt-1">⚠️ ${event.bounce_reason}</div>`;
+                        } else if (event.complaint_feedback_type) {
+                            additionalInfo = `<div class="text-xs text-orange-600 mt-1">🚨 Complaint: ${event.complaint_feedback_type}</div>`;
+                        }
+                        
+                        // Check if this event has email content (email_id exists)
+                        const hasEmailContent = event.email_id && event.email_id !== null;
+                        const clickableClass = hasEmailContent ? 'cursor-pointer hover:bg-gray-100 transition-colors' : '';
+                        const clickHandler = hasEmailContent ? `onclick="loadEmailEventContent('${event.email_id}', ${index})"` : '';
+                        
+                        return `
+                            <div class="flex items-center justify-between p-2 bg-white rounded border ${isLatest ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} ${clickableClass}" 
+                                 ${clickHandler} 
+                                 data-event-index="${index}" 
+                                 id="emailEvent${index}">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+                                            ${eventTypeDisplay}
+                                        </span>
+                                        ${isLatest ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500 text-white">Latest</span>' : ''}
+                                        ${hasEmailContent ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-500 text-white">📧 Viewable</span>' : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-400 text-white">No Content</span>'}
+                                    </div>
+                                    <div class="text-xs text-gray-600 mt-1">📅 ${eventDate}</div>
+                                    <div class="text-xs text-gray-500">📧 ID: ${event.email_id || 'N/A'}</div>
+                                    ${additionalInfo}
+                                    ${hasEmailContent ? '<div class="text-xs text-green-600 mt-1 font-medium">👆 Click to view this email content</div>' : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    emailEventHistory.innerHTML = eventsHTML;
+                    
+                    // Store events data globally for switching
+                    window.currentEmailEvents = data.recent_events;
+                    window.currentSelectedEventIndex = 0; // Default to first event
+                } else {
+                    emailEventHistory.innerHTML = '<p class="text-gray-500 text-sm italic">No recent email events found</p>';
+                }
             }
         })
         .catch(error => {
@@ -526,6 +709,92 @@ function viewEmailContent(email, contactName) {
 
 function closeEmailModal() {
     document.getElementById('emailModal').classList.add('hidden');
+}
+
+// Function to load content for a specific email event
+function loadEmailEventContent(emailId, eventIndex) {
+    if (!window.currentEmailEvents || !window.currentEmailEvents[eventIndex]) {
+        console.error('Event data not available');
+        return;
+    }
+    
+    const selectedEvent = window.currentEmailEvents[eventIndex];
+    const currentSender = getSavedSender();
+    
+    // Update the visual selection in the events list
+    updateEventSelection(eventIndex);
+    
+    // Show loading state for email body only
+    const emailBody = document.getElementById('emailBody');
+    emailBody.innerHTML = '<div class="text-center py-4"><div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div><p class="mt-2 text-gray-600 text-sm">Loading email content...</p></div>';
+    
+    // Update email details immediately with the selected event's info
+    const contactEmail = selectedEvent.to_email || document.getElementById('emailTo').textContent;
+    document.getElementById('emailTo').textContent = contactEmail;
+    document.getElementById('emailSentDate').textContent = selectedEvent.created_at ? new Date(selectedEvent.created_at).toLocaleString() : 'Unknown';
+    
+    // Update status based on the selected event type
+    const eventTypeDisplay = selectedEvent.event_type.replace('email.', '').charAt(0).toUpperCase() + 
+                             selectedEvent.event_type.replace('email.', '').slice(1);
+    document.getElementById('emailStatus').textContent = eventTypeDisplay;
+    
+    // Fetch the specific email content from Resend API
+    fetch(`/monitor/api/email_content_by_id/?email_id=${emailId}&sender=${currentSender}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                emailBody.innerHTML = `<p class="text-red-500 italic">${data.error}</p>`;
+            } else {
+                // Update email details with fetched data
+                document.getElementById('emailSubject').textContent = data.subject || 'No subject';
+                
+                // Update sent date with the API data if available, otherwise keep the event date
+                if (data.sent_date) {
+                    document.getElementById('emailSentDate').textContent = new Date(data.sent_date).toLocaleString();
+                }
+                
+                // Display email body (handle both HTML and plain text)
+                if (data.html_content) {
+                    emailBody.innerHTML = data.html_content;
+                } else if (data.text_content) {
+                    emailBody.innerHTML = `<pre class="whitespace-pre-wrap">${data.text_content}</pre>`;
+                } else {
+                    emailBody.innerHTML = '<p class="text-gray-500 italic">No email content available for this event</p>';
+                }
+            }
+        })
+        .catch(error => {
+            emailBody.innerHTML = `<p class="text-red-500 italic">Failed to load email content: ${error.message}</p>`;
+        });
+    
+    // Update the current selected event index
+    window.currentSelectedEventIndex = eventIndex;
+}
+
+// Function to update visual selection of events
+function updateEventSelection(selectedIndex) {
+    // Remove previous selection styling
+    document.querySelectorAll('[id^="emailEvent"]').forEach((eventDiv, index) => {
+        eventDiv.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-100');
+        if (index === 0) {
+            // Keep the "latest" styling for the first event if it's not selected
+            if (selectedIndex !== 0) {
+                eventDiv.classList.remove('border-blue-200', 'bg-blue-50');
+                eventDiv.classList.add('border-gray-200');
+            }
+        }
+    });
+    
+    // Add selection styling to the selected event
+    const selectedEventDiv = document.getElementById(`emailEvent${selectedIndex}`);
+    if (selectedEventDiv) {
+        selectedEventDiv.classList.add('ring-2', 'ring-blue-500', 'bg-blue-100');
+        
+        // Add back the latest styling if it's the first event
+        if (selectedIndex === 0) {
+            selectedEventDiv.classList.add('border-blue-200', 'bg-blue-50');
+        }
+    }
 }
 
 // Close modal when clicking outside

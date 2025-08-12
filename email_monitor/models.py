@@ -68,18 +68,7 @@ class EmailEvent(models.Model):
 
 
 class Contact(models.Model):
-    """Model to store contacts from CSV with their email status"""
-    
-    EMAIL_STATUS_CHOICES = [
-        ('not_sent', 'Not Sent Yet'),
-        ('sent', 'Sent'),
-        ('delivered', 'Delivered'),
-        ('opened', 'Opened'),
-        ('clicked', 'Clicked'),
-        ('bounced', 'Bounced'),
-        ('complained', 'Complained'),
-        ('failed', 'Failed'),
-    ]
+    """Model to store contacts from CSV"""
     
     # Contact information from CSV
     first_name = models.CharField(max_length=100, blank=True, null=True)
@@ -122,16 +111,9 @@ class Contact(models.Model):
     funnel_step = models.CharField(max_length=50, blank=True, null=True)
     sequence_unique_id = models.CharField(max_length=100, blank=True, null=True)
     variation_unique_id = models.CharField(max_length=100, blank=True, null=True)
-    emailsender = models.CharField(max_length=100, blank=True, null=True)
     websitecontent = models.TextField(blank=True, null=True)
     leadscore = models.CharField(max_length=50, blank=True, null=True)
     esp = models.CharField(max_length=50, blank=True, null=True, help_text="Email Service Provider")
-    
-    # Email status tracking
-    email_status = models.CharField(max_length=20, choices=EMAIL_STATUS_CHOICES, default='not_sent')
-    last_email_sent = models.DateTimeField(blank=True, null=True)
-    last_opened = models.DateTimeField(blank=True, null=True)
-    last_clicked = models.DateTimeField(blank=True, null=True)
     
     # Tracking
     created_at = models.DateTimeField(default=timezone.now)
@@ -144,7 +126,6 @@ class Contact(models.Model):
         ordering = ['last_name', 'first_name']
         indexes = [
             models.Index(fields=['email']),
-            models.Index(fields=['email_status']),
             models.Index(fields=['last_name', 'first_name']),
         ]
     
@@ -156,11 +137,6 @@ class Contact(models.Model):
     def full_name(self):
         """Returns the full name of the contact"""
         return f"{self.first_name} {self.last_name}".strip()
-    
-    @property
-    def display_status(self):
-        """Returns a human-readable status"""
-        return dict(self.EMAIL_STATUS_CHOICES).get(self.email_status, self.email_status)
 
 
 class EmailCampaign(models.Model):
@@ -214,15 +190,17 @@ class EmailCampaign(models.Model):
 
 
 class EmailTemplate(models.Model):
-    """Model to store the last used email template"""
+    """Model to store email templates for each sender"""
     
     TEMPLATE_TYPES = [
         ('default', 'Default Template'),
         ('last_used', 'Last Used Template'),
     ]
     
-    template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, unique=True, 
+    template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, 
                                    help_text="Type of template (default or last used)")
+    sender = models.CharField(max_length=50, default='horizoneurope', 
+                            help_text="Sender identifier (horizoneurope, horizon_eu, etc.)")
     subject = models.TextField(default="EU Grant Advisory Platform - Beta Testing Invitation", 
                               help_text="Email subject")
     content = models.TextField(help_text="Email template content")
@@ -230,15 +208,17 @@ class EmailTemplate(models.Model):
     
     class Meta:
         ordering = ['-updated_at']
+        unique_together = [('template_type', 'sender')]  # Ensure unique template per sender per type
     
     def __str__(self):
-        return f"{self.get_template_type_display()} - {self.subject[:50]}"
+        return f"{self.get_template_type_display()} - {self.sender} - {self.subject[:50]}"
     
     @classmethod
-    def get_last_used_template(cls):
-        """Get the last used template, or create default if none exists"""
+    def get_last_used_template(cls, sender='horizoneurope'):
+        """Get the last used template for a specific sender, or create default if none exists"""
         template, created = cls.objects.get_or_create(
             template_type='last_used',
+            sender=sender,
             defaults={
                 'subject': "EU Grant Advisory Platform - Beta Testing Invitation",
                 'content': """Dear {prospect_first_name} {prospect_last_name},
@@ -266,10 +246,11 @@ Horizon Europe Funding Expert
         return template
     
     @classmethod
-    def save_last_used_template(cls, subject, content):
-        """Save the template as the last used one"""
+    def save_last_used_template(cls, sender, subject, content):
+        """Save the template as the last used one for a specific sender"""
         template, created = cls.objects.get_or_create(
             template_type='last_used',
+            sender=sender,
             defaults={'subject': subject, 'content': content}
         )
         if not created:

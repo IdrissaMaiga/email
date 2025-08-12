@@ -18,22 +18,24 @@ def index(request):
     return render(request, 'email_app/index.html')
 
 def get_last_template(request):
-    """Get the last used email template"""
+    """Get the last used email template for a specific sender"""
     if request.method != 'GET':
         return JsonResponse({'error': 'Only GET method allowed'}, status=405)
     
     try:
-        template = EmailTemplate.get_last_used_template()
+        sender = request.GET.get('sender', 'horizoneurope')
+        template = EmailTemplate.get_last_used_template(sender)
         return JsonResponse({
             'subject': template.subject,
             'content': template.content,
+            'sender': template.sender,
             'updated_at': template.updated_at.isoformat()
         })
     except Exception as e:
         return JsonResponse({'error': f'Failed to load template: {str(e)}'}, status=500)
 
 def save_template(request):
-    """Save the current template as the last used one"""
+    """Save the current template as the last used one for a specific sender"""
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST method allowed'}, status=405)
     
@@ -41,13 +43,15 @@ def save_template(request):
         data = json.loads(request.body)
         subject = data.get('subject', '')
         content = data.get('content', '')
+        sender = data.get('sender', 'horizoneurope')
         
         if not content:
             return JsonResponse({'error': 'Template content is required'}, status=400)
         
-        template = EmailTemplate.save_last_used_template(subject, content)
+        template = EmailTemplate.save_last_used_template(sender, subject, content)
         return JsonResponse({
             'message': 'Template saved successfully',
+            'sender': template.sender,
             'updated_at': template.updated_at.isoformat()
         })
     except json.JSONDecodeError:
@@ -100,22 +104,68 @@ def send_emails(request):
         }, status=500)
     
     # Get contacts based on selection method
+    # Map sender key to email address for contact filtering
+    sender_email_map = {
+        'horizoneurope': 'roland.zonai@horizoneurope.io',
+        'horizon_eu': 'roland.zonai@horizon.eu.com'
+    }
+    sender_email = sender_email_map.get(sender_key, 'roland.zonai@horizoneurope.io')
+    
     if selected_contact_ids:
-        # Custom selection: get contacts by IDs
+        # Custom selection: get contacts by IDs (no sender filtering needed)
         contacts = Contact.objects.filter(id__in=selected_contact_ids)
         if not contacts.exists():
             return JsonResponse({
                 'error': 'No contacts found with the selected IDs'
             }, status=400)
     else:
-        # Filter-based selection: get contacts by status filter
+        # Filter-based selection: get contacts by status filter from this sender
         if not contact_filter:
             contact_filter = 'not_sent'  # Default filter
+        
+        # Get ALL contacts first (contacts are independent of senders)
+        contacts = Contact.objects.all()
+        
+        # Filter by email status based on LATEST EmailEvent records only
+        if contact_filter != 'all':
+            from email_monitor.models import EmailEvent
+            from django.db.models import Exists, OuterRef, Subquery
             
-        if contact_filter == 'all':
-            contacts = Contact.objects.all()
-        else:
-            contacts = Contact.objects.filter(email_status=contact_filter)
+            if contact_filter == 'not_sent':
+                # Contacts with no email events from this sender at all
+                any_events = EmailEvent.objects.filter(
+                    to_email=OuterRef('email'),
+                    from_email__icontains=sender_email
+                )
+                contacts = contacts.filter(~Exists(any_events))
+            else:
+                # For all other filters, we need to check the latest event type
+                # Get the most recent email event for each contact from this sender
+                latest_event_subquery = EmailEvent.objects.filter(
+                    to_email=OuterRef('email'),
+                    from_email__icontains=sender_email
+                ).order_by('-created_at').values('event_type')[:1]
+                
+                # Annotate contacts with their latest event type from this sender
+                contacts = contacts.annotate(
+                    latest_event_type=Subquery(latest_event_subquery)
+                )
+                
+                # Filter based on the specific event type
+                if contact_filter == 'sent':
+                    contacts = contacts.filter(latest_event_type='email.sent')
+                elif contact_filter == 'delivered':
+                    contacts = contacts.filter(latest_event_type='email.delivered')
+                elif contact_filter == 'opened':
+                    contacts = contacts.filter(latest_event_type='email.opened')
+                elif contact_filter == 'clicked':
+                    contacts = contacts.filter(latest_event_type='email.clicked')
+                elif contact_filter == 'bounced':
+                    contacts = contacts.filter(latest_event_type='email.bounced')
+                elif contact_filter == 'failed':
+                    contacts = contacts.filter(latest_event_type='email.failed')
+                elif contact_filter == 'complained':
+                    contacts = contacts.filter(latest_event_type='email.complained')
         
         # Apply ID range filter if specified
         if contact_range_start or contact_range_end:
@@ -232,10 +282,8 @@ def send_emails(request):
                 
                 if response and 'id' in response:
                     emails_sent += 1
-                    # Update contact status to sent
-                    contact.email_status = 'sent'
-                    contact.last_email_sent = timezone.now()
-                    contact.save()
+                    # Email sent successfully - no need to update contact status
+                    # The EmailEvent model will track the status via webhooks
                 else:
                     failed_emails.append(recipient_email)
                     
@@ -248,7 +296,7 @@ def send_emails(request):
         
         # Save the template as the last used template
         try:
-            EmailTemplate.save_last_used_template(subject, template)
+            EmailTemplate.save_last_used_template(sender_key, subject, template)
         except Exception as e:
             print(f"Failed to save template: {e}")  # Log but don't fail the email sending
         
@@ -267,22 +315,55 @@ def send_emails(request):
 
 def contact_stats_api(request):
     """API endpoint to get contact statistics"""
-    from email_monitor.models import Contact
+    from email_monitor.models import Contact, EmailEvent
+    from django.db.models import Subquery, OuterRef
     
     try:
-        # Get contact counts by status
-        total_contacts = Contact.objects.count()
-        not_sent_count = Contact.objects.filter(email_status='not_sent').count()
-        sent_count = Contact.objects.filter(email_status='sent').count()
-        delivered_count = Contact.objects.filter(email_status='delivered').count()
-        opened_count = Contact.objects.filter(email_status='opened').count()
-        clicked_count = Contact.objects.filter(email_status='clicked').count()
-        bounced_count = Contact.objects.filter(email_status='bounced').count()
-        failed_count = Contact.objects.filter(email_status='failed').count()
-        complained_count = Contact.objects.filter(email_status='complained').count()
+        # Get sender parameter to filter stats by sender
+        sender = request.GET.get('sender', 'horizoneurope')
+        
+        # Map sender key to email address for filtering
+        sender_email_map = {
+            'horizoneurope': 'roland.zonai@horizoneurope.io',
+            'horizon_eu': 'roland.zonai@horizon.eu.com'
+        }
+        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        
+        # Get ALL contacts (contacts are independent of senders)
+        sender_contacts = Contact.objects.all()
+        
+        total_contacts = sender_contacts.count()
+        
+        # Count contacts by their LATEST email status using EmailEvent records
+        # Note: EmailEvent.from_email may contain full sender format like "Name <email@domain.com>"
+        # so we need to use icontains to match the email part
+        
+        from django.db.models import Subquery
+        
+        # Get the most recent email event for each contact from this sender
+        latest_event_subquery = EmailEvent.objects.filter(
+            to_email=OuterRef('email'),
+            from_email__icontains=sender_email
+        ).order_by('-created_at').values('event_type')[:1]
+        
+        # Annotate contacts with their latest event type from this sender
+        contacts_with_latest_event = sender_contacts.annotate(
+            latest_event_type=Subquery(latest_event_subquery)
+        )
+        
+        # Count contacts based on their latest email event type
+        not_sent_count = contacts_with_latest_event.filter(latest_event_type__isnull=True).count()
+        sent_count = contacts_with_latest_event.filter(latest_event_type='email.sent').count()
+        delivered_count = contacts_with_latest_event.filter(latest_event_type='email.delivered').count()
+        opened_count = contacts_with_latest_event.filter(latest_event_type='email.opened').count()
+        clicked_count = contacts_with_latest_event.filter(latest_event_type='email.clicked').count()
+        bounced_count = contacts_with_latest_event.filter(latest_event_type='email.bounced').count()
+        failed_count = contacts_with_latest_event.filter(latest_event_type='email.failed').count()
+        complained_count = contacts_with_latest_event.filter(latest_event_type='email.complained').count()
         
         return JsonResponse({
             'total_contacts': total_contacts,
+            'total_email_events': contacts_with_latest_event.exclude(latest_event_type__isnull=True).count(),
             'not_sent': not_sent_count,
             'sent': sent_count,
             'delivered': delivered_count,
@@ -291,6 +372,13 @@ def contact_stats_api(request):
             'bounced': bounced_count,
             'failed': failed_count,
             'complained': complained_count,
+            'sender': sender,
+            'sender_email': sender_email,
+            'stats_explanation': {
+                'total_contacts': 'Total number of contact records in database (shared across all senders)',
+                'total_email_events': 'Number of contacts with email events from this sender',
+                'status_counts': 'Contact counts based on their latest email status from this sender only'
+            }
         })
         
     except Exception as e:

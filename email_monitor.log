@@ -10131,3 +10131,407 @@ Email Monitor app ready - UI-only contact management enabled
 CSV import disabled - use web interface to manage contacts
 Email Monitor app ready - UI-only contact management enabled
 CSV import disabled - use web interface to manage contacts
+Database reset completed - Deleted 3289 contacts and 0 email events
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Database reset completed - Deleted 2 contacts and 0 email events
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:20:06.903Z', 'data': {'created_at': '2025-08-12 02:20:06.665021+00', 'email_id': '823e8243-f3f5-47c8-8a19-4d0426d925b8', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:20:07.776Z', 'data': {'created_at': '2025-08-12 02:20:06.665021+00', 'email_id': '823e8243-f3f5-47c8-8a19-4d0426d925b8', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:20:07.431Z', 'data': {'created_at': '2025-08-12 02:20:07.185481+00', 'email_id': 'a8d4f842-42ef-4fb0-b237-00a779684b31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:20:08.118Z', 'data': {'created_at': '2025-08-12 02:20:07.185481+00', 'email_id': 'a8d4f842-42ef-4fb0-b237-00a779684b31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:16:58.190Z', 'data': {'created_at': '2025-08-12 02:16:57.251321+00', 'email_id': '1ebc05bb-1d7b-47b6-95af-30223ba649b9', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:16:57.759Z', 'data': {'created_at': '2025-08-12 02:16:56.705286+00', 'email_id': '4192763e-16db-4ad9-b084-5ff4cd7f0175', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:16:56.943Z', 'data': {'created_at': '2025-08-12 02:16:56.705286+00', 'email_id': '4192763e-16db-4ad9-b084-5ff4cd7f0175', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:16:57.480Z', 'data': {'created_at': '2025-08-12 02:16:57.251321+00', 'email_id': '1ebc05bb-1d7b-47b6-95af-30223ba649b9', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:34:23.525Z', 'data': {'created_at': '2025-08-12 02:20:07.185481+00', 'email_id': 'a8d4f842-42ef-4fb0-b237-00a779684b31', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'open': {'ipAddress': '66.249.93.205', 'timestamp': '2025-08-12T02:34:23.525Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:35:18.140Z', 'data': {'created_at': '2025-08-12 02:35:17.914275+00', 'email_id': '6976f064-4b94-418c-9ec4-51f9631207d3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:35:19.011Z', 'data': {'created_at': '2025-08-12 02:35:17.914275+00', 'email_id': '6976f064-4b94-418c-9ec4-51f9631207d3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:35:47.088Z', 'data': {'created_at': '2025-08-12 02:35:17.914275+00', 'email_id': '6976f064-4b94-418c-9ec4-51f9631207d3', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'open': {'ipAddress': '66.249.93.204', 'timestamp': '2025-08-12T02:35:47.088Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:36:27.370Z', 'data': {'created_at': '2025-08-12 02:16:56.705286+00', 'email_id': '4192763e-16db-4ad9-b084-5ff4cd7f0175', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.205', 'timestamp': '2025-08-12T02:36:27.370Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:36:49.576Z', 'data': {'created_at': '2025-08-12 02:36:49.328702+00', 'email_id': '94499306-866c-4f0a-ac6f-71ef0fbfd681', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:36:50.261Z', 'data': {'created_at': '2025-08-12 02:36:50.021201+00', 'email_id': '03a94e27-82eb-450b-892d-902df6671790', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:36:51.094Z', 'data': {'created_at': '2025-08-12 02:36:50.021201+00', 'email_id': '03a94e27-82eb-450b-892d-902df6671790', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:36:50.476Z', 'data': {'created_at': '2025-08-12 02:36:49.328702+00', 'email_id': '94499306-866c-4f0a-ac6f-71ef0fbfd681', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:12.853Z', 'data': {'created_at': '2025-08-12 02:37:12.624901+00', 'email_id': '2de7931f-1575-461f-869b-bf9ba45ab7bf', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:12.592Z', 'data': {'created_at': '2025-08-12 02:37:12.347918+00', 'email_id': '56f7e574-ca95-4099-b0b5-3a88b491b961', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:13.578Z', 'data': {'created_at': '2025-08-12 02:37:12.624901+00', 'email_id': '2de7931f-1575-461f-869b-bf9ba45ab7bf', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:13.273Z', 'data': {'created_at': '2025-08-12 02:37:12.347918+00', 'email_id': '56f7e574-ca95-4099-b0b5-3a88b491b961', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:25.723Z', 'data': {'created_at': '2025-08-12 02:37:25.488294+00', 'email_id': 'd6f8aff4-c869-499e-8b44-08adc1dcdb29', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:26.593Z', 'data': {'created_at': '2025-08-12 02:37:25.488294+00', 'email_id': 'd6f8aff4-c869-499e-8b44-08adc1dcdb29', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:26.293Z', 'data': {'created_at': '2025-08-12 02:37:26.043402+00', 'email_id': '0f8f8aca-82f6-45b4-8044-3fab4885de27', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:26.946Z', 'data': {'created_at': '2025-08-12 02:37:26.043402+00', 'email_id': '0f8f8aca-82f6-45b4-8044-3fab4885de27', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:41.226Z', 'data': {'created_at': '2025-08-12 02:37:25.488294+00', 'email_id': 'd6f8aff4-c869-499e-8b44-08adc1dcdb29', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.203', 'timestamp': '2025-08-12T02:37:41.226Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:38:00.075Z', 'data': {'created_at': '2025-08-12 02:37:59.844912+00', 'email_id': 'dbee6964-61e6-4ef2-8799-32513f00ae62', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:37:59.465Z', 'data': {'created_at': '2025-08-12 02:37:59.23329+00', 'email_id': '13833036-c2e2-422c-94e6-8aa046d4252f', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:38:00.725Z', 'data': {'created_at': '2025-08-12 02:37:59.844912+00', 'email_id': 'dbee6964-61e6-4ef2-8799-32513f00ae62', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:38:00.150Z', 'data': {'created_at': '2025-08-12 02:37:59.23329+00', 'email_id': '13833036-c2e2-422c-94e6-8aa046d4252f', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:41:55.568Z', 'data': {'created_at': '2025-08-12 02:37:59.23329+00', 'email_id': '13833036-c2e2-422c-94e6-8aa046d4252f', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.205', 'timestamp': '2025-08-12T02:41:55.568Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:45:29.688Z', 'data': {'created_at': '2025-08-12 02:45:29.45045+00', 'email_id': '6bfd2697-8375-478e-92a3-946cfa75ce9c', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:45:30.287Z', 'data': {'created_at': '2025-08-12 02:45:30.031936+00', 'email_id': 'eeca3fb1-7d50-4028-b347-608859660d18', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:45:30.380Z', 'data': {'created_at': '2025-08-12 02:45:29.45045+00', 'email_id': '6bfd2697-8375-478e-92a3-946cfa75ce9c', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:45:30.995Z', 'data': {'created_at': '2025-08-12 02:45:30.031936+00', 'email_id': 'eeca3fb1-7d50-4028-b347-608859660d18', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:13.575Z', 'data': {'created_at': '2025-08-12 02:47:13.334159+00', 'email_id': 'bf66a7aa-a1eb-42c6-b044-a5c1addf5a6a', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:14.208Z', 'data': {'created_at': '2025-08-12 02:47:13.334159+00', 'email_id': 'bf66a7aa-a1eb-42c6-b044-a5c1addf5a6a', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:14.148Z', 'data': {'created_at': '2025-08-12 02:47:13.914394+00', 'email_id': '68174368-09d7-40e7-88a5-93c949bb281d', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:14.891Z', 'data': {'created_at': '2025-08-12 02:47:13.914394+00', 'email_id': '68174368-09d7-40e7-88a5-93c949bb281d', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:18.260Z', 'data': {'created_at': '2025-08-12 02:47:13.334159+00', 'email_id': 'bf66a7aa-a1eb-42c6-b044-a5c1addf5a6a', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.196', 'timestamp': '2025-08-12T02:47:18.260Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:33.446Z', 'data': {'created_at': '2025-08-12 02:47:33.196594+00', 'email_id': 'cab46e2d-0eb7-4e1e-8005-d0e06d477578', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:34.097Z', 'data': {'created_at': '2025-08-12 02:47:33.196594+00', 'email_id': 'cab46e2d-0eb7-4e1e-8005-d0e06d477578', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:53.806Z', 'data': {'created_at': '2025-08-12 02:47:52.854787+00', 'email_id': 'e9dd2fbe-157a-4f6a-830c-c8d94d7b78f6', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:53.097Z', 'data': {'created_at': '2025-08-12 02:47:52.854787+00', 'email_id': 'e9dd2fbe-157a-4f6a-830c-c8d94d7b78f6', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:47:56.918Z', 'data': {'created_at': '2025-08-12 02:47:52.854787+00', 'email_id': 'e9dd2fbe-157a-4f6a-830c-c8d94d7b78f6', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.193', 'timestamp': '2025-08-12T02:47:56.918Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:50:35.046Z', 'data': {'created_at': '2025-08-12 02:50:34.799927+00', 'email_id': '2898d40f-8730-4623-b358-70b451309b88', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:50:35.713Z', 'data': {'created_at': '2025-08-12 02:50:34.799927+00', 'email_id': '2898d40f-8730-4623-b358-70b451309b88', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizoneurope: {'created_at': '2025-08-12T02:50:53.353Z', 'data': {'created_at': '2025-08-12 02:50:34.799927+00', 'email_id': '2898d40f-8730-4623-b358-70b451309b88', 'from': 'Roland Zonai - Horizon Europe IO <roland.zonai@horizoneurope.io>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.193', 'timestamp': '2025-08-12T02:50:53.353Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation1dsfsdf', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:26.683Z', 'data': {'created_at': '2025-08-12 03:00:26.426087+00', 'email_id': '8f0cf3c5-db1a-4b5b-ac0d-b0822b2ebd9b', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:27.307Z', 'data': {'created_at': '2025-08-12 03:00:27.036072+00', 'email_id': 'bb6ad99b-9fe5-4a90-bddc-db98d4e9652c', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:27.510Z', 'data': {'created_at': '2025-08-12 03:00:26.426087+00', 'email_id': '8f0cf3c5-db1a-4b5b-ac0d-b0822b2ebd9b', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:28.156Z', 'data': {'created_at': '2025-08-12 03:00:27.036072+00', 'email_id': 'bb6ad99b-9fe5-4a90-bddc-db98d4e9652c', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:33.763Z', 'data': {'created_at': '2025-08-12 03:00:26.426087+00', 'email_id': '8f0cf3c5-db1a-4b5b-ac0d-b0822b2ebd9b', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.164', 'timestamp': '2025-08-12T03:00:33.763Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:51.599Z', 'data': {'created_at': '2025-08-12 03:00:51.360713+00', 'email_id': '08077086-6c27-4581-88cc-2205ec094842', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:00:52.269Z', 'data': {'created_at': '2025-08-12 03:00:51.360713+00', 'email_id': '08077086-6c27-4581-88cc-2205ec094842', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:01:34.502Z', 'data': {'created_at': '2025-08-12 03:01:34.236579+00', 'email_id': 'ced6467d-a0d0-4479-b24a-3fb8184f20fe', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:01:35.146Z', 'data': {'created_at': '2025-08-12 03:01:34.236579+00', 'email_id': 'ced6467d-a0d0-4479-b24a-3fb8184f20fe', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:04.879Z', 'data': {'created_at': '2025-08-12 03:36:04.647739+00', 'email_id': '5bede90b-8c71-4d19-aa4d-5414eb8fa5f2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:05.772Z', 'data': {'created_at': '2025-08-12 03:36:04.647739+00', 'email_id': '5bede90b-8c71-4d19-aa4d-5414eb8fa5f2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:05.518Z', 'data': {'created_at': '2025-08-12 03:36:05.27992+00', 'email_id': '3b4e600f-841a-48be-852c-828623aa2666', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:06.381Z', 'data': {'created_at': '2025-08-12 03:36:05.27992+00', 'email_id': '3b4e600f-841a-48be-852c-828623aa2666', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:22.573Z', 'data': {'created_at': '2025-08-12 03:36:04.647739+00', 'email_id': '5bede90b-8c71-4d19-aa4d-5414eb8fa5f2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6588'}], 'open': {'ipAddress': '66.249.93.167', 'timestamp': '2025-08-12T03:36:22.573Z', 'userAgent': 'Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)'}, 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6588', 'environment': 'production'}, 'to': ['driskingmaiga@gmail.com']}, 'type': 'email.opened'}
+New webhook event: email.opened for driskingmaiga@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:37.447Z', 'data': {'created_at': '2025-08-12 03:36:37.204223+00', 'email_id': 'b8fdd292-993f-486e-92e8-fa3ebb21b4e2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.sent'}
+New webhook event: email.sent for maigadrisking@gmail.com
+Received webhook payload for horizon_eu: {'created_at': '2025-08-12T03:36:38.628Z', 'data': {'created_at': '2025-08-12 03:36:37.204223+00', 'email_id': 'b8fdd292-993f-486e-92e8-fa3ebb21b4e2', 'from': 'Roland Zonai - Horizon EU <roland.zonai@horizon.eu.com>', 'headers': [{'name': 'X-Entity-Ref-ID', 'value': 'contact-6589'}], 'subject': 'EU Grant Advisory Platform - Beta Testing Invitation', 'tags': {'campaign': 'email_campaign', 'contact_id': '6589', 'environment': 'production'}, 'to': ['maigadrisking@gmail.com']}, 'type': 'email.delivered'}
+New webhook event: email.delivered for maigadrisking@gmail.com
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts
+Email Monitor app ready - UI-only contact management enabled
+CSV import disabled - use web interface to manage contacts

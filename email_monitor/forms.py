@@ -30,7 +30,7 @@ class ContactForm(forms.ModelForm):
             
             # Additional tracking data
             'funnel_unique_id', 'funnel_step', 'sequence_unique_id', 'variation_unique_id',
-            'emailsender', 'websitecontent', 'leadscore', 'esp'
+            'websitecontent', 'leadscore', 'esp'
         ]
         
         widgets = {
@@ -153,10 +153,6 @@ class ContactForm(forms.ModelForm):
                 'class': 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
                 'placeholder': 'Enter variation ID'
             }),
-            'emailsender': forms.TextInput(attrs={
-                'class': 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-                'placeholder': 'Enter email sender'
-            }),
             'websitecontent': forms.Textarea(attrs={
                 'class': 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
                 'placeholder': 'Enter website content',
@@ -201,7 +197,6 @@ class ContactForm(forms.ModelForm):
             'funnel_step': 'Funnel Step',
             'sequence_unique_id': 'Sequence ID',
             'variation_unique_id': 'Variation ID',
-            'emailsender': 'Email Sender',
             'websitecontent': 'Website Content',
             'leadscore': 'Lead Score',
             'esp': 'Email Service Provider',
@@ -244,7 +239,17 @@ class ContactSearchForm(forms.Form):
     
     status = forms.ChoiceField(
         required=False,
-        choices=[('', 'All Statuses')] + Contact.EMAIL_STATUS_CHOICES,
+        choices=[
+            ('', 'All Statuses'),
+            ('not_sent', 'Not Sent'),
+            ('sent', 'Sent'),
+            ('delivered', 'Delivered'),
+            ('opened', 'Opened'),
+            ('clicked', 'Clicked'),
+            ('bounced', 'Bounced'),
+            ('complained', 'Complained'),
+            ('failed', 'Failed'),
+        ],
         widget=forms.Select(attrs={
             'class': 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
         })
