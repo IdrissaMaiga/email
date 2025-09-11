@@ -211,14 +211,14 @@ def send_emails(request):
             recipient_email = contact.email.strip()
             if not recipient_email:
                 continue
-            
+
             # Validate email format
             import re
             email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
             if not re.match(email_pattern, recipient_email):
                 failed_emails.append(f"{recipient_email}: Invalid email format")
                 continue
-            
+
             # Create contact data dictionary for template replacement
             contact_data = {
                 'prospect_first_name': contact.first_name or '',
@@ -242,12 +242,16 @@ def send_emails(request):
                 # Add full name for convenience
                 'full_name': contact.full_name,
             }
-            
+
             # Replace placeholders in template (HTML content)
             email_html_content = template
-            
+
             # Find placeholders in template
             placeholders = re.findall(r'\{(.*?)\}', template)
+
+            # Add a delay to avoid rate limiting
+            import time
+            time.sleep(1)
             
             for placeholder in placeholders:
                 value = contact_data.get(placeholder, f'[{placeholder} not found]')
