@@ -1,3 +1,12 @@
+
+# WARNING: Do NOT use `docker-compose down -v` unless you want to DELETE your database!
+# Your database data is stored in the named volume `postgres_data` below.
+# To keep your data safe:
+#   - Always use `docker-compose down` (without -v) to stop containers.
+#   - Use the provided backup_db.sh script to back up your database regularly.
+#   - Do NOT change the service or volume names below after you start using them.
+#   - If you need to restore from backup, ask for instructions.
+
 version: '3.8'
 
 services:
