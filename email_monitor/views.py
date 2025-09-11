@@ -1121,6 +1121,18 @@ def upload_csv(request):
                             )
                             
                             if created:
+                                # Assign the lowest available ID (fill gaps)
+                                from django.db import connection
+                                with connection.cursor() as cursor:
+                                    cursor.execute("SELECT id FROM email_monitor_contact ORDER BY id")
+                                    used_ids = set(row[0] for row in cursor.fetchall())
+                                    # Find the lowest unused positive integer
+                                    new_id = 1
+                                    while new_id in used_ids:
+                                        new_id += 1
+                                    # Set the contact's ID and save
+                                    cursor.execute("UPDATE email_monitor_contact SET id = %s WHERE id = %s", [new_id, contact.id])
+                                    contact.id = new_id
                                 created_count += 1
                             else:
                                 # Update existing contact with new data (only if fields have values)
