@@ -251,7 +251,7 @@ def send_emails(request):
 
             # Add a delay to avoid rate limiting
             import time
-            time.sleep(1)
+            time.sleep(5)
             
             for placeholder in placeholders:
                 value = contact_data.get(placeholder, f'[{placeholder} not found]')
