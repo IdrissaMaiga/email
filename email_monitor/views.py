@@ -917,8 +917,15 @@ def upload_csv(request):
                                 line_number += 1
                                 
                                 try:
-                                    # Get email from VerifiedEmail column
-                                    email = row.get('VerifiedEmail', '').strip()
+                                    # Debug: Check if row is None or empty
+                                    if not row:
+                                        errors.append(f"Line {line_number}: Empty row")
+                                        continue
+                                    
+                                    # Get email from VerifiedEmail column with safe handling
+                                    email = row.get('VerifiedEmail') or ''
+                                    if email:
+                                        email = email.strip()
                                     
                                     if not email or email.lower() == 'empty':
                                         errors.append(f"Line {line_number}: Missing or invalid email")
@@ -929,9 +936,14 @@ def upload_csv(request):
                                         errors.append(f"Line {line_number}: Invalid email format: {email}")
                                         continue
                                     
-                                    # Get basic info
-                                    first_name = row.get('prospect_first_name', '').strip()
-                                    last_name = row.get('prospect_last_name', '').strip()
+                                    # Get basic info with safe handling
+                                    first_name = row.get('prospect_first_name') or ''
+                                    if first_name:
+                                        first_name = first_name.strip()
+                                    
+                                    last_name = row.get('prospect_last_name') or ''
+                                    if last_name:
+                                        last_name = last_name.strip()
                                     
                                     if not first_name or not last_name:
                                         errors.append(f"Line {line_number}: Missing first name or last name")
@@ -942,12 +954,20 @@ def upload_csv(request):
                                     status = "Update" if existing_contact else "Create"
                                     
                                     # Handle location data - support both separate city/country fields and combined prospect_location
-                                    location_city = row.get('prospect_location_city', '').strip()
-                                    location_country = row.get('prospect_location_country', '').strip()
+                                    location_city = row.get('prospect_location_city') or ''
+                                    if location_city:
+                                        location_city = location_city.strip()
+                                    
+                                    location_country = row.get('prospect_location_country') or ''
+                                    if location_country:
+                                        location_country = location_country.strip()
                                     
                                     # If separate fields are empty, try to parse prospect_location
                                     if not location_city and not location_country:
-                                        prospect_location = row.get('prospect_location', '').strip()
+                                        prospect_location = row.get('prospect_location') or ''
+                                        if prospect_location:
+                                            prospect_location = prospect_location.strip()
+                                        
                                         if prospect_location and prospect_location.lower() != 'empty':
                                             # Split by comma and clean up
                                             location_parts = [part.strip() for part in prospect_location.split(',')]
@@ -984,13 +1004,18 @@ def upload_csv(request):
                                     if location_country and location_country.lower() in ['empty', 'null', 'none', '']:
                                         location_country = ''
                                     
+                                    # Safe field extraction
+                                    def safe_get(field_name):
+                                        value = row.get(field_name) or ''
+                                        return value.strip() if value else ''
+                                    
                                     # Prepare contact data
                                     contact_data = {
                                         'email': email,
                                         'first_name': first_name,
                                         'last_name': last_name,
-                                        'job_title': row.get('job_title', '').strip(),
-                                        'company_name': row.get('company_name', '').strip(),
+                                        'job_title': safe_get('job_title'),
+                                        'company_name': safe_get('company_name'),
                                         'location_city': location_city,
                                         'location_country': location_country,
                                         'status': status,
@@ -999,33 +1024,33 @@ def upload_csv(request):
                                         'csv_data': {
                                             'location_city': location_city,
                                             'location_country': location_country,
-                                            'prospect_location': row.get('prospect_location', '').strip(),  # Keep original for reference
-                                            'company_name': row.get('company_name', '').strip(),
-                                            'company_industry': row.get('company_industry', '').strip(),
-                                            'company_website': row.get('company_website', '').strip(),
-                                            'company_description': row.get('company_description', '').strip(),
-                                            'company_linkedin_url': row.get('company_linkedin_url', '').strip(),
-                                            'company_headcount': row.get('company_headcount', '').strip(),
-                                            'job_title': row.get('job_title', '').strip(),
-                                            'linkedin_url': row.get('linkedin_url', '').strip(),
-                                            'linkedin_headline': row.get('linkedin_headline', '').strip(),
-                                            'linkedin_position': row.get('linkedin_position', '').strip(),
-                                            'linkedin_summary': row.get('linkedin_summary', '').strip(),
-                                            'phone_number': row.get('phone_number', '').strip(),
-                                            'tailored_tone_first_line': row.get('tailored_tone_first_line', '').strip(),
-                                            'tailored_tone_ps_statement': row.get('tailored_tone_ps_statement', '').strip(),
-                                            'tailored_tone_subject': row.get('tailored_tone_subject', '').strip(),
-                                            'custom_ai_1': row.get('custom_ai_1', '').strip(),
-                                            'custom_ai_2': row.get('custom_ai_2', '').strip(),
-                                            'profile_image_url': row.get('profile_image_url', '').strip(),
-                                            'logo_image_url': row.get('logo_image_url', '').strip(),
-                                            'funnel_unique_id': row.get('funnel_unique_id', '').strip(),
-                                            'funnel_step': row.get('funnel_step', '').strip(),
-                                            'sequence_unique_id': row.get('sequence_unique_id', '').strip(),
-                                            'variation_unique_id': row.get('variation_unique_id', '').strip(),
-                                            'websitecontent': row.get('websitecontent', '').strip(),
-                                            'leadscore': row.get('leadscore', '').strip(),
-                                            'esp': row.get('ESP', '').strip(),
+                                            'prospect_location': safe_get('prospect_location'),  # Keep original for reference
+                                            'company_name': safe_get('company_name'),
+                                            'company_industry': safe_get('company_industry'),
+                                            'company_website': safe_get('company_website'),
+                                            'company_description': safe_get('company_description'),
+                                            'company_linkedin_url': safe_get('company_linkedin_url'),
+                                            'company_headcount': safe_get('company_headcount'),
+                                            'job_title': safe_get('job_title'),
+                                            'linkedin_url': safe_get('linkedin_url'),
+                                            'linkedin_headline': safe_get('linkedin_headline'),
+                                            'linkedin_position': safe_get('linkedin_position'),
+                                            'linkedin_summary': safe_get('linkedin_summary'),
+                                            'phone_number': safe_get('phone_number'),
+                                            'tailored_tone_first_line': safe_get('tailored_tone_first_line'),
+                                            'tailored_tone_ps_statement': safe_get('tailored_tone_ps_statement'),
+                                            'tailored_tone_subject': safe_get('tailored_tone_subject'),
+                                            'custom_ai_1': safe_get('custom_ai_1'),
+                                            'custom_ai_2': safe_get('custom_ai_2'),
+                                            'profile_image_url': safe_get('profile_image_url'),
+                                            'logo_image_url': safe_get('logo_image_url'),
+                                            'funnel_unique_id': safe_get('funnel_unique_id'),
+                                            'funnel_step': safe_get('funnel_step'),
+                                            'sequence_unique_id': safe_get('sequence_unique_id'),
+                                            'variation_unique_id': safe_get('variation_unique_id'),
+                                            'websitecontent': safe_get('websitecontent'),
+                                            'leadscore': safe_get('leadscore'),
+                                            'esp': safe_get('ESP'),
                                         }
                                     }
                                     
