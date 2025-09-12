@@ -1161,18 +1161,16 @@ def upload_csv(request):
                         from datetime import datetime
                         category_name = f"Import_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                     
-                    # Get the next category_id for this category
-                    existing_contacts_in_category = Contact.objects.filter(category_name=category_name)
-                    if existing_contacts_in_category.exists():
-                        # Get the highest category_id in this category and increment
-                        max_category_id = existing_contacts_in_category.aggregate(
+                    # Check if this category already exists, if not, generate new category_id
+                    existing_category = Contact.objects.filter(category_name=category_name).first()
+                    if existing_category:
+                        category_id = existing_category.category_id
+                    else:
+                        # Generate next available category_id
+                        max_category_id = Contact.objects.aggregate(
                             max_id=models.Max('category_id')
                         )['max_id'] or 0
-                        # Ensure we have an integer
-                        next_category_id = int(max_category_id) + 1
-                    else:
-                        # This is a new category, start with ID 1
-                        next_category_id = 1
+                        category_id = int(max_category_id) + 1
                     
                     created_count = 0
                     updated_count = 0
@@ -1196,7 +1194,7 @@ def upload_csv(request):
                             # Check if contact with this email already exists in this category
                             existing_contact = Contact.objects.filter(
                                 email=email,
-                                category_name=category_name
+                                category_id=category_id
                             ).first()
                             
                             if existing_contact:
@@ -1227,7 +1225,7 @@ def upload_csv(request):
                             else:
                                 # Create new contact - find the next available contact_id within this category
                                 used_contact_ids = set(
-                                    Contact.objects.filter(category_name=category_name)
+                                    Contact.objects.filter(category_id=category_id)
                                     .values_list('contact_id', flat=True)
                                 )
                                 
@@ -1238,7 +1236,7 @@ def upload_csv(request):
                                 
                                 # Ensure all IDs are integers
                                 contact_id = int(contact_id)
-                                next_category_id = int(next_category_id)
+                                category_id = int(category_id)
                                 
                                 # Create the contact
                                 contact = Contact.objects.create(
@@ -1250,7 +1248,7 @@ def upload_csv(request):
                                     location_city=location_city,
                                     location_country=location_country,
                                     category_name=category_name,
-                                    category_id=next_category_id,
+                                    category_id=category_id,
                                     contact_id=contact_id
                                 )
                                 created_count += 1
@@ -1335,11 +1333,10 @@ def add_contact_api(request):
         email = data.get('email', '').strip()
         first_name = data.get('first_name', '').strip()
         last_name = data.get('last_name', '').strip()
-        category_id = data.get('category_id', 'default').strip()
         category_name = data.get('category_name', 'Default Category').strip()
         
-        if not email or not first_name or not last_name:
-            return JsonResponse({'success': False, 'error': 'Email, first name, and last name are required'}, status=400)
+        if not email or not first_name or not last_name or not category_name:
+            return JsonResponse({'success': False, 'error': 'Email, first name, last name, and category name are required'}, status=400)
         
         # Validate email format
         from django.core.validators import validate_email
@@ -1348,6 +1345,16 @@ def add_contact_api(request):
             validate_email(email)
         except ValidationError:
             return JsonResponse({'success': False, 'error': 'Invalid email format'}, status=400)
+        
+        # Check if this category already exists, if not, generate new category_id
+        existing_category = Contact.objects.filter(category_name=category_name).first()
+        if existing_category:
+            category_id = existing_category.category_id
+        else:
+            # Generate next available category_id
+            from django.db.models import Max
+            max_category_id = Contact.objects.aggregate(max_id=Max('category_id'))['max_id'] or 0
+            category_id = max_category_id + 1
         
         # Check for duplicate email within the same category
         if Contact.objects.filter(category_id=category_id, email=email).exists():

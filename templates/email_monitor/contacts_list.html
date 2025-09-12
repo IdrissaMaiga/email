@@ -544,18 +544,13 @@
                     </div>
                     
                     <!-- New Category Input -->
-                    <div id="newCategoryDiv" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="newCategoryId" class="block text-sm font-medium text-gray-700 mb-1">Category ID *</label>
-                            <input type="text" id="newCategoryId" name="category_id" 
-                                   class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   placeholder="e.g., project_a, campaign_1">
-                        </div>
+                    <div id="newCategoryDiv" class="hidden">
                         <div>
                             <label for="newCategoryName" class="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
                             <input type="text" id="newCategoryName" name="category_name" 
                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="e.g., Project Alpha, Marketing Campaign 1">
+                            <p class="text-xs text-gray-500 mt-1">Category ID will be automatically generated</p>
                         </div>
                     </div>
                 </div>
@@ -1446,19 +1441,16 @@ async function submitNewContact(event) {
             }
             categoryData = JSON.parse(selectedCategory);
         } else {
-            const categoryId = formData.get('category_id');
             const categoryName = formData.get('category_name');
-            if (!categoryId || !categoryName) {
-                throw new Error('Please fill in both Category ID and Category Name');
+            if (!categoryName) {
+                throw new Error('Please fill in Category Name');
             }
             categoryData = {
-                category_id: categoryId,
                 category_name: categoryName
             };
         }
         
         const contactData = {
-            category_id: categoryData.category_id,
             category_name: categoryData.category_name,
             first_name: formData.get('first_name'),
             last_name: formData.get('last_name'),
