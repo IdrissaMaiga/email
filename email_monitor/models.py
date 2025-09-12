@@ -86,10 +86,10 @@ class Contact(models.Model):
         help_text="Contact ID within this category (1, 2, 3, etc.)"
     )
     
-    # Contact information from CSV - keep email unique for now to avoid issues
+    # Contact information from CSV - allow duplicate emails for different categories
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(unique=True, help_text="Primary email address")
+    email = models.EmailField(help_text="Primary email address")
     
     # Location data
     location_city = models.CharField(max_length=100, blank=True, null=True)
