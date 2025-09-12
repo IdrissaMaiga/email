@@ -25,9 +25,9 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(EmailTemplate)
 class EmailTemplateAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'subject', 'created_at', 'updated_at']
-    search_fields = ['name', 'subject']
-    readonly_fields = ['created_at', 'updated_at']
+    list_display = ['id', 'template_type', 'sender', 'subject', 'updated_at']
+    search_fields = ['sender', 'subject']
+    readonly_fields = ['updated_at']
 
 @admin.register(EmailSender)
 class EmailSenderAdmin(admin.ModelAdmin):

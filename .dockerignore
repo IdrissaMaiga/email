@@ -1,3 +1,8 @@
+# Git files (IMPORTANT: exclude .git folder to save space)
+.git/
+.gitignore
+.gitattributes
+
 # Logs
 *.log
 
@@ -35,6 +40,13 @@ Thumbs.db
 
 # Docker
 .dockerignore
+Dockerfile
+docker-compose.yml
+
+# Documentation
+README.md
+README_DJANGO.md
+DEPLOYMENT.md
 
 # Node modules (if any)
 node_modules/
@@ -46,3 +58,7 @@ htmlcov/
 
 # Testing
 .pytest_cache/
+
+# Temporary files
+tmp/
+temp/
