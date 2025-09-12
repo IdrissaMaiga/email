@@ -1170,7 +1170,13 @@ def upload_csv(request):
                         max_category_id = Contact.objects.aggregate(
                             max_id=models.Max('category_id')
                         )['max_id'] or 0
-                        category_id = int(max_category_id) + 1
+                        # Handle both string and integer category_id values
+                        if isinstance(max_category_id, str):
+                            try:
+                                max_category_id = int(max_category_id)
+                            except (ValueError, TypeError):
+                                max_category_id = 0
+                        category_id = str(max_category_id + 1)  # Keep as string for now
                     
                     created_count = 0
                     updated_count = 0
@@ -1191,10 +1197,10 @@ def upload_csv(request):
                             if not email:
                                 continue
                             
-                            # Check if contact with this email already exists in this category
+                            # Check if contact with this email already exists in this category (use string comparison)
                             existing_contact = Contact.objects.filter(
                                 email=email,
-                                category_id=category_id
+                                category_id=str(category_id)
                             ).first()
                             
                             if existing_contact:
@@ -1225,7 +1231,7 @@ def upload_csv(request):
                             else:
                                 # Create new contact - find the next available contact_id within this category
                                 used_contact_ids = set(
-                                    Contact.objects.filter(category_id=category_id)
+                                    Contact.objects.filter(category_id=str(category_id))
                                     .values_list('contact_id', flat=True)
                                 )
                                 
@@ -1234,11 +1240,7 @@ def upload_csv(request):
                                 while contact_id in used_contact_ids:
                                     contact_id += 1
                                 
-                                # Ensure all IDs are integers
-                                contact_id = int(contact_id)
-                                category_id = int(category_id)
-                                
-                                # Create the contact
+                                # Create the contact (keep category_id as string for now)
                                 contact = Contact.objects.create(
                                     email=email,
                                     first_name=first_name,
@@ -1248,7 +1250,7 @@ def upload_csv(request):
                                     location_city=location_city,
                                     location_country=location_country,
                                     category_name=category_name,
-                                    category_id=category_id,
+                                    category_id=str(category_id),
                                     contact_id=contact_id
                                 )
                                 created_count += 1
@@ -1354,10 +1356,16 @@ def add_contact_api(request):
             # Generate next available category_id
             from django.db.models import Max
             max_category_id = Contact.objects.aggregate(max_id=Max('category_id'))['max_id'] or 0
-            category_id = max_category_id + 1
+            # Handle both string and integer category_id values
+            if isinstance(max_category_id, str):
+                try:
+                    max_category_id = int(max_category_id)
+                except (ValueError, TypeError):
+                    max_category_id = 0
+            category_id = str(max_category_id + 1)  # Keep as string for now
         
-        # Check for duplicate email within the same category
-        if Contact.objects.filter(category_id=category_id, email=email).exists():
+        # Check for duplicate email within the same category (use string comparison for now)
+        if Contact.objects.filter(category_id=str(category_id), email=email).exists():
             return JsonResponse({'success': False, 'error': 'A contact with this email already exists in this category'}, status=400)
         
         # Optional fields
@@ -1367,16 +1375,16 @@ def add_contact_api(request):
         location_country = data.get('location_country', '').strip()
         linkedin_url = data.get('linkedin_url', '').strip()
         
-        # Find the next contact_id for this category
+        # Find the next contact_id for this category (use string comparison for now)
         from django.db.models import Max
-        max_contact_id = Contact.objects.filter(category_id=category_id).aggregate(
+        max_contact_id = Contact.objects.filter(category_id=str(category_id)).aggregate(
             max_id=Max('contact_id')
         )['max_id'] or 0
         next_contact_id = max_contact_id + 1
         
         # Create new contact
         contact = Contact(
-            category_id=category_id,
+            category_id=str(category_id),  # Keep as string for now
             category_name=category_name,
             contact_id=next_contact_id,
             email=email,

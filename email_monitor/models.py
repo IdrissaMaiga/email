@@ -71,8 +71,9 @@ class Contact(models.Model):
     """Model to store contacts from CSV with category-based ID system"""
     
     # Category and ID fields (with safe defaults for existing data)
-    category_id = models.IntegerField(
-        default=1,
+    category_id = models.CharField(
+        max_length=50, 
+        default='1',
         help_text="Auto-generated category identifier (1, 2, 3, etc.)"
     )
     category_name = models.CharField(
