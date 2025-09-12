@@ -302,10 +302,15 @@ class CSVUploadForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Get existing categories for the dropdown
-        from .models import Contact
-        existing_categories = Contact.objects.values_list('category_name', flat=True).distinct().exclude(category_name__isnull=True).exclude(category_name='')
-        category_choices = [('', 'Select a category...')] + [(cat, cat) for cat in existing_categories]
-        self.fields['existing_category'].widget.choices = category_choices
+        try:
+            from .models import Contact
+            existing_categories = Contact.objects.values_list('category_name', flat=True).distinct().exclude(category_name__isnull=True).exclude(category_name='')
+            category_choices = [('', 'Select a category...')] + [(cat, cat) for cat in existing_categories]
+            self.fields['existing_category'].widget.choices = category_choices
+        except Exception as e:
+            # If category field doesn't exist yet (pre-migration), provide default choices
+            print(f"Warning: Could not load categories: {e}")
+            self.fields['existing_category'].widget.choices = [('', 'No categories available yet')]
     
     def clean_csv_file(self):
         csv_file = self.cleaned_data.get('csv_file')

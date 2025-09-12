@@ -367,24 +367,39 @@
 
         // Load existing categories for dropdown
         function loadExistingCategories() {
-            fetch('/email_monitor/api/categories/')
-                .then(response => response.json())
+            fetch('/monitor/api/categories/')
+                .then(response => {
+                    console.log('Categories API response status:', response.status);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Categories API data:', data);
                     const select = document.getElementById('existing-category-select');
                     // Clear existing options except the first one
                     select.innerHTML = '<option value="">Select a category...</option>';
                     
-                    if (data.success && data.categories) {
+                    if (data.success && data.categories && data.categories.length > 0) {
                         data.categories.forEach(category => {
                             const option = document.createElement('option');
                             option.value = category;
                             option.textContent = category;
                             select.appendChild(option);
                         });
+                        console.log('Loaded', data.categories.length, 'categories');
+                    } else {
+                        console.log('No categories found or API call failed');
+                        // Add option indicating no categories
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'No categories available yet';
+                        option.disabled = true;
+                        select.appendChild(option);
                     }
                 })
                 .catch(error => {
                     console.error('Error loading categories:', error);
+                    const select = document.getElementById('existing-category-select');
+                    select.innerHTML = '<option value="">Error loading categories</option>';
                 });
         }
 

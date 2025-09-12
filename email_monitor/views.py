@@ -1395,18 +1395,20 @@ def get_categories_api(request):
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
     
     try:
-        from django.db.models import Count
-        
-        # Get all unique categories with contact counts
-        categories = Contact.objects.values('category_id', 'category_name').annotate(
-            contact_count=Count('id')
-        ).order_by('category_name')
-        
+        # Get all unique category names
+        categories = Contact.objects.values_list('category_name', flat=True).distinct().exclude(category_name__isnull=True).exclude(category_name='').order_by('category_name')
         categories_list = list(categories)
         
         return JsonResponse({
             'success': True,
             'categories': categories_list
+        })
+    except Exception as e:
+        # Handle case where category fields don't exist yet (pre-migration)
+        return JsonResponse({
+            'success': False,
+            'error': f'Categories not available yet: {str(e)}',
+            'categories': []
         })
         
     except Exception as e:
