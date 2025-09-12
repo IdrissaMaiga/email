@@ -1315,9 +1315,13 @@
         // Function to navigate to contacts page with status filter
         function navigateToContactsWithStatus(status) {
             const currentSender = getSavedSender();
+            const currentCategory = document.getElementById('categoryFilter').value;
             const url = new URL('/monitor/', window.location.origin);
             url.searchParams.set('status', status);
             url.searchParams.set('sender', currentSender);
+            if (currentCategory) {
+                url.searchParams.set('category', currentCategory);
+            }
             window.location.href = url.toString();
         }
 
@@ -1325,8 +1329,12 @@
         function updateContactsLinkWithSender(event, linkElement) {
             event.preventDefault();
             const currentSender = getSavedSender();
+            const currentCategory = document.getElementById('categoryFilter').value;
             const url = new URL('/monitor/', window.location.origin);
             url.searchParams.set('sender', currentSender);
+            if (currentCategory) {
+                url.searchParams.set('category', currentCategory);
+            }
             window.location.href = url.toString();
         }
     </script>
