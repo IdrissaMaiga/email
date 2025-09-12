@@ -74,6 +74,7 @@ def send_emails(request):
     template = data.get('template', '')
     subject = data.get('subject', 'Custom Email')
     contact_filter = data.get('contact_filter')  # Filter contacts by status (optional for custom selection)
+    category_filter = data.get('category_filter')  # Filter contacts by category
     contact_limit = data.get('contact_limit')  # Limit number of contacts to send to (deprecated, use range instead)
     contact_range_start = data.get('contact_range_start')  # Start ID for contact range
     contact_range_end = data.get('contact_range_end')  # End ID for contact range
@@ -167,6 +168,10 @@ def send_emails(request):
                 elif contact_filter == 'complained':
                     contacts = contacts.filter(latest_event_type='email.complained')
         
+        # Apply category filter if specified
+        if category_filter:
+            contacts = contacts.filter(category_name=category_filter)
+        
         # Apply ID range filter if specified
         if contact_range_start or contact_range_end:
             if contact_range_start and contact_range_end:
@@ -196,8 +201,10 @@ def send_emails(request):
                 elif contact_range_end:
                     range_info = f" up to ID {contact_range_end}"
             
+            category_info = f" in category '{category_filter}'" if category_filter else ""
+            
             return JsonResponse({
-                'error': f'No contacts found with status "{contact_filter}"{range_info}'
+                'error': f'No contacts found with status "{contact_filter}"{category_info}{range_info}'
             }, status=400)
     
     # Configure Resend

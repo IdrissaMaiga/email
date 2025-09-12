@@ -681,12 +681,13 @@ def verify_webhook_signature(request, signing_secret):
 
 
 def contact_stats_api(request):
-    """API endpoint to get contact statistics filtered by sender"""
+    """API endpoint to get contact statistics filtered by sender and optionally by category"""
     from django.db.models import Subquery, OuterRef
     
     try:
         # Get sender parameter from request
         sender = request.GET.get('sender', 'horizoneurope')
+        category_filter = request.GET.get('category')  # Optional category filter
         
         # Map sender to email domain for filtering
         sender_email_map = {
@@ -724,6 +725,10 @@ def contact_stats_api(request):
         
         # Get ALL contacts (contacts are independent of senders)
         sender_contacts = Contact.objects.all()
+        
+        # Apply category filter if specified
+        if category_filter:
+            sender_contacts = sender_contacts.filter(category_name=category_filter)
         
         total_contacts = sender_contacts.count()
         
@@ -767,10 +772,11 @@ def contact_stats_api(request):
             'failed': failed_count,
             'sender': sender,
             'sender_email': sender_email,
+            'category_filter': category_filter,
             'stats_explanation': {
-                'total_contacts': 'Total number of contact records in database (shared across all senders)',
-                'total_email_events': 'Number of contacts with email events from this sender',
-                'status_counts': 'Contact counts based on their latest email status from this sender only'
+                'total_contacts': f'Total number of contact records{f" in category \"{category_filter}\"" if category_filter else ""} (shared across all senders)',
+                'total_email_events': f'Number of contacts{f" in category \"{category_filter}\"" if category_filter else ""} with email events from this sender',
+                'status_counts': f'Contact counts{f" in category \"{category_filter}\"" if category_filter else ""} based on their latest email status from this sender only'
             }
         }
         return JsonResponse(stats)

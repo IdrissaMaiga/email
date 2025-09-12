@@ -229,7 +229,7 @@
             <h3 class="text-xl font-semibold text-gray-900 mb-6">Campaign Setup</h3>
         
         <!-- Contact Filter Selection -->
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Target Audience</label>
                 <select id="contactFilter" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -244,6 +244,15 @@
                     <option value="custom">🎯 Custom Selection</option>
                 </select>
                 <p class="text-sm text-gray-500 mt-2">Choose which contacts to target based on their engagement status</p>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
+                <select id="categoryFilter" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">📁 All Categories</option>
+                    <option disabled>Loading categories...</option>
+                </select>
+                <p class="text-sm text-gray-500 mt-2">Filter contacts by their assigned category</p>
             </div>
             
             <div>
@@ -620,9 +629,16 @@
             
             // Get current sender for filtering
             const currentSender = getSavedSender();
+            const categoryFilter = document.getElementById('categoryFilter').value;
             
-            // Fetch contact statistics from our API with sender filter
-            fetch(`/monitor/api/contact_stats/?sender=${currentSender}`)
+            // Build URL with parameters
+            let url = `/monitor/api/contact_stats/?sender=${currentSender}`;
+            if (categoryFilter) {
+                url += `&category=${encodeURIComponent(categoryFilter)}`;
+            }
+            
+            // Fetch contact statistics from our API with sender and category filter
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -673,18 +689,54 @@
                 });
         }
 
+        // Load categories for the category filter dropdown
+        function loadCategories() {
+            fetch('/monitor/api/categories/')
+                .then(response => response.json())
+                .then(data => {
+                    const categorySelect = document.getElementById('categoryFilter');
+                    // Clear existing options except the first one
+                    categorySelect.innerHTML = '<option value="">📁 All Categories</option>';
+                    
+                    if (data.success && data.categories && data.categories.length > 0) {
+                        data.categories.forEach(category => {
+                            const option = document.createElement('option');
+                            option.value = category.category_name;
+                            option.textContent = `${category.category_name} (${category.category_id}) - ${category.contact_count} contacts`;
+                            categorySelect.appendChild(option);
+                        });
+                        console.log('Loaded', data.categories.length, 'categories for email sending');
+                    } else {
+                        console.log('No categories found for email sending');
+                        // Add option indicating no categories
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'No categories available yet';
+                        option.disabled = true;
+                        categorySelect.appendChild(option);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading categories for email sending:', error);
+                    const categorySelect = document.getElementById('categoryFilter');
+                    categorySelect.innerHTML = '<option value="">📁 All Categories</option><option value="" disabled>Error loading categories</option>';
+                });
+        }
+
         // Update status message based on selected filter
         function updateStatusMessage() {
             if (!window.contactStats) return;
             
             const filter = document.getElementById('contactFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
             
             // Handle custom selection differently
             if (filter === 'custom') {
                 const selectedCount = selectedContacts.size;
+                const categoryText = categoryFilter ? ` from category "${categoryFilter}"` : '';
                 document.getElementById('csvStatus').textContent = selectedCount > 0 ? 
-                    `Ready to send emails to ${selectedCount} selected contacts` : 
-                    'Select contacts from the list below';
+                    `Ready to send emails to ${selectedCount} selected contacts${categoryText}` : 
+                    `Select contacts from the list below${categoryText}`;
                 
                 // Hide range controls for custom selection
                 document.getElementById('contactRangeStart').closest('div').parentElement.style.display = 'none';
@@ -805,20 +857,21 @@
             }
             
             // Update status message
+            const categoryText = categoryFilter ? ` from category "${categoryFilter}"` : '';
             if (startId || endId) {
                 if (isValidRange) {
                     if (startId && endId) {
-                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID ${startId}-${endId} (${rangeSize} contacts) from ${filterName}`;
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID ${startId}-${endId} (${rangeSize} contacts) from ${filterName}${categoryText}`;
                     } else if (startId) {
-                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts from ID ${startId} onwards from ${filterName}`;
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts from ID ${startId} onwards from ${filterName}${categoryText}`;
                     } else {
-                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID 1-${endId} from ${filterName}`;
+                        document.getElementById('csvStatus').textContent = `Ready to send emails to contacts ID 1-${endId} from ${filterName}${categoryText}`;
                     }
                 } else {
-                    document.getElementById('csvStatus').textContent = `Invalid range specified for ${filterName}`;
+                    document.getElementById('csvStatus').textContent = `Invalid range specified for ${filterName}${categoryText}`;
                 }
             } else {
-                document.getElementById('csvStatus').textContent = `Ready to send emails to ${count} ${filterName}`;
+                document.getElementById('csvStatus').textContent = `Ready to send emails to ${count} ${filterName}${categoryText}`;
             }
             
             // Store validation state globally
@@ -981,6 +1034,7 @@
             initializeEditor();
             loadContactStats();
             loadLastTemplate();
+            loadCategories(); // Load categories for the category filter
             
             // Set up periodic refresh of contact stats every 30 seconds
             setInterval(loadContactStats, 30000);
@@ -1028,6 +1082,12 @@
             document.getElementById('contactFilter').addEventListener('change', function() {
                 const isCustom = this.value === 'custom';
                 toggleCustomSelection(isCustom);
+                updateStatusMessage();
+            });
+            
+            // Category filter change handler
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                loadContactStats(); // Reload stats for the new category
                 updateStatusMessage();
             });
             
@@ -1135,6 +1195,7 @@
         // Send emails with tracking
         document.getElementById('sendEmailsTracking').addEventListener('click', function() {
             const contactFilter = document.getElementById('contactFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
             const subject = document.getElementById('emailSubject').value;
             const rangeStart = document.getElementById('contactRangeStart').value;
             const rangeEnd = document.getElementById('contactRangeEnd').value;
@@ -1177,6 +1238,11 @@
                 subject: subject,
                 sender: getSavedSender() // Use saved sender instead of dropdown value
             };
+            
+            // Add category filter if specified
+            if (categoryFilter) {
+                requestBody.category_filter = categoryFilter;
+            }
             
             // Handle custom selection vs filter-based selection
             if (contactFilter === 'custom') {
