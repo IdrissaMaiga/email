@@ -759,6 +759,9 @@ def contact_stats_api(request):
         failed_count = contacts_with_latest_event.filter(latest_event_type='email.failed').count()
         complained_count = contacts_with_latest_event.filter(latest_event_type='email.complained').count()
         
+        # Prepare category text for explanations
+        category_text = f' in category "{category_filter}"' if category_filter else ''
+        
         stats = {
             'total_contacts': total_contacts,
             'total_email_events': contacts_with_latest_event.exclude(latest_event_type__isnull=True).count(),
@@ -774,9 +777,9 @@ def contact_stats_api(request):
             'sender_email': sender_email,
             'category_filter': category_filter,
             'stats_explanation': {
-                'total_contacts': f'Total number of contact records{f" in category \"{category_filter}\"" if category_filter else ""} (shared across all senders)',
-                'total_email_events': f'Number of contacts{f" in category \"{category_filter}\"" if category_filter else ""} with email events from this sender',
-                'status_counts': f'Contact counts{f" in category \"{category_filter}\"" if category_filter else ""} based on their latest email status from this sender only'
+                'total_contacts': f'Total number of contact records{category_text} (shared across all senders)',
+                'total_email_events': f'Number of contacts{category_text} with email events from this sender',
+                'status_counts': f'Contact counts{category_text} based on their latest email status from this sender only'
             }
         }
         return JsonResponse(stats)
