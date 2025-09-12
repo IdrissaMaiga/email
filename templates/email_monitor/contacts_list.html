@@ -45,6 +45,14 @@
                 
                 <!-- Action Buttons -->
                 <div class="flex items-center space-x-4">
+                    <button onclick="showAddContactModal()" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Add New Contact</span>
+                    </button>
+                    
                     <a href="{% url 'upload_csv' %}" 
                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -464,6 +472,95 @@
                     </svg>
                 </div>
                 <p class="text-gray-600" id="errorMessage">Failed to load email content</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Contact Modal -->
+<div id="addContactModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Add New Contact</h3>
+                <button onclick="closeAddContactModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Add Contact Form -->
+            <form id="addContactForm" onsubmit="submitNewContact(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="newFirstName" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input type="text" id="newFirstName" name="first_name" required 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="newLastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input type="text" id="newLastName" name="last_name" required 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="newEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                    <input type="email" id="newEmail" name="email" required 
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="newJobTitle" class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                        <input type="text" id="newJobTitle" name="job_title" 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="newCompanyName" class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                        <input type="text" id="newCompanyName" name="company_name" 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="newLocationCity" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                        <input type="text" id="newLocationCity" name="location_city" 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="newLocationCountry" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                        <input type="text" id="newLocationCountry" name="location_country" 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="newLinkedinUrl" class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                    <input type="url" id="newLinkedinUrl" name="linkedin_url" 
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           placeholder="https://linkedin.com/in/...">
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeAddContactModal()" 
+                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                        Add Contact
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Loading State -->
+            <div id="addContactLoading" class="hidden text-center py-4">
+                <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                <p class="mt-2 text-gray-600">Adding contact...</p>
             </div>
         </div>
     </div>
@@ -1199,6 +1296,103 @@ function saveFieldValue(fieldElement, inputElement, displayElement) {
 </div>
 
 <script>
+// Add Contact Modal Functions
+function showAddContactModal() {
+    document.getElementById('addContactModal').classList.remove('hidden');
+    document.getElementById('addContactForm').reset();
+    document.getElementById('addContactLoading').classList.add('hidden');
+}
+
+function closeAddContactModal() {
+    document.getElementById('addContactModal').classList.add('hidden');
+}
+
+async function submitNewContact(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('addContactForm');
+    const loading = document.getElementById('addContactLoading');
+    
+    // Show loading state
+    form.classList.add('hidden');
+    loading.classList.remove('hidden');
+    
+    try {
+        const formData = new FormData(form);
+        const contactData = {
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            email: formData.get('email'),
+            job_title: formData.get('job_title'),
+            company_name: formData.get('company_name'),
+            location_city: formData.get('location_city'),
+            location_country: formData.get('location_country'),
+            linkedin_url: formData.get('linkedin_url')
+        };
+        
+        const response = await fetch('/monitor/api/add-contact/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify(contactData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            // Success - close modal and refresh page
+            closeAddContactModal();
+            showSuccessMessage(result.message || 'Contact added successfully!');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } else {
+            // Error - show error message
+            throw new Error(result.error || 'Failed to add contact');
+        }
+        
+    } catch (error) {
+        console.error('Error adding contact:', error);
+        
+        // Hide loading and show form again
+        loading.classList.add('hidden');
+        form.classList.remove('hidden');
+        
+        // Show error message
+        showErrorMessage('Error adding contact: ' + error.message);
+    }
+}
+
+// Helper function to show success message
+function showSuccessMessage(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+        }
+    }, 3000);
+}
+
+// Helper function to show error message
+function showErrorMessage(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+        }
+    }, 5000);
+}
+
 // Database Reset Modal Functions
 function showResetDatabaseModal() {
     document.getElementById('resetDatabaseModal').classList.remove('hidden');

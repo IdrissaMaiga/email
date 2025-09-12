@@ -1250,6 +1250,77 @@ def upload_csv(request):
             return render(request, 'email_monitor/upload_csv.html', context)
 
 
+def add_contact_api(request):
+    """API endpoint to add a new contact manually"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        
+        # Required fields
+        email = data.get('email', '').strip()
+        first_name = data.get('first_name', '').strip()
+        last_name = data.get('last_name', '').strip()
+        
+        if not email or not first_name or not last_name:
+            return JsonResponse({'success': False, 'error': 'Email, first name, and last name are required'}, status=400)
+        
+        # Validate email format
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({'success': False, 'error': 'Invalid email format'}, status=400)
+        
+        # Check for duplicate email
+        if Contact.objects.filter(email=email).exists():
+            return JsonResponse({'success': False, 'error': 'A contact with this email already exists'}, status=400)
+        
+        # Optional fields
+        job_title = data.get('job_title', '').strip()
+        company_name = data.get('company_name', '').strip()
+        location_city = data.get('location_city', '').strip()
+        location_country = data.get('location_country', '').strip()
+        linkedin_url = data.get('linkedin_url', '').strip()
+        
+        # Create the contact with the lowest available ID
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT id FROM email_monitor_contact ORDER BY id")
+            used_ids = set(row[0] for row in cursor.fetchall())
+            # Find the lowest unused positive integer
+            new_id = 1
+            while new_id in used_ids:
+                new_id += 1
+        
+        # Create new contact
+        contact = Contact(
+            id=new_id,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            job_title=job_title,
+            company_name=company_name,
+            location_city=location_city,
+            location_country=location_country,
+            linkedin_url=linkedin_url
+        )
+        contact.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Contact {contact.full_name} added successfully!',
+            'contact_id': contact.id
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': f'Failed to add contact: {str(e)}'}, status=500)
+
+
 def update_contact_field_api(request):
     """API endpoint to update a single contact field inline"""
     if request.method != 'POST':
