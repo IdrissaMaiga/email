@@ -70,15 +70,26 @@ class EmailEvent(models.Model):
 class Contact(models.Model):
     """Model to store contacts from CSV with category-based ID system"""
     
-    # Category and ID fields
-    category_id = models.CharField(max_length=50, help_text="Category identifier (e.g., 'project_a', 'campaign_1')")
-    category_name = models.CharField(max_length=200, help_text="Human-readable category name")
-    contact_id = models.IntegerField(help_text="Contact ID within this category (1, 2, 3, etc.)")
+    # Category and ID fields (with safe defaults for existing data)
+    category_id = models.CharField(
+        max_length=50, 
+        default='default',
+        help_text="Category identifier (e.g., 'project_a', 'campaign_1')"
+    )
+    category_name = models.CharField(
+        max_length=200, 
+        default='Default Category',
+        help_text="Human-readable category name"
+    )
+    contact_id = models.IntegerField(
+        default=1,
+        help_text="Contact ID within this category (1, 2, 3, etc.)"
+    )
     
-    # Contact information from CSV
+    # Contact information from CSV - keep email unique for now to avoid issues
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(help_text="Primary email address")
+    email = models.EmailField(unique=True, help_text="Primary email address")
     
     # Location data
     location_city = models.CharField(max_length=100, blank=True, null=True)

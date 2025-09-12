@@ -268,6 +268,45 @@ class CSVUploadForm(forms.Form):
         })
     )
     
+    # Category selection fields
+    category_choice = forms.ChoiceField(
+        choices=[('existing', 'Use Existing Category'), ('new', 'Create New Category')],
+        initial='existing',
+        widget=forms.RadioSelect(attrs={
+            'class': 'category-choice-radio'
+        }),
+        label="Category Option"
+    )
+    
+    existing_category = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'id': 'existing-category-select'
+        }),
+        label="Select Existing Category"
+    )
+    
+    new_category_name = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': 'Enter new category name',
+            'id': 'new-category-input'
+        }),
+        label="New Category Name"
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Get existing categories for the dropdown
+        from .models import Contact
+        existing_categories = Contact.objects.values_list('category_name', flat=True).distinct().exclude(category_name__isnull=True).exclude(category_name='')
+        category_choices = [('', 'Select a category...')] + [(cat, cat) for cat in existing_categories]
+        self.fields['existing_category'].widget.choices = category_choices
+    
     def clean_csv_file(self):
         csv_file = self.cleaned_data.get('csv_file')
         
@@ -281,3 +320,22 @@ class CSVUploadForm(forms.Form):
                 raise forms.ValidationError("File size must be less than 10MB.")
         
         return csv_file
+
+    def clean(self):
+        cleaned_data = super().clean()
+        category_choice = cleaned_data.get('category_choice')
+        existing_category = cleaned_data.get('existing_category')
+        new_category_name = cleaned_data.get('new_category_name')
+        
+        if category_choice == 'existing':
+            if not existing_category:
+                raise forms.ValidationError("Please select an existing category or choose to create a new one.")
+        elif category_choice == 'new':
+            if not new_category_name:
+                raise forms.ValidationError("Please enter a name for the new category.")
+            # Check if category name already exists
+            from .models import Contact
+            if Contact.objects.filter(category_name=new_category_name).exists():
+                raise forms.ValidationError(f"Category '{new_category_name}' already exists. Please choose a different name or select the existing category.")
+        
+        return cleaned_data

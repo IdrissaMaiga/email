@@ -5,7 +5,8 @@ import json
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Max
+from django.db import models
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.core.validators import validate_email
@@ -882,6 +883,17 @@ def upload_csv(request):
                 form = CSVUploadForm(request.POST, request.FILES)
                 
                 if form.is_valid():
+                    # Get category information
+                    category_choice = form.cleaned_data.get('category_choice')
+                    existing_category = form.cleaned_data.get('existing_category')
+                    new_category_name = form.cleaned_data.get('new_category_name')
+                    
+                    # Determine the final category name
+                    if category_choice == 'existing':
+                        final_category_name = existing_category
+                    else:
+                        final_category_name = new_category_name
+                    
                     try:
                         csv_file = request.FILES['csv_file']
                         
@@ -1088,6 +1100,10 @@ def upload_csv(request):
                         
                         # Store preview data in session for batch creation
                         request.session['csv_contacts_preview'] = contacts_preview
+                        request.session['csv_category_info'] = {
+                            'category_choice': category_choice,
+                            'category_name': final_category_name
+                        }
                         
                         return JsonResponse({
                             'success': True,
@@ -1134,6 +1150,27 @@ def upload_csv(request):
                             'error': 'No contacts to create. Please upload a CSV first.'
                         }, status=400)
                     
+                    # Get category information from session
+                    category_info = request.session.get('csv_category_info', {})
+                    category_name = category_info.get('category_name', '')
+                    
+                    # If no category specified, create a default one
+                    if not category_name:
+                        from datetime import datetime
+                        category_name = f"Import_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                    
+                    # Get the next category_id for this category
+                    existing_contacts_in_category = Contact.objects.filter(category_name=category_name)
+                    if existing_contacts_in_category.exists():
+                        # Get the highest category_id in this category and increment
+                        max_category_id = existing_contacts_in_category.aggregate(
+                            max_id=models.Max('category_id')
+                        )['max_id'] or 0
+                        next_category_id = max_category_id + 1
+                    else:
+                        # This is a new category, start with ID 1
+                        next_category_id = 1
+                    
                     created_count = 0
                     updated_count = 0
                     errors = []
@@ -1152,58 +1189,63 @@ def upload_csv(request):
                             if not email:
                                 continue
                             
-                            # Create or update contact
-                            contact, created = Contact.objects.get_or_create(
+                            # Check if contact with this email already exists in this category
+                            existing_contact = Contact.objects.filter(
                                 email=email,
-                                defaults={
-                                    'first_name': first_name,
-                                    'last_name': last_name,
-                                    'company_name': company_name,
-                                    'job_title': job_title,
-                                    'location_city': location_city,
-                                    'location_country': location_country,
-                                }
-                            )
+                                category_name=category_name
+                            ).first()
                             
-                            if created:
-                                # Assign the lowest available ID (fill gaps)
-                                from django.db import connection
-                                with connection.cursor() as cursor:
-                                    cursor.execute("SELECT id FROM email_monitor_contact ORDER BY id")
-                                    used_ids = set(row[0] for row in cursor.fetchall())
-                                    # Find the lowest unused positive integer
-                                    new_id = 1
-                                    while new_id in used_ids:
-                                        new_id += 1
-                                    # Set the contact's ID and save
-                                    cursor.execute("UPDATE email_monitor_contact SET id = %s WHERE id = %s", [new_id, contact.id])
-                                    contact.id = new_id
-                                created_count += 1
-                            else:
-                                # Update existing contact with new data (only if fields have values)
+                            if existing_contact:
+                                # Update existing contact
                                 updated = False
-                                if first_name and contact.first_name != first_name:
-                                    contact.first_name = first_name
+                                if first_name and existing_contact.first_name != first_name:
+                                    existing_contact.first_name = first_name
                                     updated = True
-                                if last_name and contact.last_name != last_name:
-                                    contact.last_name = last_name
+                                if last_name and existing_contact.last_name != last_name:
+                                    existing_contact.last_name = last_name
                                     updated = True
-                                if company_name and contact.company_name != company_name:
-                                    contact.company_name = company_name
+                                if company_name and existing_contact.company_name != company_name:
+                                    existing_contact.company_name = company_name
                                     updated = True
-                                if job_title and contact.job_title != job_title:
-                                    contact.job_title = job_title
+                                if job_title and existing_contact.job_title != job_title:
+                                    existing_contact.job_title = job_title
                                     updated = True
-                                if location_city and contact.location_city != location_city:
-                                    contact.location_city = location_city
+                                if location_city and existing_contact.location_city != location_city:
+                                    existing_contact.location_city = location_city
                                     updated = True
-                                if location_country and contact.location_country != location_country:
-                                    contact.location_country = location_country
+                                if location_country and existing_contact.location_country != location_country:
+                                    existing_contact.location_country = location_country
                                     updated = True
                                 
                                 if updated:
-                                    contact.save()
+                                    existing_contact.save()
                                     updated_count += 1
+                            else:
+                                # Create new contact - find the next available contact_id within this category
+                                used_contact_ids = set(
+                                    Contact.objects.filter(category_name=category_name)
+                                    .values_list('contact_id', flat=True)
+                                )
+                                
+                                # Find the lowest unused contact_id for this category
+                                contact_id = 1
+                                while contact_id in used_contact_ids:
+                                    contact_id += 1
+                                
+                                # Create the contact
+                                contact = Contact.objects.create(
+                                    email=email,
+                                    first_name=first_name,
+                                    last_name=last_name,
+                                    company_name=company_name,
+                                    job_title=job_title,
+                                    location_city=location_city,
+                                    location_country=location_country,
+                                    category_name=category_name,
+                                    category_id=next_category_id,
+                                    contact_id=contact_id
+                                )
+                                created_count += 1
                         
                         except Exception as e:
                             error_msg = f"Error with {contact_data.get('email', 'unknown')}: {str(e)}"
@@ -1212,6 +1254,8 @@ def upload_csv(request):
                     # Clear session data
                     if 'csv_contacts_preview' in request.session:
                         del request.session['csv_contacts_preview']
+                    if 'csv_category_info' in request.session:
+                        del request.session['csv_category_info']
                     
                     # Prepare response message
                     message_parts = []
