@@ -612,10 +612,10 @@
         }
 
         // Load contact stats automatically on page load
-        function loadContactStats() {
-            // Prevent excessive API calls with cooldown
+        function loadContactStats(forceReload = false) {
+            // Prevent excessive API calls with cooldown (but allow forced reloads)
             const now = Date.now();
-            if (window.lastStatsLoadTime && (now - window.lastStatsLoadTime) < 2000) {
+            if (!forceReload && window.lastStatsLoadTime && (now - window.lastStatsLoadTime) < 2000) {
                 console.log('Skipping stats reload - too frequent');
                 return;
             }
@@ -637,6 +637,8 @@
                 url += `&category=${encodeURIComponent(categoryFilter)}`;
             }
             
+            console.log('Loading stats with URL:', url);
+            
             // Fetch contact statistics from our API with sender and category filter
             fetch(url)
                 .then(response => response.json())
@@ -649,6 +651,12 @@
                     
                     // Store the stats globally for filter updates
                     window.contactStats = data;
+                    
+                    console.log('Stats updated:', {
+                        category: data.category_filter || 'All Categories',
+                        total_contacts: data.total_contacts,
+                        not_sent: data.not_sent
+                    });
                     
                     // Update the statistics cards
                     document.getElementById('totalContacts').textContent = data.total_contacts || 0;
@@ -1087,7 +1095,8 @@
             
             // Category filter change handler
             document.getElementById('categoryFilter').addEventListener('change', function() {
-                loadContactStats(); // Reload stats for the new category
+                console.log('Category filter changed to:', this.value);
+                loadContactStats(true); // Force reload stats for the new category
                 updateStatusMessage();
             });
             
