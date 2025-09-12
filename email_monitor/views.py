@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.decorators import method_decorator
 from django.conf import settings
@@ -1250,6 +1251,7 @@ def upload_csv(request):
             return render(request, 'email_monitor/upload_csv.html', context)
 
 
+@csrf_exempt
 def add_contact_api(request):
     """API endpoint to add a new contact manually"""
     if request.method != 'POST':
