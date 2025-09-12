@@ -1039,7 +1039,9 @@ def upload_csv(request):
                                     # Safe field extraction
                                     def safe_get(field_name):
                                         value = row.get(field_name) or ''
-                                        return value.strip() if value else ''
+                                        # Ensure value is a string before calling strip()
+                                        value_str = str(value) if value is not None else ''
+                                        return value_str.strip() if value_str else ''
                                     
                                     # Prepare contact data
                                     contact_data = {
@@ -1166,7 +1168,8 @@ def upload_csv(request):
                         max_category_id = existing_contacts_in_category.aggregate(
                             max_id=models.Max('category_id')
                         )['max_id'] or 0
-                        next_category_id = max_category_id + 1
+                        # Ensure we have an integer
+                        next_category_id = int(max_category_id) + 1
                     else:
                         # This is a new category, start with ID 1
                         next_category_id = 1
@@ -1178,13 +1181,14 @@ def upload_csv(request):
                     for contact_data in contacts_data:
                         try:
                             # Get email and field values (either from modified form data or original data)
-                            email = contact_data.get('email', '').strip()
-                            first_name = contact_data.get('first_name', '').strip()
-                            last_name = contact_data.get('last_name', '').strip()
-                            company_name = contact_data.get('company_name', '').strip()
-                            job_title = contact_data.get('job_title', '').strip()
-                            location_city = contact_data.get('location_city', '').strip()
-                            location_country = contact_data.get('location_country', '').strip()
+                            # Ensure all values are converted to strings before calling strip()
+                            email = str(contact_data.get('email', '')).strip()
+                            first_name = str(contact_data.get('first_name', '')).strip()
+                            last_name = str(contact_data.get('last_name', '')).strip()
+                            company_name = str(contact_data.get('company_name', '')).strip()
+                            job_title = str(contact_data.get('job_title', '')).strip()
+                            location_city = str(contact_data.get('location_city', '')).strip()
+                            location_country = str(contact_data.get('location_country', '')).strip()
                             
                             if not email:
                                 continue
@@ -1231,6 +1235,10 @@ def upload_csv(request):
                                 contact_id = 1
                                 while contact_id in used_contact_ids:
                                     contact_id += 1
+                                
+                                # Ensure all IDs are integers
+                                contact_id = int(contact_id)
+                                next_category_id = int(next_category_id)
                                 
                                 # Create the contact
                                 contact = Contact.objects.create(
