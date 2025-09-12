@@ -7,7 +7,10 @@ while ! nc -z db 5432; do
 done
 echo "Database is ready!"
 
-# Run migrations
+# Create and run migrations
+echo "Creating migrations..."
+python manage.py makemigrations
+
 echo "Running database migrations..."
 python manage.py migrate
 
