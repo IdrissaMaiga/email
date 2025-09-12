@@ -381,8 +381,15 @@
                     if (data.success && data.categories && data.categories.length > 0) {
                         data.categories.forEach(category => {
                             const option = document.createElement('option');
-                            option.value = category;
-                            option.textContent = category;
+                            // Handle both old format (string) and new format (object)
+                            if (typeof category === 'string') {
+                                option.value = category;
+                                option.textContent = category;
+                            } else {
+                                // New format with category_id, category_name, and contact_count
+                                option.value = category.category_name;
+                                option.textContent = `${category.category_name} (${category.category_id}) - ${category.contact_count} contacts`;
+                            }
                             select.appendChild(option);
                         });
                         console.log('Loaded', data.categories.length, 'categories');

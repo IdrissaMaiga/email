@@ -1413,14 +1413,28 @@ def add_contact_api(request):
 
 @csrf_exempt
 def get_categories_api(request):
-    """API endpoint to get all existing categories"""
+    """API endpoint to get all existing categories with count and ID"""
     if request.method != 'GET':
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
     
     try:
-        # Get all unique category names
-        categories = Contact.objects.values_list('category_name', flat=True).distinct().exclude(category_name__isnull=True).exclude(category_name='').order_by('category_name')
-        categories_list = list(categories)
+        # Get all unique categories with their IDs and contact counts
+        categories_data = Contact.objects.values('category_id', 'category_name').annotate(
+            contact_count=Count('id')
+        ).exclude(
+            category_name__isnull=True
+        ).exclude(
+            category_name=''
+        ).order_by('category_name')
+        
+        # Convert to list and ensure all fields are present
+        categories_list = []
+        for category in categories_data:
+            categories_list.append({
+                'category_id': category['category_id'] or 'undefined',
+                'category_name': category['category_name'] or 'undefined',
+                'contact_count': category['contact_count']
+            })
         
         return JsonResponse({
             'success': True,
@@ -1433,9 +1447,6 @@ def get_categories_api(request):
             'error': f'Categories not available yet: {str(e)}',
             'categories': []
         })
-        
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': f'Failed to get categories: {str(e)}'}, status=500)
 
 
 def update_contact_field_api(request):
