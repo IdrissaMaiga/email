@@ -728,7 +728,7 @@ def contact_stats_api(request):
         
         # Apply category filter if specified
         if category_filter:
-            sender_contacts = sender_contacts.filter(category_name=category_filter)
+            sender_contacts = sender_contacts.filter(category_id=category_filter)
         
         total_contacts = sender_contacts.count()
         

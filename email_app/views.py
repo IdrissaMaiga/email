@@ -170,7 +170,7 @@ def send_emails(request):
         
         # Apply category filter if specified
         if category_filter:
-            contacts = contacts.filter(category_name=category_filter)
+            contacts = contacts.filter(category_id=category_filter)
         
         # Apply ID range filter if specified
         if contact_range_start or contact_range_end:
