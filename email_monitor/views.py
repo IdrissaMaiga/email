@@ -72,6 +72,38 @@ def contacts_list(request):
     sender = request.GET.get('sender', 'horizoneurope')
     sender_email = get_sender_email(sender)
     
+    # If no sender email found, return error or redirect to setup
+    if not sender_email:
+        # Check if there are any active senders at all
+        from .models import EmailSender
+        active_senders = EmailSender.objects.filter(is_active=True)
+        
+        if not active_senders.exists():
+            # No senders configured, show setup message
+            context = {
+                'contacts': [],
+                'stats': {
+                    'total': 0,
+                    'not_sent': 0,
+                    'sent': 0,
+                    'delivered': 0,
+                    'opened': 0,
+                    'clicked': 0,
+                    'bounced': 0,
+                    'failed': 0
+                },
+                'current_sender': sender,
+                'sender_email': None,
+                'no_senders_configured': True,
+                'message': 'No email senders configured. Please add email senders first.'
+            }
+            return render(request, 'email_monitor/contacts_list.html', context)
+        else:
+            # Use the first active sender as fallback
+            first_sender = active_senders.first()
+            sender = first_sender.key
+            sender_email = first_sender.email
+    
     # Import needed Django query tools
     from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
     
@@ -272,6 +304,10 @@ def contact_email_content_api(request):
         sender = request.GET.get('sender', 'horizoneurope')
         sender_email = get_sender_email(sender)
         
+        # If no sender email found, return error
+        if not sender_email:
+            return JsonResponse({'error': f'Sender "{sender}" not found or not active'}, status=400)
+        
         # Import needed Django query tools
         from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
         
@@ -437,6 +473,10 @@ def email_content_by_id_api(request):
         # Get sender parameter to determine which API key to use
         sender = request.GET.get('sender', 'horizoneurope')
         sender_email = get_sender_email(sender)
+        
+        # If no sender email found, return error
+        if not sender_email:
+            return JsonResponse({'error': f'Sender "{sender}" not found or not active'}, status=400)
         
         # Find the email event with this email_id
         email_event = EmailEvent.objects.filter(
@@ -713,6 +753,10 @@ def contact_stats_api(request):
         # Map sender to email domain for filtering
         sender_email = get_sender_email(sender)
         
+        # If no sender email found, return error
+        if not sender_email:
+            return JsonResponse({'error': f'Sender "{sender}" not found or not active'}, status=400)
+        
         # Debug: Let's see what emails have been sent by each sender
         debug_mode = request.GET.get('debug', 'false').lower() == 'true'
         if debug_mode:
@@ -811,6 +855,10 @@ def contacts_api(request):
         
         # Map sender to email domain for filtering
         sender_email = get_sender_email(sender)
+        
+        # If no sender email found, return error
+        if not sender_email:
+            return JsonResponse({'error': f'Sender "{sender}" not found or not active'}, status=400)
         
         # Import needed Django query tools
         from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
