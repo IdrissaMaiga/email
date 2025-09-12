@@ -145,16 +145,17 @@ class Contact(models.Model):
             models.Index(fields=['email']),
             models.Index(fields=['last_name', 'first_name']),
         ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=['category_id', 'contact_id'], 
-                name='unique_contact_per_category'
-            ),
-            models.UniqueConstraint(
-                fields=['category_id', 'email'], 
-                name='unique_email_per_category'
-            ),
-        ]
+        # Temporarily removed constraints to allow migration
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=['category_id', 'contact_id'], 
+        #         name='unique_contact_per_category'
+        #     ),
+        #     models.UniqueConstraint(
+        #         fields=['category_id', 'email'], 
+        #         name='unique_email_per_category'
+        #     ),
+        # ]
     
     def __str__(self):
         name = f"{self.first_name} {self.last_name}".strip()
