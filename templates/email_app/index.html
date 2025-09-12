@@ -518,6 +518,14 @@
             localStorage.setItem('selectedSender', sender);
         }
 
+        function getSavedCategory() {
+            return localStorage.getItem('selectedCategory') || '';
+        }
+
+        function saveCategory(category) {
+            localStorage.setItem('selectedCategory', category);
+        }
+
         function applySenderToUI() {
             const savedSender = getSavedSender();
             const senderSelect = document.getElementById('senderSelect');
@@ -527,6 +535,16 @@
             
             // Update UI elements based on sender
             updateUIForSender(savedSender);
+        }
+
+        function applyCategoryToUI() {
+            const savedCategory = getSavedCategory();
+            const categorySelect = document.getElementById('categoryFilter');
+            if (categorySelect && savedCategory) {
+                categorySelect.value = savedCategory;
+                // Trigger status message update to show the restored category selection
+                updateStatusMessage();
+            }
         }
 
         function updateUIForSender(sender) {
@@ -714,6 +732,9 @@
                             categorySelect.appendChild(option);
                         });
                         console.log('Loaded', data.categories.length, 'categories for email sending');
+                        
+                        // Restore saved category selection after loading categories
+                        applyCategoryToUI();
                     } else {
                         console.log('No categories found for email sending');
                         // Add option indicating no categories
@@ -1096,6 +1117,7 @@
             // Category filter change handler
             document.getElementById('categoryFilter').addEventListener('change', function() {
                 console.log('Category filter changed to:', this.value);
+                saveCategory(this.value); // Save the selected category
                 loadContactStats(true); // Force reload stats for the new category
                 updateStatusMessage();
             });
