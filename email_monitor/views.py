@@ -126,6 +126,11 @@ def contacts_list(request):
             if target_event_type:
                 contacts = contacts.filter(latest_event_type=target_event_type)
     
+    # Filter by category if specified
+    category_filter = request.GET.get('category')
+    if category_filter and category_filter != 'all':
+        contacts = contacts.filter(category_id=category_filter)
+    
     # Search by name or email
     search = request.GET.get('search')
     if search:
@@ -200,13 +205,27 @@ def contacts_list(request):
         ('failed', 'Failed'),
     ]
     
+    # Get all distinct categories for filtering with counts
+    categories = []
+    distinct_categories = Contact.objects.values('category_id', 'category_name').distinct().order_by('category_id')
+    for category in distinct_categories:
+        cat_id = category['category_id']
+        count = Contact.objects.filter(category_id=cat_id).count()
+        categories.append({
+            'category_id': cat_id,
+            'category_name': category['category_name'],
+            'count': count
+        })
+    
     context = {
         'page_obj': page_obj,
         'status_counts': status_counts,
         'status_choices': status_choices,
+        'categories': categories,
         'current_status': status_filter,
         'current_search': search,
         'current_sort': sort_by,
+        'current_category': category_filter,
     }
     
     return render(request, 'email_monitor/contacts_list.html', context)
@@ -1264,6 +1283,8 @@ def add_contact_api(request):
         email = data.get('email', '').strip()
         first_name = data.get('first_name', '').strip()
         last_name = data.get('last_name', '').strip()
+        category_id = data.get('category_id', 'default').strip()
+        category_name = data.get('category_name', 'Default Category').strip()
         
         if not email or not first_name or not last_name:
             return JsonResponse({'success': False, 'error': 'Email, first name, and last name are required'}, status=400)
@@ -1276,9 +1297,9 @@ def add_contact_api(request):
         except ValidationError:
             return JsonResponse({'success': False, 'error': 'Invalid email format'}, status=400)
         
-        # Check for duplicate email
-        if Contact.objects.filter(email=email).exists():
-            return JsonResponse({'success': False, 'error': 'A contact with this email already exists'}, status=400)
+        # Check for duplicate email within the same category
+        if Contact.objects.filter(category_id=category_id, email=email).exists():
+            return JsonResponse({'success': False, 'error': 'A contact with this email already exists in this category'}, status=400)
         
         # Optional fields
         job_title = data.get('job_title', '').strip()
@@ -1287,19 +1308,18 @@ def add_contact_api(request):
         location_country = data.get('location_country', '').strip()
         linkedin_url = data.get('linkedin_url', '').strip()
         
-        # Create the contact with the lowest available ID
-        from django.db import connection
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT id FROM email_monitor_contact ORDER BY id")
-            used_ids = set(row[0] for row in cursor.fetchall())
-            # Find the lowest unused positive integer
-            new_id = 1
-            while new_id in used_ids:
-                new_id += 1
+        # Find the next contact_id for this category
+        from django.db.models import Max
+        max_contact_id = Contact.objects.filter(category_id=category_id).aggregate(
+            max_id=Max('contact_id')
+        )['max_id'] or 0
+        next_contact_id = max_contact_id + 1
         
         # Create new contact
         contact = Contact(
-            id=new_id,
+            category_id=category_id,
+            category_name=category_name,
+            contact_id=next_contact_id,
             email=email,
             first_name=first_name,
             last_name=last_name,
@@ -1313,14 +1333,40 @@ def add_contact_api(request):
         
         return JsonResponse({
             'success': True,
-            'message': f'Contact {contact.full_name} added successfully!',
-            'contact_id': contact.id
+            'message': f'Contact {contact.full_name} added successfully to {category_name}!',
+            'category_id': contact.category_id,
+            'contact_id': contact.contact_id
         })
         
     except json.JSONDecodeError:
         return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
     except Exception as e:
         return JsonResponse({'success': False, 'error': f'Failed to add contact: {str(e)}'}, status=500)
+
+
+@csrf_exempt
+def get_categories_api(request):
+    """API endpoint to get all existing categories"""
+    if request.method != 'GET':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+    
+    try:
+        from django.db.models import Count
+        
+        # Get all unique categories with contact counts
+        categories = Contact.objects.values('category_id', 'category_name').annotate(
+            contact_count=Count('id')
+        ).order_by('category_name')
+        
+        categories_list = list(categories)
+        
+        return JsonResponse({
+            'success': True,
+            'categories': categories_list
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': f'Failed to get categories: {str(e)}'}, status=500)
 
 
 def update_contact_field_api(request):

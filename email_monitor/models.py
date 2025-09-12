@@ -68,12 +68,17 @@ class EmailEvent(models.Model):
 
 
 class Contact(models.Model):
-    """Model to store contacts from CSV"""
+    """Model to store contacts from CSV with category-based ID system"""
+    
+    # Category and ID fields
+    category_id = models.CharField(max_length=50, help_text="Category identifier (e.g., 'project_a', 'campaign_1')")
+    category_name = models.CharField(max_length=200, help_text="Human-readable category name")
+    contact_id = models.IntegerField(help_text="Contact ID within this category (1, 2, 3, etc.)")
     
     # Contact information from CSV
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(unique=True, help_text="Primary email address")
+    email = models.EmailField(help_text="Primary email address")
     
     # Location data
     location_city = models.CharField(max_length=100, blank=True, null=True)
@@ -123,15 +128,27 @@ class Contact(models.Model):
     csv_data = models.JSONField(blank=True, null=True, help_text="Complete CSV row data")
     
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['category_id', 'contact_id']
         indexes = [
+            models.Index(fields=['category_id', 'contact_id']),
             models.Index(fields=['email']),
             models.Index(fields=['last_name', 'first_name']),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['category_id', 'contact_id'], 
+                name='unique_contact_per_category'
+            ),
+            models.UniqueConstraint(
+                fields=['category_id', 'email'], 
+                name='unique_email_per_category'
+            ),
         ]
     
     def __str__(self):
         name = f"{self.first_name} {self.last_name}".strip()
-        return f"{name} ({self.email})" if name else self.email
+        contact_info = f"{name} ({self.email})" if name else self.email
+        return f"[{self.category_id}#{self.contact_id}] {contact_info}"
     
     @property
     def full_name(self):
