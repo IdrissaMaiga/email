@@ -288,3 +288,80 @@ Horizon Europe Funding Expert
             template.updated_at = timezone.now()
             template.save()
         return template
+
+
+class EmailSender(models.Model):
+    """Model to store dynamic email sender configurations"""
+    
+    # Basic sender information
+    key = models.CharField(max_length=50, unique=True, help_text="Unique identifier for this sender")
+    email = models.EmailField(help_text="Sender email address")
+    name = models.CharField(max_length=255, help_text="Display name for the sender")
+    domain = models.CharField(max_length=255, help_text="Domain for this sender")
+    
+    # Resend API configuration
+    api_key = models.CharField(max_length=255, help_text="Resend API key")
+    
+    # Webhook configuration
+    webhook_url = models.CharField(max_length=500, help_text="Webhook URL for this sender")
+    webhook_secret = models.CharField(max_length=255, help_text="Webhook secret for verification")
+    
+    # Status and metadata
+    is_active = models.BooleanField(default=True, help_text="Whether this sender is active")
+    is_verified = models.BooleanField(default=False, help_text="Whether the domain is verified with Resend")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # Usage statistics
+    emails_sent = models.PositiveIntegerField(default=0, help_text="Total emails sent using this sender")
+    last_used = models.DateTimeField(null=True, blank=True, help_text="When this sender was last used")
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Email Sender"
+        verbose_name_plural = "Email Senders"
+    
+    def __str__(self):
+        return f"{self.name} <{self.email}>"
+    
+    def increment_usage(self):
+        """Increment usage counter and update last used timestamp"""
+        self.emails_sent += 1
+        self.last_used = timezone.now()
+        self.save(update_fields=['emails_sent', 'last_used'])
+    
+    @classmethod
+    def get_active_senders(cls):
+        """Get all active sender configurations"""
+        return cls.objects.filter(is_active=True).order_by('name')
+    
+    @classmethod
+    def get_sender_config(cls, sender_key):
+        """Get sender configuration in the format expected by the email sending code"""
+        try:
+            sender = cls.objects.get(key=sender_key, is_active=True)
+            return {
+                'email': sender.email,
+                'name': sender.name,
+                'api_key': sender.api_key,
+                'domain': sender.domain,
+                'webhook_url': sender.webhook_url,
+                'webhook_secret': sender.webhook_secret
+            }
+        except cls.DoesNotExist:
+            return None
+    
+    @classmethod
+    def get_all_sender_configs(cls):
+        """Get all active sender configurations in the format expected by the email sending code"""
+        configs = {}
+        for sender in cls.get_active_senders():
+            configs[sender.key] = {
+                'email': sender.email,
+                'name': sender.name,
+                'api_key': sender.api_key,
+                'domain': sender.domain,
+                'webhook_url': sender.webhook_url,
+                'webhook_secret': sender.webhook_secret
+            }
+        return configs

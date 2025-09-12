@@ -153,28 +153,6 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
-# Multiple Email Sender Configurations
-EMAIL_SENDERS = {
-    'horizoneurope': {
-        'email': 'roland.zonai@horizoneurope.io',
-        'name': 'Roland Zonai - Horizon Europe IO',
-        'api_key': 're_Cs5WjBoq_KQVASjgHeJv5ru1Nkuomk3BY',
-        'domain': 'horizoneurope.io',
-        'webhook_url': 'sender.horizoneurope.io/webhook1/',
-        'webhook_secret': 'whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf'
-    },
-    'horizon_eu': {
-        'email': 'roland.zonai@horizon.eu.com',
-        'name': 'Roland Zonai - Horizon EU',
-        'api_key': 're_2g11XipG_PZyEkMWAkwJ2eTSMbZVbk5hz',
-        'domain': 'horizon.eu.com',
-        'webhook_url': 'sender.horizoneurope.io/webhook2/',
-        'webhook_secret': 'whsec_tAU54drStmKUyqSmDT2An08p0m3WuvSv'
-    }
-}
-
 # Logging configuration
 LOGGING = {
     'version': 1,

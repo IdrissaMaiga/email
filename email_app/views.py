@@ -8,10 +8,40 @@ import os
 import json
 import resend
 from email_monitor.models import Contact, EmailTemplate
+from email_monitor.views import get_sender_email
 
 # Store CSV data in memory (for simplicity; could use database or session for persistence)
 csv_data = None
 csv_columns = []
+
+def get_email_senders():
+    """Get email senders from database with fallback to settings"""
+    try:
+        from email_monitor.models import EmailSender
+        
+        # Get active senders from database
+        db_senders = EmailSender.objects.filter(is_active=True)
+        senders_dict = {}
+        
+        for sender in db_senders:
+            senders_dict[sender.key] = {
+                'email': sender.email,
+                'name': sender.name,
+                'api_key': sender.api_key,
+                'domain': sender.domain,
+                'webhook_url': sender.webhook_url,
+                'webhook_secret': sender.webhook_secret
+            }
+        
+        # If no database senders, fallback to settings
+        if not senders_dict:
+            senders_dict = getattr(settings, 'EMAIL_SENDERS', {})
+        
+        return senders_dict
+        
+    except Exception as e:
+        # Fallback to settings if database error
+        return getattr(settings, 'EMAIL_SENDERS', {})
 
 def index(request):
     """Render the main email templater page"""
@@ -81,8 +111,8 @@ def send_emails(request):
     selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
     sender_key = data.get('sender', 'horizoneurope')  # Which sender to use
     
-    # Get sender configuration
-    email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+    # Get sender configuration from database or settings
+    email_senders = get_email_senders()
     if sender_key not in email_senders:
         return JsonResponse({
             'error': f'Invalid sender selection: {sender_key}'
@@ -105,12 +135,8 @@ def send_emails(request):
         }, status=500)
     
     # Get contacts based on selection method
-    # Map sender key to email address for contact filtering
-    sender_email_map = {
-        'horizoneurope': 'roland.zonai@horizoneurope.io',
-        'horizon_eu': 'roland.zonai@horizon.eu.com'
-    }
-    sender_email = sender_email_map.get(sender_key, 'roland.zonai@horizoneurope.io')
+    # Get sender email using the dynamic system
+    sender_email = get_sender_email(sender_key)
     
     if selected_contact_ids:
         # Custom selection: get contacts by IDs (no sender filtering needed)

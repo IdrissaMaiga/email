@@ -15,4 +15,13 @@ urlpatterns = [
     path('api/update_contact_field/', views.update_contact_field_api, name='update_contact_field_api'),
     path('api/update_contact_batch/', views.update_contact_batch_api, name='update_contact_batch_api'),
     path('api/reset_database/', views.reset_database_api, name='reset_database_api'),
+    # Email Sender Management APIs
+    path('api/email_senders/', views.email_senders_api, name='email_senders_api'),
+    path('api/email_senders/available/', views.available_senders_api, name='available_senders_api'),
+    path('api/email_senders/create/', views.create_email_sender_api, name='create_email_sender_api'),
+    path('api/email_senders/<int:sender_id>/update/', views.update_email_sender_api, name='update_email_sender_api'),
+    path('api/email_senders/<int:sender_id>/delete/', views.delete_email_sender_api, name='delete_email_sender_api'),
+    # JSON Import/Export APIs
+    path('api/email_senders/export/', views.export_email_senders_json, name='export_email_senders_json'),
+    path('api/email_senders/import/', views.import_email_senders_json, name='import_email_senders_json'),
 ]

@@ -32,16 +32,45 @@ import traceback
 logger = logging.getLogger(__name__)
 
 
+def get_sender_email(sender_key):
+    """Get sender email from database"""
+    try:
+        from .models import EmailSender
+        
+        # Get from database
+        try:
+            sender = EmailSender.objects.get(key=sender_key, is_active=True)
+            return sender.email
+        except EmailSender.DoesNotExist:
+            # No fallback, return None if not found
+            logger.warning(f"No active sender found for key: {sender_key}")
+            return None
+        
+    except Exception as e:
+        logger.error(f"Error getting sender email for {sender_key}: {str(e)}")
+        return None
+
+
+def get_sender_email_map():
+    """Get a mapping of sender keys to emails from database"""
+    try:
+        from .models import EmailSender
+        
+        # Get from database only
+        db_senders = EmailSender.objects.filter(is_active=True)
+        return {sender.key: sender.email for sender in db_senders}
+        
+    except Exception as e:
+        logger.error(f"Error getting sender email map: {str(e)}")
+        return {}
+
+
 def contacts_list(request):
     """View to display all contacts from CSV with their email status"""
     
     # Get sender parameter to filter email events by sender
     sender = request.GET.get('sender', 'horizoneurope')
-    sender_email_map = {
-        'horizoneurope': 'roland.zonai@horizoneurope.io',
-        'horizon_eu': 'roland.zonai@horizon.eu.com'
-    }
-    sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+    sender_email = get_sender_email(sender)
     
     # Import needed Django query tools
     from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
@@ -241,11 +270,7 @@ def contact_email_content_api(request):
     try:
         # Get sender parameter to determine which sender's emails to show
         sender = request.GET.get('sender', 'horizoneurope')
-        sender_email_map = {
-            'horizoneurope': 'roland.zonai@horizoneurope.io',
-            'horizon_eu': 'roland.zonai@horizon.eu.com'
-        }
-        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        sender_email = get_sender_email(sender)
         
         # Import needed Django query tools
         from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
@@ -411,11 +436,7 @@ def email_content_by_id_api(request):
     try:
         # Get sender parameter to determine which API key to use
         sender = request.GET.get('sender', 'horizoneurope')
-        sender_email_map = {
-            'horizoneurope': 'roland.zonai@horizoneurope.io',
-            'horizon_eu': 'roland.zonai@horizon.eu.com'
-        }
-        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        sender_email = get_sender_email(sender)
         
         # Find the email event with this email_id
         email_event = EmailEvent.objects.filter(
@@ -690,12 +711,7 @@ def contact_stats_api(request):
         category_filter = request.GET.get('category')  # Optional category filter
         
         # Map sender to email domain for filtering
-        sender_email_map = {
-            'horizoneurope': 'roland.zonai@horizoneurope.io',
-            'horizon_eu': 'roland.zonai@horizon.eu.com'
-        }
-        
-        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        sender_email = get_sender_email(sender)
         
         # Debug: Let's see what emails have been sent by each sender
         debug_mode = request.GET.get('debug', 'false').lower() == 'true'
@@ -794,12 +810,7 @@ def contacts_api(request):
         sender = request.GET.get('sender', 'horizoneurope')
         
         # Map sender to email domain for filtering
-        sender_email_map = {
-            'horizoneurope': 'roland.zonai@horizoneurope.io',
-            'horizon_eu': 'roland.zonai@horizon.eu.com'
-        }
-        
-        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        sender_email = get_sender_email(sender)
         
         # Import needed Django query tools
         from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
@@ -1667,3 +1678,416 @@ def reset_database_api(request):
     except Exception as e:
         logger.error(f"Database reset error: {str(e)}")
         return JsonResponse({'success': False, 'error': f'Database reset failed: {str(e)}'}, status=500)
+
+
+# Email Sender Management APIs
+
+@csrf_exempt
+def email_senders_api(request):
+    """API to get all email senders"""
+    if request.method == 'GET':
+        try:
+            from .models import EmailSender
+            
+            senders = EmailSender.objects.all().order_by('key')
+            senders_data = []
+            
+            for sender in senders:
+                senders_data.append({
+                    'id': sender.id,
+                    'key': sender.key,
+                    'name': sender.name,
+                    'email': sender.email,
+                    'domain': sender.domain,
+                    'is_active': sender.is_active,
+                    'has_api_key': bool(sender.api_key),  # Don't expose the actual API key
+                    'has_webhook_url': bool(sender.webhook_url),
+                    'has_webhook_secret': bool(sender.webhook_secret),
+                    'created_at': sender.created_at.isoformat(),
+                    'updated_at': sender.updated_at.isoformat()
+                })
+            
+            return JsonResponse({
+                'success': True,
+                'senders': senders_data
+            })
+            
+        except Exception as e:
+            logger.error(f"Error fetching email senders: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to fetch email senders: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def available_senders_api(request):
+    """API to get available active senders for frontend dropdowns"""
+    if request.method == 'GET':
+        try:
+            from .models import EmailSender
+            from django.conf import settings
+            
+            # Get active senders from database
+            db_senders = EmailSender.objects.filter(is_active=True).order_by('key')
+            senders_data = []
+            
+            if db_senders.exists():
+                # Use database senders
+                for sender in db_senders:
+                    senders_data.append({
+                        'key': sender.key,
+                        'name': sender.name,
+                        'email': sender.email,
+                        'display_name': f"{sender.name} ({sender.email})"
+                    })
+            else:
+                # Fallback to settings if no database senders
+                email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+                for key, config in email_senders.items():
+                    senders_data.append({
+                        'key': key,
+                        'name': config['name'],
+                        'email': config['email'],
+                        'display_name': f"{config['name']} ({config['email']})"
+                    })
+            
+            return JsonResponse({
+                'success': True,
+                'senders': senders_data
+            })
+            
+        except Exception as e:
+            logger.error(f"Error fetching available senders: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to fetch available senders: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def create_email_sender_api(request):
+    """API to create a new email sender"""
+    if request.method == 'POST':
+        try:
+            from .models import EmailSender
+            data = json.loads(request.body)
+            
+            # Validate required fields
+            required_fields = ['key', 'name', 'email', 'domain', 'api_key']
+            for field in required_fields:
+                if not data.get(field):
+                    return JsonResponse({
+                        'success': False,
+                        'error': f'Missing required field: {field}'
+                    }, status=400)
+            
+            # Check if key already exists
+            if EmailSender.objects.filter(key=data['key']).exists():
+                return JsonResponse({
+                    'success': False,
+                    'error': 'A sender with this key already exists'
+                }, status=400)
+            
+            # Validate email format
+            from django.core.validators import validate_email
+            from django.core.exceptions import ValidationError
+            try:
+                validate_email(data['email'])
+            except ValidationError:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Invalid email format'
+                }, status=400)
+            
+            # Create new email sender
+            sender = EmailSender.objects.create(
+                key=data['key'],
+                name=data['name'],
+                email=data['email'],
+                domain=data['domain'],
+                api_key=data['api_key'],
+                webhook_url=data.get('webhook_url', ''),
+                webhook_secret=data.get('webhook_secret', ''),
+                is_active=data.get('is_active', True)
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Email sender created successfully',
+                'sender': {
+                    'id': sender.id,
+                    'key': sender.key,
+                    'name': sender.name,
+                    'email': sender.email,
+                    'domain': sender.domain,
+                    'is_active': sender.is_active
+                }
+            })
+            
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data'
+            }, status=400)
+        except Exception as e:
+            logger.error(f"Error creating email sender: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to create email sender: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def update_email_sender_api(request, sender_id):
+    """API to update an existing email sender"""
+    if request.method == 'PUT':
+        try:
+            from .models import EmailSender
+            data = json.loads(request.body)
+            
+            # Get the sender
+            try:
+                sender = EmailSender.objects.get(id=sender_id)
+            except EmailSender.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Email sender not found'
+                }, status=404)
+            
+            # Update fields if provided
+            if 'name' in data:
+                sender.name = data['name']
+            if 'email' in data:
+                # Validate email format
+                from django.core.validators import validate_email
+                from django.core.exceptions import ValidationError
+                try:
+                    validate_email(data['email'])
+                    sender.email = data['email']
+                except ValidationError:
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'Invalid email format'
+                    }, status=400)
+            if 'domain' in data:
+                sender.domain = data['domain']
+            if 'api_key' in data:
+                sender.api_key = data['api_key']
+            if 'webhook_url' in data:
+                sender.webhook_url = data['webhook_url']
+            if 'webhook_secret' in data:
+                sender.webhook_secret = data['webhook_secret']
+            if 'is_active' in data:
+                sender.is_active = data['is_active']
+            
+            sender.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Email sender updated successfully',
+                'sender': {
+                    'id': sender.id,
+                    'key': sender.key,
+                    'name': sender.name,
+                    'email': sender.email,
+                    'domain': sender.domain,
+                    'is_active': sender.is_active
+                }
+            })
+            
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data'
+            }, status=400)
+        except Exception as e:
+            logger.error(f"Error updating email sender: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to update email sender: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def delete_email_sender_api(request, sender_id):
+    """API to delete an email sender"""
+    if request.method == 'DELETE':
+        try:
+            from .models import EmailSender
+            
+            # Get the sender
+            try:
+                sender = EmailSender.objects.get(id=sender_id)
+            except EmailSender.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Email sender not found'
+                }, status=404)
+            
+            # Store sender info for response
+            sender_info = {
+                'key': sender.key,
+                'name': sender.name,
+                'email': sender.email
+            }
+            
+            # Delete the sender
+            sender.delete()
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Email sender "{sender_info["name"]}" deleted successfully'
+            })
+            
+        except Exception as e:
+            logger.error(f"Error deleting email sender: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to delete email sender: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def export_email_senders_json(request):
+    """API to export all email senders as JSON"""
+    if request.method == 'GET':
+        try:
+            from .models import EmailSender
+            
+            # Get all active senders
+            senders = EmailSender.objects.filter(is_active=True)
+            
+            # Build JSON structure like the settings format
+            senders_json = {}
+            for sender in senders:
+                senders_json[sender.key] = {
+                    'email': sender.email,
+                    'name': sender.name,
+                    'api_key': sender.api_key,
+                    'domain': sender.domain,
+                    'webhook_url': sender.webhook_url,
+                    'webhook_secret': sender.webhook_secret
+                }
+            
+            return JsonResponse({
+                'success': True,
+                'senders': senders_json
+            })
+            
+        except Exception as e:
+            logger.error(f"Error exporting email senders: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to export email senders: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+def import_email_senders_json(request):
+    """API to import email senders from JSON"""
+    if request.method == 'POST':
+        try:
+            from .models import EmailSender
+            
+            # Parse JSON data
+            data = json.loads(request.body)
+            senders_data = data.get('senders', {})
+            replace_existing = data.get('replace_existing', False)
+            
+            if not senders_data:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No senders data provided'
+                }, status=400)
+            
+            created_count = 0
+            updated_count = 0
+            errors = []
+            
+            # If replace_existing is True, deactivate all existing senders
+            if replace_existing:
+                EmailSender.objects.all().update(is_active=False)
+            
+            # Process each sender
+            for key, sender_data in senders_data.items():
+                try:
+                    # Validate required fields
+                    required_fields = ['email', 'name', 'api_key', 'domain']
+                    missing_fields = [field for field in required_fields if not sender_data.get(field)]
+                    
+                    if missing_fields:
+                        errors.append(f"Sender '{key}': Missing required fields: {', '.join(missing_fields)}")
+                        continue
+                    
+                    # Check if sender with this key already exists
+                    try:
+                        sender = EmailSender.objects.get(key=key)
+                        # Update existing sender
+                        sender.email = sender_data['email']
+                        sender.name = sender_data['name']
+                        sender.api_key = sender_data['api_key']
+                        sender.domain = sender_data['domain']
+                        sender.webhook_url = sender_data.get('webhook_url', '')
+                        sender.webhook_secret = sender_data.get('webhook_secret', '')
+                        sender.is_active = True
+                        sender.save()
+                        updated_count += 1
+                        
+                    except EmailSender.DoesNotExist:
+                        # Create new sender
+                        sender = EmailSender.objects.create(
+                            key=key,
+                            email=sender_data['email'],
+                            name=sender_data['name'],
+                            api_key=sender_data['api_key'],
+                            domain=sender_data['domain'],
+                            webhook_url=sender_data.get('webhook_url', ''),
+                            webhook_secret=sender_data.get('webhook_secret', ''),
+                            is_active=True
+                        )
+                        created_count += 1
+                        
+                except Exception as e:
+                    errors.append(f"Sender '{key}': {str(e)}")
+                    continue
+            
+            # Prepare response
+            response_data = {
+                'success': True,
+                'message': f'Import completed. Created: {created_count}, Updated: {updated_count}',
+                'created': created_count,
+                'updated': updated_count
+            }
+            
+            if errors:
+                response_data['errors'] = errors
+                response_data['message'] += f', Errors: {len(errors)}'
+            
+            return JsonResponse(response_data)
+            
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON format'
+            }, status=400)
+        except Exception as e:
+            logger.error(f"Error importing email senders: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': f'Failed to import email senders: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)

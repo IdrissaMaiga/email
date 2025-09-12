@@ -224,6 +224,40 @@
             </div>
         </div>
 
+        <!-- Email Sender Management -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Email Sender Management</h3>
+                <div class="flex space-x-3">
+                    <button id="exportSendersBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Export JSON</span>
+                    </button>
+                    <button id="importSendersBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                        </svg>
+                        <span>Import JSON</span>
+                    </button>
+                    <button id="addSenderBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Add New Sender</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email Senders List -->
+            <div id="sendersContainer" class="space-y-3">
+                <div class="text-center text-gray-500 py-4">
+                    Loading email senders...
+                </div>
+            </div>
+        </div>
+
         <!-- Campaign Setup -->
         <div class="bg-white rounded-lg shadow-sm p-6">
             <h3 class="text-xl font-semibold text-gray-900 mb-6">Campaign Setup</h3>
@@ -568,8 +602,7 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
                             <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
-                                <option value="horizoneurope">roland.zonai@horizoneurope.io</option>
-                                <option value="horizon_eu">roland.zonai@horizon.eu.com</option>
+                                <option value="">Loading senders...</option>
                             </select>
                         </div>
                     </div>
@@ -1057,13 +1090,14 @@
 
         // Load contacts when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Apply saved sender first
-            applySenderToUI();
+            // Load available senders first, then apply saved sender
+            loadAvailableSenders();
             
             initializeEditor();
             loadContactStats();
             loadLastTemplate();
             loadCategories(); // Load categories for the category filter
+            loadEmailSenders(); // Load email senders for management
             
             // Set up periodic refresh of contact stats every 30 seconds
             setInterval(loadContactStats, 30000);
@@ -1143,6 +1177,68 @@
                 renderContactsList();
                 updateSelectedCount();
                 updateStatusMessage();
+            });
+
+            // Email Sender Management Event Listeners
+            document.getElementById('addSenderBtn').addEventListener('click', function() {
+                showSenderModal();
+            });
+
+            document.getElementById('exportSendersBtn').addEventListener('click', function() {
+                exportSendersToJson();
+            });
+
+            document.getElementById('importSendersBtn').addEventListener('click', function() {
+                showImportModal();
+            });
+
+            document.getElementById('closeSenderModal').addEventListener('click', hideSenderModal);
+            document.getElementById('cancelSenderBtn').addEventListener('click', hideSenderModal);
+
+            document.getElementById('closeImportModal').addEventListener('click', hideImportModal);
+            document.getElementById('cancelImportBtn').addEventListener('click', hideImportModal);
+
+            document.getElementById('importForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                importSendersFromJson();
+            });
+
+            document.getElementById('senderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Convert FormData to regular object
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'is_active') {
+                        data[key] = true; // Checkbox is checked
+                    } else if (value.trim() !== '') {
+                        data[key] = value.trim();
+                    }
+                }
+                
+                // If not checked, is_active should be false
+                if (!data.hasOwnProperty('is_active')) {
+                    data.is_active = false;
+                }
+
+                // For editing, don't send empty API key or webhook secret
+                if (currentEditingSender && (!data.api_key || data.api_key === '')) {
+                    delete data.api_key;
+                }
+                if (currentEditingSender && (!data.webhook_secret || data.webhook_secret === '')) {
+                    delete data.webhook_secret;
+                }
+
+                saveSender(data);
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('senderModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideSenderModal();
+                }
             });
 
             // Auto-save template when subject or content changes
@@ -1359,6 +1455,511 @@
             }
             window.location.href = url.toString();
         }
+
+        // Email Sender Management Functions
+        let currentEditingSender = null;
+
+        function loadEmailSenders() {
+            fetch('/monitor/api/email_senders/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayEmailSenders(data.senders);
+                        updateSenderDropdowns(data.senders);
+                    } else {
+                        console.error('Failed to load email senders:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading email senders:', error);
+                });
+        }
+
+        function displayEmailSenders(senders) {
+            const container = document.getElementById('sendersContainer');
+            
+            if (senders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-4">
+                        <p>No email senders configured yet.</p>
+                        <p class="text-sm">Click "Add New Sender" to create your first email configuration.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = senders.map(sender => `
+                <div class="border border-gray-200 rounded-lg p-4 ${sender.is_active ? 'bg-white' : 'bg-gray-50'}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="font-medium text-gray-900">${sender.name}</h4>
+                                <span class="px-2 py-1 text-xs rounded-full ${sender.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}">
+                                    ${sender.is_active ? 'Active' : 'Inactive'}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1">
+                                <span class="font-medium">Key:</span> ${sender.key}
+                            </p>
+                            <p class="text-sm text-gray-600 mb-1">
+                                <span class="font-medium">Email:</span> ${sender.email}
+                            </p>
+                            <p class="text-sm text-gray-600 mb-1">
+                                <span class="font-medium">Domain:</span> ${sender.domain}
+                            </p>
+                            <div class="flex items-center space-x-4 text-xs text-gray-500 mt-2">
+                                <span class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full mr-1 ${sender.has_api_key ? 'bg-green-500' : 'bg-red-500'}"></div>
+                                    API Key ${sender.has_api_key ? 'Set' : 'Missing'}
+                                </span>
+                                <span class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full mr-1 ${sender.has_webhook_url ? 'bg-green-500' : 'bg-gray-300'}"></div>
+                                    Webhook ${sender.has_webhook_url ? 'Set' : 'Not Set'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button onclick="editSender(${sender.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Edit
+                            </button>
+                            <button onclick="deleteSender(${sender.id}, '${sender.name}')" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showSenderModal(sender = null) {
+            currentEditingSender = sender;
+            const modal = document.getElementById('senderModal');
+            const title = document.getElementById('senderModalTitle');
+            const form = document.getElementById('senderForm');
+            
+            if (sender) {
+                title.textContent = 'Edit Email Sender';
+                document.getElementById('senderKey').value = sender.key;
+                document.getElementById('senderKey').disabled = true;
+                document.getElementById('senderName').value = sender.name;
+                document.getElementById('senderEmail').value = sender.email;
+                document.getElementById('senderDomain').value = sender.domain;
+                document.getElementById('senderIsActive').checked = sender.is_active;
+                document.getElementById('senderApiKey').placeholder = 'Leave blank to keep current key';
+                document.getElementById('senderWebhookSecret').placeholder = 'Leave blank to keep current secret';
+            } else {
+                title.textContent = 'Add Email Sender';
+                form.reset();
+                document.getElementById('senderKey').disabled = false;
+                document.getElementById('senderApiKey').placeholder = 're_...';
+                document.getElementById('senderWebhookSecret').placeholder = 'whsec_...';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function hideSenderModal() {
+            document.getElementById('senderModal').classList.add('hidden');
+            document.getElementById('senderForm').reset();
+            currentEditingSender = null;
+        }
+
+        function editSender(senderId) {
+            fetch('/monitor/api/email_senders/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const sender = data.senders.find(s => s.id === senderId);
+                        if (sender) {
+                            showSenderModal(sender);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching sender:', error);
+                    alert('Error loading sender details');
+                });
+        }
+
+        function deleteSender(senderId, senderName) {
+            if (confirm(`Are you sure you want to delete the email sender "${senderName}"?`)) {
+                fetch(`/monitor/api/email_senders/${senderId}/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCsrfToken()
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        loadEmailSenders(); // Reload the sender management list
+                        loadAvailableSenders(); // Refresh the dropdown options
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting sender:', error);
+                    alert('Error deleting sender');
+                });
+            }
+        }
+
+        function updateSenderDropdowns(senders) {
+            // Update main sender selector if it exists
+            const senderSelect = document.getElementById('senderSelect');
+            if (senderSelect) {
+                const currentValue = senderSelect.value;
+                senderSelect.innerHTML = senders
+                    .filter(sender => sender.is_active)
+                    .map(sender => `<option value="${sender.key}">${sender.name}</option>`)
+                    .join('');
+                
+                // Restore previous selection if still available
+                if (currentValue && senders.find(s => s.key === currentValue && s.is_active)) {
+                    senderSelect.value = currentValue;
+                }
+            }
+
+            // Update active sender select
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect) {
+                const currentValue = activeSenderSelect.value;
+                activeSenderSelect.innerHTML = senders
+                    .filter(sender => sender.is_active)
+                    .map(sender => `<option value="${sender.key}">${sender.name}</option>`)
+                    .join('');
+                
+                // Restore previous selection if still available
+                if (currentValue && senders.find(s => s.key === currentValue && s.is_active)) {
+                    activeSenderSelect.value = currentValue;
+                }
+            }
+        }
+
+        function loadAvailableSenders() {
+            fetch('/monitor/api/email_senders/available/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateSenderDropdownsFromAvailable(data.senders);
+                    } else {
+                        console.error('Failed to load available senders:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading available senders:', error);
+                });
+        }
+
+        function updateSenderDropdownsFromAvailable(senders) {
+            // Update active sender select
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect) {
+                const currentValue = activeSenderSelect.value;
+                activeSenderSelect.innerHTML = senders
+                    .map(sender => `<option value="${sender.key}">${sender.display_name}</option>`)
+                    .join('');
+                
+                // Set saved sender or default to first available
+                const savedSender = getSavedSender();
+                if (savedSender && senders.find(s => s.key === savedSender)) {
+                    activeSenderSelect.value = savedSender;
+                } else if (senders.length > 0) {
+                    activeSenderSelect.value = senders[0].key;
+                    saveSender(senders[0].key); // Save the default selection
+                }
+            }
+        }
+
+        function saveSender(formData) {
+            const isEditing = currentEditingSender !== null;
+            const url = isEditing 
+                ? `/monitor/api/email_senders/${currentEditingSender.id}/update/`
+                : '/monitor/api/email_senders/create/';
+            const method = isEditing ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    hideSenderModal();
+                    loadEmailSenders(); // Reload the sender management list
+                    loadAvailableSenders(); // Refresh the dropdown options
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving sender:', error);
+                alert('Error saving sender');
+            });
+        }
+
+        // JSON Import/Export Functions
+        function exportSendersToJson() {
+            fetch('/monitor/api/email_senders/export/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Create downloadable JSON file
+                        const jsonString = JSON.stringify(data.senders, null, 2);
+                        const blob = new Blob([jsonString], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        
+                        // Create download link
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `email_senders_${new Date().toISOString().split('T')[0]}.json`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        alert('Email senders exported successfully!');
+                    } else {
+                        alert('Error exporting email senders: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error exporting email senders:', error);
+                    alert('Error exporting email senders');
+                });
+        }
+
+        function showImportModal() {
+            document.getElementById('importModal').classList.remove('hidden');
+            // Clear previous data
+            document.getElementById('jsonImportData').value = '';
+            document.getElementById('replaceExisting').checked = false;
+        }
+
+        function hideImportModal() {
+            document.getElementById('importModal').classList.add('hidden');
+        }
+
+        function importSendersFromJson() {
+            const jsonData = document.getElementById('jsonImportData').value.trim();
+            const replaceExisting = document.getElementById('replaceExisting').checked;
+            
+            if (!jsonData) {
+                alert('Please enter JSON data');
+                return;
+            }
+            
+            try {
+                // Validate JSON format
+                const parsedData = JSON.parse(jsonData);
+                
+                // Prepare the data for import
+                const importData = {
+                    senders: parsedData.senders || parsedData, // Support both formats
+                    replace_existing: replaceExisting
+                };
+                
+                // Validate that we have senders data
+                if (!importData.senders || Object.keys(importData.senders).length === 0) {
+                    alert('No valid senders data found in JSON');
+                    return;
+                }
+                
+                // Send import request
+                fetch('/monitor/api/email_senders/import/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify(importData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        hideImportModal();
+                        loadEmailSenders(); // Reload the sender management list
+                        loadAvailableSenders(); // Refresh the dropdown options
+                        
+                        let message = data.message;
+                        if (data.errors && data.errors.length > 0) {
+                            message += '\n\nErrors encountered:\n' + data.errors.join('\n');
+                        }
+                        alert(message);
+                    } else {
+                        alert('Error importing senders: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error importing senders:', error);
+                    alert('Error importing senders');
+                });
+                
+            } catch (e) {
+                alert('Invalid JSON format: ' + e.message);
+            }
+        }
+
+        function getCsrfToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                   document.cookie.split('; ')
+                           .find(row => row.startsWith('csrftoken='))
+                           ?.split('=')[1] || '';
+        }
     </script>
+
+    <!-- Email Sender Management Modal -->
+    <div id="senderModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="senderModalTitle" class="text-lg font-medium text-gray-900">Add Email Sender</h3>
+                    <button id="closeSenderModal" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <form id="senderForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sender Key *</label>
+                        <input type="text" id="senderKey" name="key" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="e.g., my_company" required>
+                        <p class="text-xs text-gray-500 mt-1">Unique identifier for this sender</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Display Name *</label>
+                        <input type="text" id="senderName" name="name" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="e.g., My Company Name" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                        <input type="email" id="senderEmail" name="email" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="e.g., noreply@mycompany.com" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Domain *</label>
+                        <input type="text" id="senderDomain" name="domain" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="e.g., mycompany.com" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Resend API Key *</label>
+                        <input type="password" id="senderApiKey" name="api_key" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="re_..." required>
+                        <p class="text-xs text-gray-500 mt-1">Your Resend API key for this sender</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Webhook URL</label>
+                        <input type="url" id="senderWebhookUrl" name="webhook_url" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="https://yoursite.com/webhook/">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Webhook Secret</label>
+                        <input type="password" id="senderWebhookSecret" name="webhook_secret" 
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="whsec_...">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="senderIsActive" name="is_active" checked
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="senderIsActive" class="ml-2 block text-sm text-gray-900">Active</label>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelSenderBtn" 
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg">
+                            Cancel
+                        </button>
+                        <button type="submit" id="saveSenderBtn" 
+                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg">
+                            Save Sender
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JSON Import Modal -->
+    <div id="importModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-3/4 max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Import Email Senders from JSON</h3>
+                    <button id="closeImportModal" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg">
+                    <h4 class="font-medium text-blue-900 mb-2">JSON Format Expected:</h4>
+                    <pre class="text-xs text-blue-800 bg-blue-100 p-2 rounded overflow-x-auto"><code>{
+  "senders": {
+    "sender_key": {
+      "email": "email@domain.com",
+      "name": "Display Name", 
+      "api_key": "your_api_key",
+      "domain": "domain.com",
+      "webhook_url": "optional_webhook_url",
+      "webhook_secret": "optional_webhook_secret"
+    }
+  },
+  "replace_existing": false
+}</code></pre>
+                </div>
+                
+                <form id="importForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">JSON Data</label>
+                        <textarea id="jsonImportData" name="jsonData" 
+                                  class="w-full h-64 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                                  placeholder="Paste your JSON data here..." required></textarea>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="replaceExisting" name="replaceExisting" 
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="replaceExisting" class="ml-2 block text-sm text-gray-700">
+                            Replace existing senders (deactivate all current senders)
+                        </label>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelImportBtn" 
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg">
+                            Cancel
+                        </button>
+                        <button type="submit" id="importJsonBtn" 
+                                class="px-4 py-2 text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-lg">
+                            Import Senders
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
