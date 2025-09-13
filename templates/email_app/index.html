@@ -1610,9 +1610,8 @@
             if (activeSenderSelect) {
                 const currentValue = activeSenderSelect.value;
                 activeSenderSelect.innerHTML = senders
-                    .map(sender => `<option value="${sender.key}">${sender.display_name}</option>`)
+                    .map(sender => `<option value="${sender.key}">${sender.display_name || sender.name || sender.email}</option>`)
                     .join('');
-                
                 // Set saved sender or default to first available
                 const savedSender = getSavedSender();
                 if (savedSender && senders.find(s => s.key === savedSender)) {
@@ -1621,6 +1620,8 @@
                     activeSenderSelect.value = senders[0].key;
                     saveSender(senders[0].key); // Save the default selection
                 }
+                // Always load the template for the selected sender
+                loadLastTemplate(activeSenderSelect.value);
             }
         }
 
