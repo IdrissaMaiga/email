@@ -1893,6 +1893,18 @@
                            .find(row => row.startsWith('csrftoken='))
                            ?.split('=')[1] || '';
         }
+
+    // Show auto-save indicator (fix for missing function)
+    function showAutoSaveIndicator() {
+        const indicator = document.getElementById('autoSaveIndicator');
+        if (indicator) {
+            indicator.classList.remove('hidden');
+            // Optionally update text if needed
+            setTimeout(() => {
+                indicator.classList.add('hidden');
+            }, 1200);
+        }
+    }
     </script>
 
 </body>
