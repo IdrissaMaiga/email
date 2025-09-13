@@ -573,35 +573,37 @@
             // Update page title to show current sender
             const senderInfo = getSenderInfo(sender);
             document.title = `Email Campaign Manager - ${senderInfo.name}`;
-            
-            // Just update the value and event listener for the always-present sender selector
+
+            // Always update the value and event listener for the always-present sender selector
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect) {
                 activeSenderSelect.value = sender;
-                if (!activeSenderSelect.dataset.listenerAttached) {
-                    activeSenderSelect.addEventListener('change', function() {
-                        const oldSender = getSavedSender();
-                        const newSender = this.value;
-                        saveCurrentTemplate(oldSender);
-                        saveSender(newSender);
-                        const mainSenderSelect = document.getElementById('senderSelect');
-                        if (mainSenderSelect) {
-                            mainSenderSelect.value = newSender;
-                        }
-                        setTimeout(() => {
-                            loadLastTemplate(newSender);
-                        }, 200);
-                        loadContactStats();
-                        const customSection = document.getElementById('customContactSelection');
-                        if (customSection && !customSection.classList.contains('hidden')) {
-                            selectedContacts.clear();
-                            updateSelectedCount();
-                            loadContactsForSelection();
-                        }
-                        console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
-                    });
-                    activeSenderSelect.dataset.listenerAttached = 'true';
+                // Remove previous event listener if any, then add a new one
+                if (activeSenderSelect._listener) {
+                    activeSenderSelect.removeEventListener('change', activeSenderSelect._listener);
                 }
+                activeSenderSelect._listener = function() {
+                    const oldSender = getSavedSender();
+                    const newSender = this.value;
+                    saveCurrentTemplate(oldSender);
+                    saveSender(newSender);
+                    const mainSenderSelect = document.getElementById('senderSelect');
+                    if (mainSenderSelect) {
+                        mainSenderSelect.value = newSender;
+                    }
+                    loadLastTemplate(newSender);
+                    loadContactStats();
+                    const customSection = document.getElementById('customContactSelection');
+                    if (customSection && !customSection.classList.contains('hidden')) {
+                        selectedContacts.clear();
+                        updateSelectedCount();
+                        loadContactsForSelection();
+                    }
+                    console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                };
+                activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
+                // Always load the template for the selected sender immediately
+                loadLastTemplate(sender);
             }
         }
 
