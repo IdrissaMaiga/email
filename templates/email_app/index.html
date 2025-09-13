@@ -586,11 +586,8 @@
             const senderInfo = getSenderInfo(sender);
             document.title = `Email Campaign Manager - ${senderInfo.name}`;
             
-            // Add sender selector after the main page title (h1), or at top of body if not found
-            let insertAfterElem = document.querySelector('h1');
-            if (!insertAfterElem) {
-                insertAfterElem = document.body;
-            }
+            // Add sender selector as the first child of the main content container
+            let mainContent = document.querySelector('main') || document.querySelector('.container') || document.body;
             if (!document.getElementById('senderIndicator')) {
                 const senderIndicator = document.createElement('div');
                 senderIndicator.id = 'senderIndicator';
@@ -610,10 +607,10 @@
                         </div>
                     </div>
                 `;
-                if (insertAfterElem.nextSibling) {
-                    insertAfterElem.parentNode.insertBefore(senderIndicator, insertAfterElem.nextSibling);
+                if (mainContent.firstChild) {
+                    mainContent.insertBefore(senderIndicator, mainContent.firstChild);
                 } else {
-                    insertAfterElem.parentNode.appendChild(senderIndicator);
+                    mainContent.appendChild(senderIndicator);
                 }
                 // Add event listener to the new selector
                 const activeSenderSelect = document.getElementById('activeSenderSelect');
