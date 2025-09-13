@@ -431,7 +431,8 @@
 
         // Load the last used template for a specific sender
         function loadLastTemplate(sender = null) {
-            const currentSender = sender || getSavedSender();
+            // Always use the currently selected sender from the dropdown
+            const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
             
             // Prevent excessive API calls with cooldown
             const now = Date.now();
@@ -483,7 +484,8 @@
 
         // Save the current template for a specific sender
         function saveCurrentTemplate(sender = null) {
-            const currentSender = sender || getSavedSender();
+            // Always use the currently selected sender from the dropdown
+            const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
             const subject = document.getElementById('emailSubject').value;
             
             let content = '';
@@ -533,6 +535,11 @@
 
         // Sender management functions
         function getSavedSender() {
+            // Always get the sender from the dropdown if available, else fallback to localStorage
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect && activeSenderSelect.value) {
+                return activeSenderSelect.value;
+            }
             return localStorage.getItem('selectedSender') || 'horizoneurope';
         }
 
@@ -585,25 +592,76 @@
                 activeSenderSelect._listener = function() {
                     const oldSender = getSavedSender();
                     const newSender = this.value;
-                    saveCurrentTemplate(oldSender);
-                    saveSender(newSender);
-                    const mainSenderSelect = document.getElementById('senderSelect');
-                    if (mainSenderSelect) {
-                        mainSenderSelect.value = newSender;
-                    }
-                    loadLastTemplate(newSender);
-                    loadContactStats();
-                    const customSection = document.getElementById('customContactSelection');
-                    if (customSection && !customSection.classList.contains('hidden')) {
-                        selectedContacts.clear();
-                        updateSelectedCount();
-                        loadContactsForSelection();
-                    }
-                    console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                    // Save current template for old sender, then load new sender's template after save completes
+                    saveCurrentTemplateAsync(oldSender).then(() => {
+                        saveSender(newSender);
+                        const mainSenderSelect = document.getElementById('senderSelect');
+                        if (mainSenderSelect) {
+                            mainSenderSelect.value = newSender;
+                        }
+                        loadLastTemplate(newSender);
+                        loadContactStats();
+                        const customSection = document.getElementById('customContactSelection');
+                        if (customSection && !customSection.classList.contains('hidden')) {
+                            selectedContacts.clear();
+                            updateSelectedCount();
+                            loadContactsForSelection();
+                        }
+                        console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                    });
                 };
                 activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
                 // Always load the template for the selected sender immediately
                 loadLastTemplate(sender);
+            }
+
+            // Async version of saveCurrentTemplate that returns a Promise
+            function saveCurrentTemplateAsync(sender = null) {
+                return new Promise((resolve) => {
+                    const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
+                    const subject = document.getElementById('emailSubject').value;
+                    let content = '';
+                    if (editorInitialized && tinymce.get('emailTemplate')) {
+                        content = tinymce.get('emailTemplate').getContent();
+                    } else {
+                        content = document.getElementById('emailTemplate').value;
+                    }
+                    if (!content.trim() && !subject.trim()) {
+                        resolve();
+                        return;
+                    }
+                    const templateKey = `${currentSender}_${subject}_${content}`;
+                    if (window.lastSavedTemplateKey === templateKey) {
+                        resolve();
+                        return;
+                    }
+                    window.lastSavedTemplateKey = templateKey;
+                    fetch('/api/save_template/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            subject: subject,
+                            content: content,
+                            sender: currentSender
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Failed to save template:', data.error);
+                        } else {
+                            console.log(`Template saved for sender: ${currentSender}`);
+                        }
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error('Failed to save template:', error);
+                        window.lastSavedTemplateKey = null;
+                        resolve();
+                    });
+                });
             }
         }
 
