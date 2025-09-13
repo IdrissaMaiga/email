@@ -47,6 +47,10 @@ def index(request):
     """Render the main email templater page"""
     return render(request, 'email_app/index.html')
 
+def sender_management(request):
+    """Render the sender management page"""
+    return render(request, 'email_app/sender_management.html')
+
 def get_last_template(request):
     """Get the last used email template for a specific sender"""
     if request.method != 'GET':

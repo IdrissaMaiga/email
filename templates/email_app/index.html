@@ -17,6 +17,7 @@
     <script src="https://cdn.tiny.cloud/1/i7idxd1ss3d8d8dhyb63zcdozq8cgno2k9bymb5vrdaq8ynp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body class="bg-gray-100 pb-12">
+
     <!-- Navigation -->
     <nav class="bg-white shadow mb-6">
         <div class="max-w-4xl mx-auto px-6">
@@ -26,10 +27,28 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <a href="{% url 'contacts_list' %}" class="text-gray-600 hover:text-gray-900" onclick="updateContactsLinkWithSender(event, this)">Email Monitor</a>
+                    <a href="/sender-management/" class="text-gray-600 hover:text-gray-900">Sender Management</a>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Always show sender selector at the top of main content -->
+    <div id="senderIndicator" class="bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4 mb-6 max-w-6xl mx-auto">
+        <div class="flex items-center space-x-4">
+            <div class="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
+                <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
+                    <option value="">Loading senders...</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
@@ -224,39 +243,7 @@
             </div>
         </div>
 
-        <!-- Email Sender Management -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-semibold text-gray-900">Email Sender Management</h3>
-                <div class="flex space-x-3">
-                    <button id="exportSendersBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        <span>Export JSON</span>
-                    </button>
-                    <button id="importSendersBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                        </svg>
-                        <span>Import JSON</span>
-                    </button>
-                    <button id="addSenderBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        <span>Add New Sender</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Email Senders List -->
-            <div id="sendersContainer" class="space-y-3">
-                <div class="text-center text-gray-500 py-4">
-                    Loading email senders...
-                </div>
-            </div>
-        </div>
+    <!-- Email Sender Management section moved to its own page -->
 
         <!-- Campaign Setup -->
         <div class="bg-white rounded-lg shadow-sm p-6">
@@ -586,66 +573,33 @@
             const senderInfo = getSenderInfo(sender);
             document.title = `Email Campaign Manager - ${senderInfo.name}`;
             
-            // Add sender selector as the first child of the main content container
-            let mainContent = document.querySelector('main') || document.querySelector('.container') || document.body;
-            if (!document.getElementById('senderIndicator')) {
-                const senderIndicator = document.createElement('div');
-                senderIndicator.id = 'senderIndicator';
-                senderIndicator.className = 'bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4 mb-6';
-                senderIndicator.innerHTML = `
-                    <div class="flex items-center space-x-4">
-                        <div class="p-2 bg-blue-100 rounded-lg flex-shrink-0">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
-                            <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
-                                <option value="">Loading senders...</option>
-                            </select>
-                        </div>
-                    </div>
-                `;
-                if (mainContent.firstChild) {
-                    mainContent.insertBefore(senderIndicator, mainContent.firstChild);
-                } else {
-                    mainContent.appendChild(senderIndicator);
-                }
-                // Add event listener to the new selector
-                const activeSenderSelect = document.getElementById('activeSenderSelect');
+            // Just update the value and event listener for the always-present sender selector
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect) {
                 activeSenderSelect.value = sender;
-                activeSenderSelect.addEventListener('change', function() {
-                    const oldSender = getSavedSender();
-                    const newSender = this.value;
-                    // Save current template for the old sender before switching
-                    saveCurrentTemplate(oldSender);
-                    // Switch to new sender
-                    saveSender(newSender);
-                    // Update the main sender selector to match
-                    const mainSenderSelect = document.getElementById('senderSelect');
-                    if (mainSenderSelect) {
-                        mainSenderSelect.value = newSender;
-                    }
-                    // Load template for new sender
-                    setTimeout(() => {
-                        loadLastTemplate(newSender);
-                    }, 200); // Small delay to ensure save completes first
-                    // Refresh data for new sender
-                    loadContactStats();
-                    // If custom selection is open, reload contacts for new sender
-                    const customSection = document.getElementById('customContactSelection');
-                    if (customSection && !customSection.classList.contains('hidden')) {
-                        selectedContacts.clear();
-                        updateSelectedCount();
-                        loadContactsForSelection();
-                    }
-                    console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
-                });
-            } else if (document.getElementById('senderIndicator')) {
-                const activeSenderSelect = document.getElementById('activeSenderSelect');
-                if (activeSenderSelect) {
-                    activeSenderSelect.value = sender;
+                if (!activeSenderSelect.dataset.listenerAttached) {
+                    activeSenderSelect.addEventListener('change', function() {
+                        const oldSender = getSavedSender();
+                        const newSender = this.value;
+                        saveCurrentTemplate(oldSender);
+                        saveSender(newSender);
+                        const mainSenderSelect = document.getElementById('senderSelect');
+                        if (mainSenderSelect) {
+                            mainSenderSelect.value = newSender;
+                        }
+                        setTimeout(() => {
+                            loadLastTemplate(newSender);
+                        }, 200);
+                        loadContactStats();
+                        const customSection = document.getElementById('customContactSelection');
+                        if (customSection && !customSection.classList.contains('hidden')) {
+                            selectedContacts.clear();
+                            updateSelectedCount();
+                            loadContactsForSelection();
+                        }
+                        console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                    });
+                    activeSenderSelect.dataset.listenerAttached = 'true';
                 }
             }
         }

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('sender-management/', views.sender_management, name='sender_management'),
     path('send_emails/', views.send_emails, name='send_emails'),
     path('api/contact_stats/', views.contact_stats_api, name='contact_stats_api'),
     path('api/get_template/', views.get_last_template, name='get_last_template'),
