@@ -1205,6 +1205,7 @@
             }
             
             // Deselect all contacts
+
             const deselectAllBtn = document.getElementById('deselectAll');
             if (deselectAllBtn) {
                 deselectAllBtn.addEventListener('click', function() {
@@ -1216,38 +1217,66 @@
             }
 
             // Email Sender Management Event Listeners
-            document.getElementById('addSenderBtn').addEventListener('click', function() {
-                showSenderModal();
-            });
+            const addSenderBtn = document.getElementById('addSenderBtn');
+            if (addSenderBtn) {
+                addSenderBtn.addEventListener('click', function() {
+                    showSenderModal();
+                });
+            }
 
-            document.getElementById('exportSendersBtn').addEventListener('click', function() {
-                exportSendersToJson();
-            });
+            const exportSendersBtn = document.getElementById('exportSendersBtn');
+            if (exportSendersBtn) {
+                exportSendersBtn.addEventListener('click', function() {
+                    exportSendersToJson();
+                });
+            }
 
-            document.getElementById('importSendersBtn').addEventListener('click', function() {
-                showImportModal();
-            });
+            const importSendersBtn = document.getElementById('importSendersBtn');
+            if (importSendersBtn) {
+                importSendersBtn.addEventListener('click', function() {
+                    showImportModal();
+                });
+            }
 
-            document.getElementById('closeSenderModal').addEventListener('click', hideSenderModal);
-            document.getElementById('cancelSenderBtn').addEventListener('click', hideSenderModal);
+            const closeSenderModal = document.getElementById('closeSenderModal');
+            if (closeSenderModal) {
+                closeSenderModal.addEventListener('click', hideSenderModal);
+            }
 
-            document.getElementById('closeImportModal').addEventListener('click', hideImportModal);
-            document.getElementById('cancelImportBtn').addEventListener('click', hideImportModal);
+            const cancelSenderBtn = document.getElementById('cancelSenderBtn');
+            if (cancelSenderBtn) {
+                cancelSenderBtn.addEventListener('click', hideSenderModal);
+            }
 
-            document.getElementById('importForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                importSendersFromJson();
-            });
+            const closeImportModal = document.getElementById('closeImportModal');
+            if (closeImportModal) {
+                closeImportModal.addEventListener('click', hideImportModal);
+            }
 
-            document.getElementById('senderForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(this);
-                const data = {};
-                
-                // Convert FormData to regular object
-                for (let [key, value] of formData.entries()) {
-                    if (key === 'is_active') {
+            const cancelImportBtn = document.getElementById('cancelImportBtn');
+            if (cancelImportBtn) {
+                cancelImportBtn.addEventListener('click', hideImportModal);
+            }
+
+            const importForm = document.getElementById('importForm');
+            if (importForm) {
+                importForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    importSendersFromJson();
+                });
+            }
+
+            const senderForm = document.getElementById('senderForm');
+            if (senderForm) {
+                senderForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const data = {};
+                    
+                    // Convert FormData to regular object
+                    for (let [key, value] of formData.entries()) {
+                        if (key === 'is_active') {
                         data[key] = true; // Checkbox is checked
                     } else if (value.trim() !== '') {
                         data[key] = value.trim();
@@ -1271,11 +1300,15 @@
             });
 
             // Close modal when clicking outside
-            document.getElementById('senderModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hideSenderModal();
-                }
-            });
+
+            const senderModal = document.getElementById('senderModal');
+            if (senderModal) {
+                senderModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hideSenderModal();
+                    }
+                });
+            }
 
             // Auto-save template when subject or content changes
             let autoSaveTimeout;
@@ -1283,21 +1316,29 @@
             const AUTO_SAVE_COOLDOWN = 5000; // 5 seconds minimum between saves
             
             // Auto-save subject changes
-            document.getElementById('emailSubject').addEventListener('input', function() {
-                clearTimeout(autoSaveTimeout);
-                autoSaveTimeout = setTimeout(() => {
-                    const now = Date.now();
-                    if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+            const emailSubject = document.getElementById('emailSubject');
+            if (emailSubject) {
+                emailSubject.addEventListener('input', function() {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        const now = Date.now();
+                        if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                            saveCurrentTemplate();
+                            showAutoSaveIndicator();
+                            lastAutoSaveTime = now;
+                        }
+                    }, 2000); // Save 2 seconds after user stops typing
+                });
+                // Also save subject when user clicks away (blur event)
+                emailSubject.addEventListener('blur', function() {
+                    clearTimeout(autoSaveTimeout);
+                    if (Date.now() - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
                         saveCurrentTemplate();
                         showAutoSaveIndicator();
-                        lastAutoSaveTime = now;
+                        lastAutoSaveTime = Date.now();
                     }
-                }, 2000); // Save 2 seconds after user stops typing
-            });
-            
-            // Also save subject when user clicks away (blur event)
-            document.getElementById('emailSubject').addEventListener('blur', function() {
-                clearTimeout(autoSaveTimeout);
+                });
+            }
                 const now = Date.now();
                 if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
                     saveCurrentTemplate();
