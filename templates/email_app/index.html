@@ -1325,6 +1325,7 @@
                     }, 2000); // Save 2 seconds after user stops typing
                 });
                 // Also save subject when user clicks away (blur event)
+
                 emailSubject.addEventListener('blur', function() {
                     clearTimeout(autoSaveTimeout);
                     if (Date.now() - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
@@ -1334,50 +1335,35 @@
                     }
                 });
             }
-                const now = Date.now();
-                if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
-                    saveCurrentTemplate();
-                    showAutoSaveIndicator();
-                    lastAutoSaveTime = now;
-                }
-            });
             
             // Auto-save template content changes (for TinyMCE)
+
             function setupAutoSaveForEditor() {
-                    senderForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const formData = new FormData(this);
-                        const data = {};
-                        // Convert FormData to regular object
-                        for (let [key, value] of formData.entries()) {
-                            if (key === 'is_active') {
-                                data[key] = true; // Checkbox is checked
-                            } else if (value.trim() !== '') {
-                                data[key] = value.trim();
+                if (editorInitialized && tinymce.get('emailTemplate')) {
+                    tinymce.get('emailTemplate').on('input', function() {
+                        clearTimeout(autoSaveTimeout);
+                        autoSaveTimeout = setTimeout(() => {
+                            const now = Date.now();
+                            if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                                saveCurrentTemplate();
+                                showAutoSaveIndicator();
+                                lastAutoSaveTime = now;
                             }
-                        }
-                        // If not checked, is_active should be false
-                        if (!data.hasOwnProperty('is_active')) {
-                            data.is_active = false;
-                        }
-                        // For editing, don't send empty API key or webhook secret
-                        if (currentEditingSender && (!data.api_key || data.api_key === '')) {
-                            delete data.api_key;
-                        }
-                        if (currentEditingSender && (!data.webhook_secret || data.webhook_secret === '')) {
-                            delete data.webhook_secret;
-                        }
-                        saveSender(data);
+                        }, 3000); // Save 3 seconds after user stops typing
                     });
-                const indicator = document.getElementById('autoSaveIndicator');
-                if (indicator) {
-                    indicator.classList.remove('hidden');
-                    indicator.innerHTML = '<div class="flex items-center text-sm text-green-600"><div class="w-2 h-2 bg-green-600 rounded-full mr-2"></div>Auto-saved</div>';
-                    
-                    // Hide after 3 seconds
-                    setTimeout(() => {
-                        indicator.classList.add('hidden');
-                    }, 3000);
+                    // Also save on blur (when user clicks away)
+                    tinymce.get('emailTemplate').on('blur', function() {
+                        clearTimeout(autoSaveTimeout);
+                        const now = Date.now();
+                        if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                            saveCurrentTemplate();
+                            showAutoSaveIndicator();
+                            lastAutoSaveTime = now;
+                        }
+                    });
+                } else {
+                    // Retry setup if editor not ready yet
+                    setTimeout(setupAutoSaveForEditor, 1000);
                 }
             }
             
