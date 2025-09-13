@@ -1114,9 +1114,12 @@
             setInterval(loadContactStats, 30000);
             
             // Manual refresh button
-            document.getElementById('manualRefresh').addEventListener('click', function() {
-                loadContactStats();
-            });
+            const manualRefreshBtn = document.getElementById('manualRefresh');
+            if (manualRefreshBtn) {
+                manualRefreshBtn.addEventListener('click', function() {
+                    loadContactStats();
+                });
+            }
             
             // Sender selection change handler (only if element exists)
             const senderSelect = document.getElementById('senderSelect');
@@ -1142,53 +1145,75 @@
             }
             
             // Clear range button functionality
-            document.getElementById('clearRange').addEventListener('click', function() {
-                document.getElementById('contactRangeStart').value = '';
-                document.getElementById('contactRangeEnd').value = '';
-                updateStatusMessage();
-            });
+            const clearRangeBtn = document.getElementById('clearRange');
+            if (clearRangeBtn) {
+                clearRangeBtn.addEventListener('click', function() {
+                    const startInput = document.getElementById('contactRangeStart');
+                    const endInput = document.getElementById('contactRangeEnd');
+                    if (startInput) startInput.value = '';
+                    if (endInput) endInput.value = '';
+                    updateStatusMessage();
+                });
+            }
             
             // Range input change handlers
-            document.getElementById('contactRangeStart').addEventListener('input', updateStatusMessage);
-            document.getElementById('contactRangeEnd').addEventListener('input', updateStatusMessage);
+            const contactRangeStart = document.getElementById('contactRangeStart');
+            if (contactRangeStart) contactRangeStart.addEventListener('input', updateStatusMessage);
+            const contactRangeEnd = document.getElementById('contactRangeEnd');
+            if (contactRangeEnd) contactRangeEnd.addEventListener('input', updateStatusMessage);
             
             // Contact filter change handler
-            document.getElementById('contactFilter').addEventListener('change', function() {
-                const isCustom = this.value === 'custom';
-                toggleCustomSelection(isCustom);
-                updateStatusMessage();
-            });
+            const contactFilter = document.getElementById('contactFilter');
+            if (contactFilter) {
+                contactFilter.addEventListener('change', function() {
+                    const isCustom = this.value === 'custom';
+                    toggleCustomSelection(isCustom);
+                    updateStatusMessage();
+                });
+            }
             
             // Category filter change handler
-            document.getElementById('categoryFilter').addEventListener('change', function() {
-                console.log('Category filter changed to:', this.value);
-                saveCategory(this.value); // Save the selected category
-                loadContactStats(true); // Force reload stats for the new category
-                updateStatusMessage();
-            });
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', function() {
+                    console.log('Category filter changed to:', this.value);
+                    saveCategory(this.value); // Save the selected category
+                    loadContactStats(true); // Force reload stats for the new category
+                    updateStatusMessage();
+                });
+            }
             
             // Contact search handler
-            document.getElementById('contactSearch').addEventListener('input', function() {
-                filterContacts(this.value);
-            });
+            const contactSearch = document.getElementById('contactSearch');
+            if (contactSearch) {
+                contactSearch.addEventListener('input', function() {
+                    filterContacts(this.value);
+                });
+            }
             
             // Select all filtered contacts
-            document.getElementById('selectAllFiltered').addEventListener('click', function() {
-                filteredContacts.forEach(contact => {
-                    selectedContacts.add(contact.id);
+            const selectAllFilteredBtn = document.getElementById('selectAllFiltered');
+            if (selectAllFilteredBtn) {
+                selectAllFilteredBtn.addEventListener('click', function() {
+                    filteredContacts.forEach(contact => {
+                        selectedContacts.add(contact.id);
+                    });
+                    renderContactsList();
+                    updateSelectedCount();
+                    updateStatusMessage();
                 });
-                renderContactsList();
-                updateSelectedCount();
-                updateStatusMessage();
-            });
+            }
             
             // Deselect all contacts
-            document.getElementById('deselectAll').addEventListener('click', function() {
-                selectedContacts.clear();
-                renderContactsList();
-                updateSelectedCount();
-                updateStatusMessage();
-            });
+            const deselectAllBtn = document.getElementById('deselectAll');
+            if (deselectAllBtn) {
+                deselectAllBtn.addEventListener('click', function() {
+                    selectedContacts.clear();
+                    renderContactsList();
+                    updateSelectedCount();
+                    updateStatusMessage();
+                });
+            }
 
             // Email Sender Management Event Listeners
             document.getElementById('addSenderBtn').addEventListener('click', function() {
@@ -1488,7 +1513,7 @@
 
         function displayEmailSenders(senders) {
             const container = document.getElementById('sendersContainer');
-            
+            if (!container) return;
             if (senders.length === 0) {
                 container.innerHTML = `
                     <div class="text-center text-gray-500 py-4">
@@ -1498,7 +1523,6 @@
                 `;
                 return;
             }
-
             container.innerHTML = senders.map(sender => `
                 <div class="border border-gray-200 rounded-lg p-4 ${sender.is_active ? 'bg-white' : 'bg-gray-50'}">
                     <div class="flex justify-between items-start">
