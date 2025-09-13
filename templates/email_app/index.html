@@ -1339,13 +1339,6 @@
                     }
                 });
             }
-                const now = Date.now();
-                if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
-                    saveCurrentTemplate();
-                    showAutoSaveIndicator();
-                    lastAutoSaveTime = now;
-                }
-            });
             
             // Auto-save template content changes (for TinyMCE)
             function setupAutoSaveForEditor() {
@@ -1394,7 +1387,6 @@
             
             // Set up auto-save when editor is ready
             setTimeout(setupAutoSaveForEditor, 2000);
-        });
 
         // Send emails with tracking
         document.getElementById('sendEmailsTracking').addEventListener('click', function() {
