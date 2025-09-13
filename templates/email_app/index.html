@@ -586,9 +586,12 @@
             const senderInfo = getSenderInfo(sender);
             document.title = `Email Campaign Manager - ${senderInfo.name}`;
             
-            // Add sender selector after the header section
-            const headerSection = document.querySelector('.bg-white.rounded-lg.shadow-sm.p-6.mb-6');
-            if (headerSection && !document.getElementById('senderIndicator')) {
+            // Add sender selector after the main page title (h1), or at top of body if not found
+            let insertAfterElem = document.querySelector('h1');
+            if (!insertAfterElem) {
+                insertAfterElem = document.body;
+            }
+            if (!document.getElementById('senderIndicator')) {
                 const senderIndicator = document.createElement('div');
                 senderIndicator.id = 'senderIndicator';
                 senderIndicator.className = 'bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4 mb-6';
@@ -607,43 +610,39 @@
                         </div>
                     </div>
                 `;
-                headerSection.parentNode.insertBefore(senderIndicator, headerSection.nextSibling);
-                
+                if (insertAfterElem.nextSibling) {
+                    insertAfterElem.parentNode.insertBefore(senderIndicator, insertAfterElem.nextSibling);
+                } else {
+                    insertAfterElem.parentNode.appendChild(senderIndicator);
+                }
                 // Add event listener to the new selector
                 const activeSenderSelect = document.getElementById('activeSenderSelect');
                 activeSenderSelect.value = sender;
                 activeSenderSelect.addEventListener('change', function() {
                     const oldSender = getSavedSender();
                     const newSender = this.value;
-                    
                     // Save current template for the old sender before switching
                     saveCurrentTemplate(oldSender);
-                    
                     // Switch to new sender
                     saveSender(newSender);
-                    
                     // Update the main sender selector to match
                     const mainSenderSelect = document.getElementById('senderSelect');
                     if (mainSenderSelect) {
                         mainSenderSelect.value = newSender;
                     }
-                    
                     // Load template for new sender
                     setTimeout(() => {
                         loadLastTemplate(newSender);
                     }, 200); // Small delay to ensure save completes first
-                    
                     // Refresh data for new sender
                     loadContactStats();
-                    
                     // If custom selection is open, reload contacts for new sender
                     const customSection = document.getElementById('customContactSelection');
-                    if (!customSection.classList.contains('hidden')) {
+                    if (customSection && !customSection.classList.contains('hidden')) {
                         selectedContacts.clear();
                         updateSelectedCount();
                         loadContactsForSelection();
                     }
-                    
                     console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
                 });
             } else if (document.getElementById('senderIndicator')) {
