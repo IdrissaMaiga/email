@@ -1267,6 +1267,7 @@
             }
 
             const senderForm = document.getElementById('senderForm');
+
             if (senderForm) {
                 senderForm.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -1293,8 +1294,7 @@
                     }
                     saveSender(data);
                 });
-
-            // Close modal when clicking outside
+            }
 
             const senderModal = document.getElementById('senderModal');
             if (senderModal) {
