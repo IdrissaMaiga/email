@@ -1270,34 +1270,29 @@
             if (senderForm) {
                 senderForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    
                     const formData = new FormData(this);
                     const data = {};
-                    
                     // Convert FormData to regular object
                     for (let [key, value] of formData.entries()) {
                         if (key === 'is_active') {
-                        data[key] = true; // Checkbox is checked
-                    } else if (value.trim() !== '') {
-                        data[key] = value.trim();
+                            data[key] = true; // Checkbox is checked
+                        } else if (value.trim() !== '') {
+                            data[key] = value.trim();
+                        }
                     }
-                }
-                
-                // If not checked, is_active should be false
-                if (!data.hasOwnProperty('is_active')) {
-                    data.is_active = false;
-                }
-
-                // For editing, don't send empty API key or webhook secret
-                if (currentEditingSender && (!data.api_key || data.api_key === '')) {
-                    delete data.api_key;
-                }
-                if (currentEditingSender && (!data.webhook_secret || data.webhook_secret === '')) {
-                    delete data.webhook_secret;
-                }
-
-                saveSender(data);
-            });
+                    // If not checked, is_active should be false
+                    if (!data.hasOwnProperty('is_active')) {
+                        data.is_active = false;
+                    }
+                    // For editing, don't send empty API key or webhook secret
+                    if (currentEditingSender && (!data.api_key || data.api_key === '')) {
+                        delete data.api_key;
+                    }
+                    if (currentEditingSender && (!data.webhook_secret || data.webhook_secret === '')) {
+                        delete data.webhook_secret;
+                    }
+                    saveSender(data);
+                });
 
             // Close modal when clicking outside
 
