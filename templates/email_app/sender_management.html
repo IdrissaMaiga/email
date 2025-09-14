@@ -559,6 +559,12 @@
                 
                 try {
                     const importData = JSON.parse(jsonText);
+                    console.log('📋 Parsed JSON from text area:', importData);
+                    console.log('📋 JSON text length:', jsonText.length);
+                    console.log('📋 Has senders property:', !!importData.senders);
+                    if (importData.senders) {
+                        console.log('📋 Senders keys:', Object.keys(importData.senders));
+                    }
                     sendImportData(importData);
                 } catch (e) {
                     alert('Invalid JSON format: ' + e.message);
@@ -567,6 +573,13 @@
         }
 
         function sendImportData(importData) {
+            console.log('📤 Sending import data to API:', importData);
+            console.log('📤 Import data structure:', {
+                hasSenders: !!importData.senders,
+                sendersKeys: importData.senders ? Object.keys(importData.senders) : 'no senders',
+                replaceExisting: importData.replace_existing
+            });
+            
             fetch('/monitor/api/email_senders/import/', {
                 method: 'POST',
                 headers: {
@@ -575,8 +588,12 @@
                 },
                 body: JSON.stringify(importData)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('📤 Import response status:', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('📤 Import response data:', data);
                 if (data.success) {
                     hideImportModal();
                     loadEmailSenders(); // Reload the sender management list
