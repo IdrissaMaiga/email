@@ -642,69 +642,69 @@
             }
         }
 
-            // Async version of saveCurrentTemplate that returns a Promise
-            function saveCurrentTemplateAsync(sender = null) {
-                return new Promise((resolve) => {
-                    // Use the passed sender parameter if provided, otherwise get current sender
-                    const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
-                    const subject = document.getElementById('emailSubject').value;
-                    
-                    console.log(`💾 ASYNC SAVING TEMPLATE:`);
-                    console.log(`   👤 Sender: ${currentSender}`);
-                    console.log(`   📝 Subject: "${subject}"`);
-                    
-                    let content = '';
-                    if (editorInitialized && tinymce.get('emailTemplate')) {
-                        content = tinymce.get('emailTemplate').getContent();
-                        console.log(`   📄 Content (via TinyMCE): ${content.length} characters`);
+        // Async version of saveCurrentTemplate that returns a Promise
+        function saveCurrentTemplateAsync(sender = null) {
+            return new Promise((resolve) => {
+                // Use the passed sender parameter if provided, otherwise get current sender
+                const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
+                const subject = document.getElementById('emailSubject').value;
+                
+                console.log(`💾 ASYNC SAVING TEMPLATE:`);
+                console.log(`   👤 Sender: ${currentSender}`);
+                console.log(`   📝 Subject: "${subject}"`);
+                
+                let content = '';
+                if (editorInitialized && tinymce.get('emailTemplate')) {
+                    content = tinymce.get('emailTemplate').getContent();
+                    console.log(`   📄 Content (via TinyMCE): ${content.length} characters`);
+                } else {
+                    content = document.getElementById('emailTemplate').value;
+                    console.log(`   📄 Content (via textarea): ${content.length} characters`);
+                }
+                
+                if (!content.trim() && !subject.trim()) {
+                    console.log('⚠️ Skipping async save - empty template');
+                    resolve();
+                    return;
+                }
+                
+                const templateKey = `${currentSender}_${subject}_${content}`;
+                if (window.lastSavedTemplateKey === templateKey) {
+                    console.log('⚠️ Skipping async save - template unchanged');
+                    resolve();
+                    return;
+                }
+                window.lastSavedTemplateKey = templateKey;
+                
+                console.log(`🌐 Posting template to /api/save_template/`);
+                fetch('/api/save_template/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        subject: subject,
+                        content: content,
+                        sender: currentSender
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Failed to save template:', data.error);
                     } else {
-                        content = document.getElementById('emailTemplate').value;
-                        console.log(`   📄 Content (via textarea): ${content.length} characters`);
+                        console.log(`Template saved for sender: ${currentSender}`);
                     }
-                    
-                    if (!content.trim() && !subject.trim()) {
-                        console.log('⚠️ Skipping async save - empty template');
-                        resolve();
-                        return;
-                    }
-                    
-                    const templateKey = `${currentSender}_${subject}_${content}`;
-                    if (window.lastSavedTemplateKey === templateKey) {
-                        console.log('⚠️ Skipping async save - template unchanged');
-                        resolve();
-                        return;
-                    }
-                    window.lastSavedTemplateKey = templateKey;
-                    
-                    console.log(`🌐 Posting template to /api/save_template/`);
-                    fetch('/api/save_template/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            subject: subject,
-                            content: content,
-                            sender: currentSender
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            console.error('Failed to save template:', data.error);
-                        } else {
-                            console.log(`Template saved for sender: ${currentSender}`);
-                        }
-                        resolve();
-                    })
-                    .catch(error => {
-                        console.error('Failed to save template:', error);
-                        window.lastSavedTemplateKey = null;
-                        resolve();
-                    });
+                    resolve();
+                })
+                .catch(error => {
+                    console.error('Failed to save template:', error);
+                    window.lastSavedTemplateKey = null;
+                    resolve();
                 });
+            });
             }
-        }
+        
 
         // Global variable to store sender data
         let senderData = {};
