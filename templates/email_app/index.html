@@ -1796,19 +1796,22 @@
         }
 
         function updateSenderDropdowns(senders) {
+            console.log('🔧 updateSenderDropdowns called with senders:', senders);
+            
             // Update main sender selector if it exists
             const senderSelect = document.getElementById('senderSelect');
             if (senderSelect) {
                 const currentValue = senderSelect.value;
                 senderSelect.innerHTML = senders
                     .filter(sender => sender.is_active)
-                    .map(sender => `<option value="${sender.key}">${sender.name}</option>`)
+                    .map(sender => `<option value="${sender.key}">${sender.display_name || sender.name}</option>`)
                     .join('');
                 
                 // Restore previous selection if still available
                 if (currentValue && senders.find(s => s.key === currentValue && s.is_active)) {
                     senderSelect.value = currentValue;
                 }
+                console.log('🔧 Updated senderSelect with display_name format');
             }
 
             // Update active sender select
@@ -1817,13 +1820,15 @@
                 const currentValue = activeSenderSelect.value;
                 activeSenderSelect.innerHTML = senders
                     .filter(sender => sender.is_active)
-                    .map(sender => `<option value="${sender.key}">${sender.name}</option>`)
+                    .map(sender => `<option value="${sender.key}">${sender.display_name || sender.name}</option>`)
                     .join('');
                 
                 // Restore previous selection if still available
                 if (currentValue && senders.find(s => s.key === currentValue && s.is_active)) {
                     activeSenderSelect.value = currentValue;
                 }
+                console.log('🔧 Updated activeSenderSelect with display_name format');
+                console.log('🔧 Final activeSenderSelect options:', Array.from(activeSenderSelect.options).map(opt => `${opt.value}: "${opt.text}"`));
             }
         }
 
