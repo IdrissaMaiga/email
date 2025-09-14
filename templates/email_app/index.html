@@ -1393,7 +1393,7 @@
                     if (currentEditingSender && (!data.webhook_secret || data.webhook_secret === '')) {
                         delete data.webhook_secret;
                     }
-                    saveSender(data);
+                    saveEmailSender(data);
                 });
             }
 
@@ -1869,16 +1869,20 @@
                     .join('');
                     
                 // Set saved sender or default to first available
-                const savedSender = getSavedSender();
+                const savedSender = localStorage.getItem('selectedSender'); // Get raw localStorage value
                 console.log('Saved sender from localStorage:', savedSender);
+                console.log('Available sender keys:', senderKeys);
+                console.log('Is saved sender available?', savedSender && senders[savedSender]);
                 
                 if (savedSender && senders[savedSender]) {
                     activeSenderSelect.value = savedSender;
-                    console.log(`Set saved sender: ${savedSender}`);
+                    console.log(`✅ Set saved sender: ${savedSender}`);
                 } else if (senderKeys.length > 0) {
                     activeSenderSelect.value = senderKeys[0];
                     saveSender(senderKeys[0]); // Save the default selection
-                    console.log(`Set default sender: ${senderKeys[0]}`);
+                    console.log(`⚠️ Saved sender "${savedSender}" not found, set default sender: ${senderKeys[0]}`);
+                } else {
+                    console.log('❌ No senders available');
                 }
                 
                 console.log('Final dropdown value:', activeSenderSelect.value);
@@ -1891,11 +1895,18 @@
                 }
                 
                 activeSenderSelect._listener = function() {
-                    const oldSender = getSavedSender();
+                    const oldSender = localStorage.getItem('selectedSender'); // Get from localStorage, not dropdown
                     const newSender = this.value;
+                    
                     console.log(`🔄 SENDER CHANGE DETECTED:`);
                     console.log(`   📤 Old sender: ${oldSender} (${getSenderInfo(oldSender).name})`);
                     console.log(`   📥 New sender: ${newSender} (${getSenderInfo(newSender).name})`);
+                    
+                    // Don't do anything if the sender hasn't actually changed
+                    if (oldSender === newSender) {
+                        console.log(`⚠️ No actual change detected (${oldSender} === ${newSender}), ignoring`);
+                        return;
+                    }
                     
                     // Prevent event bubbling during switching
                     isSenderSwitching = true;
@@ -1955,7 +1966,7 @@
             }
         }
 
-        function saveSender(formData) {
+        function saveEmailSender(formData) {
             const isEditing = currentEditingSender !== null;
             const url = isEditing 
                 ? `/monitor/api/email_senders/${currentEditingSender.id}/update/`
