@@ -507,10 +507,15 @@
         // Save the current template for a specific sender
         function saveCurrentTemplate(sender = null) {
             // Use the passed sender parameter if provided, otherwise get current sender
+            console.log(`🔍 saveCurrentTemplate() called with sender parameter: "${sender}"`);
             const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
+            console.log(`🔍 Resolved currentSender: "${currentSender}"`);
+            console.log(`   - Dropdown value: "${document.getElementById('activeSenderSelect')?.value}"`);
+            console.log(`   - getSavedSender(): "${getSavedSender()}"`);
+            
             const subject = document.getElementById('emailSubject').value;
             
-            console.log(`Saving template for sender: ${currentSender}, subject: "${subject}"`);
+            console.log(`💾 Saving template for sender: ${currentSender}, subject: "${subject}"`);
             
             let content = '';
             if (editorInitialized && tinymce.get('emailTemplate')) {
@@ -520,13 +525,14 @@
             }
             
             if (!content.trim() && !subject.trim()) {
-                console.log('Skipping save - empty template');
+                console.log('⚠️ Skipping save - empty template');
                 return; // Don't save empty templates
             }
             
             // Prevent duplicate saves with same content
             const templateKey = `${currentSender}_${subject}_${content}`;
             if (window.lastSavedTemplateKey === templateKey) {
+                console.log('⚠️ Skipping save - same content as last save');
                 return; // Same content, skip save
             }
             
@@ -625,70 +631,16 @@
             const senderInfo = getSenderInfo(sender);
             document.title = `Email Campaign Manager - ${senderInfo.name}`;
 
-            // Always update the value and event listener for the always-present sender selector
+            // Update the dropdown value if it exists
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect) {
                 activeSenderSelect.value = sender;
-                // Remove previous event listener if any, then add a new one
-                if (activeSenderSelect._listener) {
-                    activeSenderSelect.removeEventListener('change', activeSenderSelect._listener);
-                }
-                activeSenderSelect._listener = function() {
-                    const oldSender = getSavedSender();
-                    const newSender = this.value;
-                    console.log(`🔄 SENDER CHANGE DETECTED:`);
-                    console.log(`   📤 Old sender: ${oldSender} (${getSenderInfo(oldSender).name})`);
-                    console.log(`   📥 New sender: ${newSender} (${getSenderInfo(newSender).name})`);
-                    
-                    // Prevent event bubbling during switching
-                    isSenderSwitching = true;
-                    console.log(`🚫 Set isSenderSwitching = true`);
-                    
-                    // Save current template for old sender explicitly before switching
-                    console.log(`💾 Saving current template for old sender: ${oldSender}`);
-                    saveCurrentTemplateAsync(oldSender).then(() => {
-                        console.log(`✅ Template saved for ${oldSender}, now switching to ${newSender}`);
-                        
-                        // Now switch to new sender
-                        saveSender(newSender);
-                        console.log(`🔧 Updated localStorage to new sender: ${newSender}`);
-                        
-                        // Clear current content before loading new template
-                        console.log(`🧹 Clearing current template content`);
-                        document.getElementById('emailSubject').value = '';
-                        if (editorInitialized && tinymce.get('emailTemplate')) {
-                            tinymce.get('emailTemplate').setContent('');
-                        } else {
-                            document.getElementById('emailTemplate').value = '';
-                        }
-                        
-                        // Force reload the template for the new sender
-                        console.log(`📋 Loading template for new sender: ${newSender}`);
-                        loadLastTemplate(newSender);
-                        
-                        // Refresh contact stats for new sender
-                        loadContactStats(true); // Force reload
-                        
-                        // If custom selection is open, reload contacts for new sender
-                        const customSection = document.getElementById('customContactSelection');
-                        if (customSection && !customSection.classList.contains('hidden')) {
-                            selectedContacts.clear();
-                            updateSelectedCount();
-                            loadContactsForSelection();
-                        }
-                        console.log(`🎉 Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
-                        
-                        // Clear the switching flag after a delay to allow template to load
-                        setTimeout(() => {
-                            isSenderSwitching = false;
-                            console.log(`✅ Set isSenderSwitching = false`);
-                        }, 1000);
-                    });
-                };
-                activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
-                // Always load the template for the selected sender immediately
+                console.log(`� Set dropdown value to: ${sender}`);
+                
+                // Load the template for the selected sender
                 loadLastTemplate(sender);
             }
+        }
 
             // Async version of saveCurrentTemplate that returns a Promise
             function saveCurrentTemplateAsync(sender = null) {
@@ -1930,6 +1882,69 @@
                 }
                 
                 console.log('Final dropdown value:', activeSenderSelect.value);
+                
+                // Attach the change event listener here after dropdown is populated
+                console.log(`🎧 Attaching change event listener to sender dropdown`);
+                if (activeSenderSelect._listener) {
+                    activeSenderSelect.removeEventListener('change', activeSenderSelect._listener);
+                    console.log(`🗑️ Removed old event listener`);
+                }
+                
+                activeSenderSelect._listener = function() {
+                    const oldSender = getSavedSender();
+                    const newSender = this.value;
+                    console.log(`🔄 SENDER CHANGE DETECTED:`);
+                    console.log(`   📤 Old sender: ${oldSender} (${getSenderInfo(oldSender).name})`);
+                    console.log(`   📥 New sender: ${newSender} (${getSenderInfo(newSender).name})`);
+                    
+                    // Prevent event bubbling during switching
+                    isSenderSwitching = true;
+                    console.log(`🚫 Set isSenderSwitching = true`);
+                    
+                    // Save current template for old sender explicitly before switching
+                    console.log(`💾 Saving current template for old sender: ${oldSender}`);
+                    saveCurrentTemplateAsync(oldSender).then(() => {
+                        console.log(`✅ Template saved for ${oldSender}, now switching to ${newSender}`);
+                        
+                        // Now switch to new sender
+                        saveSender(newSender);
+                        console.log(`🔧 Updated localStorage to new sender: ${newSender}`);
+                        
+                        // Clear current content before loading new template
+                        console.log(`🧹 Clearing current template content`);
+                        document.getElementById('emailSubject').value = '';
+                        if (editorInitialized && tinymce.get('emailTemplate')) {
+                            tinymce.get('emailTemplate').setContent('');
+                        } else {
+                            document.getElementById('emailTemplate').value = '';
+                        }
+                        
+                        // Force reload the template for the new sender
+                        console.log(`📋 Loading template for new sender: ${newSender}`);
+                        loadLastTemplate(newSender);
+                        
+                        // Refresh contact stats for new sender
+                        loadContactStats(true); // Force reload
+                        
+                        // If custom selection is open, reload contacts for new sender
+                        const customSection = document.getElementById('customContactSelection');
+                        if (customSection && !customSection.classList.contains('hidden')) {
+                            selectedContacts.clear();
+                            updateSelectedCount();
+                            loadContactsForSelection();
+                        }
+                        console.log(`🎉 Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                        
+                        // Clear the switching flag after a delay to allow template to load
+                        setTimeout(() => {
+                            isSenderSwitching = false;
+                            console.log(`✅ Set isSenderSwitching = false`);
+                        }, 1000);
+                    });
+                };
+                
+                activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
+                console.log(`✅ Event listener attached to sender dropdown`);
                 
                 // Always load the template for the selected sender after a short delay
                 setTimeout(() => {
