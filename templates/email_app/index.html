@@ -1896,6 +1896,18 @@
                 console.log('Final dropdown HTML:', activeSenderSelect.innerHTML);
                 console.log('Final dropdown options:', Array.from(activeSenderSelect.options).map(opt => `${opt.value}: "${opt.text}"`));
                 
+                // Add a mutation observer to detect if dropdown gets modified
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                            console.log('🚨 DROPDOWN MODIFIED after initial setup!');
+                            console.log('New dropdown HTML:', activeSenderSelect.innerHTML);
+                            console.log('New dropdown options:', Array.from(activeSenderSelect.options).map(opt => `${opt.value}: "${opt.text}"`));
+                        }
+                    });
+                });
+                observer.observe(activeSenderSelect, { childList: true, subtree: true, characterData: true });
+                
                 // Attach the change event listener here after dropdown is populated
                 console.log(`🎧 Attaching change event listener to sender dropdown`);
                 if (activeSenderSelect._listener) {
