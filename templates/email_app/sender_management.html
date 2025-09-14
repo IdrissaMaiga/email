@@ -220,10 +220,13 @@
 
         // Load all email senders for management
         function loadEmailSenders() {
+            console.log('📋 Loading email senders for management...');
             fetch('/monitor/api/email_senders/')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('📋 Email senders response:', data);
                     if (data.success) {
+                        console.log('📋 Rendering senders:', data.senders);
                         renderEmailSenders(data.senders);
                     } else {
                         console.error('Failed to load email senders:', data.error);
@@ -358,10 +361,15 @@
         }
 
         function saveEmailSender(data) {
+            console.log('💾 Saving email sender with data:', data);
+            console.log('💾 Current editing sender:', currentEditingSender);
+            
             const url = currentEditingSender 
                 ? `/monitor/api/email_senders/${currentEditingSender.id}/update/`
                 : '/monitor/api/email_senders/create/';
             const method = currentEditingSender ? 'PUT' : 'POST';
+
+            console.log('💾 Making request to:', url, 'with method:', method);
 
             fetch(url, {
                 method: method,
@@ -371,19 +379,28 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('💾 Response status:', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('💾 Response data:', data);
                 if (data.success) {
                     hideSenderModal();
-                    loadEmailSenders(); // Reload the list
-                    loadAvailableSenders(); // Refresh dropdown
+                    console.log('💾 Reloading email senders list...');
+                    // Add a small delay to ensure database transaction is complete
+                    setTimeout(() => {
+                        loadEmailSenders(); // Reload the list
+                        console.log('💾 Reloading available senders dropdown...');
+                        loadAvailableSenders(); // Refresh dropdown
+                    }, 500);
                     alert(data.message);
                 } else {
                     alert('Error saving sender: ' + data.error);
                 }
             })
             .catch(error => {
-                console.error('Error saving sender:', error);
+                console.error('💾 Error saving sender:', error);
                 alert('Error saving sender');
             });
         }
