@@ -436,11 +436,12 @@
             const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
             
             if (!currentSender) {
-                console.warn('No sender available to load template');
+                console.warn('❌ No sender available to load template');
                 return;
             }
             
-            console.log(`Loading template for sender: ${currentSender}`);
+            console.log(`🔄 LOADING TEMPLATE FOR SENDER: ${currentSender}`);
+            console.log(`📋 Sender info:`, getSenderInfo(currentSender));
             
             // Clear the current cache for this template load
             const templateKey = `loadTemplate_${currentSender}`;
@@ -448,11 +449,19 @@
                 delete window.lastTemplateLoadTime[templateKey];
             }
             
-            fetch(`/api/get_template/?sender=${currentSender}`)
-                .then(response => response.json())
+            const apiUrl = `/api/get_template/?sender=${currentSender}`;
+            console.log(`🌐 Fetching template from: ${apiUrl}`);
+            
+            fetch(apiUrl)
+                .then(response => {
+                    console.log(`📡 Response status: ${response.status}`);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log(`📦 Template response data:`, data);
+                    
                     if (data.error) {
-                        console.log(`No saved template found for sender ${currentSender}, using default`);
+                        console.log(`⚠️ No saved template found for sender ${currentSender}, using default`);
                         // Clear the fields if no template found
                         document.getElementById('emailSubject').value = '';
                         if (editorInitialized && tinymce.get('emailTemplate')) {
@@ -463,7 +472,9 @@
                         return;
                     }
                     
-                    console.log(`Template loaded for sender ${currentSender}: subject="${data.subject}"`);
+                    console.log(`✅ TEMPLATE LOADED for sender ${currentSender}:`);
+                    console.log(`📝 Subject: "${data.subject}"`);
+                    console.log(`📄 Content length: ${data.content ? data.content.length : 0} characters`);
                     
                     // Set the subject
                     document.getElementById('emailSubject').value = data.subject;
@@ -472,9 +483,11 @@
                     if (editorInitialized && tinymce.get('emailTemplate')) {
                         // TinyMCE is ready, set content through editor
                         tinymce.get('emailTemplate').setContent(data.content);
+                        console.log(`📝 Content set via TinyMCE editor`);
                     } else {
                         // TinyMCE not ready yet, set textarea value directly
                         document.getElementById('emailTemplate').value = data.content;
+                        console.log(`📝 Content set via textarea (TinyMCE not ready)`);
                         
                         // Also try to set it after a delay in case TinyMCE initializes later
                         setTimeout(() => {
@@ -547,24 +560,34 @@
 
         // Sender management functions
         function getSavedSender() {
+            const savedSender = localStorage.getItem('selectedSender');
+            console.log(`🔍 getSavedSender() - localStorage value: "${savedSender}"`);
+            
             // Always get the sender from the dropdown if available, else fallback to localStorage
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect && activeSenderSelect.value) {
+                console.log(`🔍 Current dropdown value: "${activeSenderSelect.value}"`);
                 // Also update localStorage to keep it in sync
                 if (activeSenderSelect.value !== localStorage.getItem('selectedSender')) {
                     localStorage.setItem('selectedSender', activeSenderSelect.value);
+                    console.log(`🔄 Synced localStorage to dropdown value: ${activeSenderSelect.value}`);
                 }
                 return activeSenderSelect.value;
             }
-            return localStorage.getItem('selectedSender') || null;
+            console.log(`🔍 No dropdown value, returning localStorage: ${savedSender}`);
+            return savedSender || null;
         }
 
         function saveSender(sender) {
+            console.log(`💾 saveSender() - Saving sender: "${sender}"`);
             localStorage.setItem('selectedSender', sender);
+            console.log(`✅ Saved to localStorage: ${localStorage.getItem('selectedSender')}`);
+            
             // Also update dropdown if it exists
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect && activeSenderSelect.value !== sender) {
                 activeSenderSelect.value = sender;
+                console.log(`🔄 Updated dropdown to: ${sender}`);
             }
         }
 
@@ -613,17 +636,25 @@
                 activeSenderSelect._listener = function() {
                     const oldSender = getSavedSender();
                     const newSender = this.value;
-                    console.log(`Sender changed from ${oldSender} to ${newSender}`);
+                    console.log(`🔄 SENDER CHANGE DETECTED:`);
+                    console.log(`   📤 Old sender: ${oldSender} (${getSenderInfo(oldSender).name})`);
+                    console.log(`   📥 New sender: ${newSender} (${getSenderInfo(newSender).name})`);
                     
                     // Prevent event bubbling during switching
                     isSenderSwitching = true;
+                    console.log(`🚫 Set isSenderSwitching = true`);
                     
                     // Save current template for old sender explicitly before switching
+                    console.log(`💾 Saving current template for old sender: ${oldSender}`);
                     saveCurrentTemplateAsync(oldSender).then(() => {
+                        console.log(`✅ Template saved for ${oldSender}, now switching to ${newSender}`);
+                        
                         // Now switch to new sender
                         saveSender(newSender);
+                        console.log(`🔧 Updated localStorage to new sender: ${newSender}`);
                         
                         // Clear current content before loading new template
+                        console.log(`🧹 Clearing current template content`);
                         document.getElementById('emailSubject').value = '';
                         if (editorInitialized && tinymce.get('emailTemplate')) {
                             tinymce.get('emailTemplate').setContent('');
@@ -632,7 +663,7 @@
                         }
                         
                         // Force reload the template for the new sender
-                        console.log(`Loading template for new sender: ${newSender}`);
+                        console.log(`📋 Loading template for new sender: ${newSender}`);
                         loadLastTemplate(newSender);
                         
                         // Refresh contact stats for new sender
@@ -645,11 +676,12 @@
                             updateSelectedCount();
                             loadContactsForSelection();
                         }
-                        console.log(`Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                        console.log(`🎉 Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
                         
                         // Clear the switching flag after a delay to allow template to load
                         setTimeout(() => {
                             isSenderSwitching = false;
+                            console.log(`✅ Set isSenderSwitching = false`);
                         }, 1000);
                     });
                 };
@@ -665,25 +697,34 @@
                     const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
                     const subject = document.getElementById('emailSubject').value;
                     
-                    console.log(`Async saving template for sender: ${currentSender}, subject: "${subject}"`);
+                    console.log(`💾 ASYNC SAVING TEMPLATE:`);
+                    console.log(`   👤 Sender: ${currentSender}`);
+                    console.log(`   📝 Subject: "${subject}"`);
                     
                     let content = '';
                     if (editorInitialized && tinymce.get('emailTemplate')) {
                         content = tinymce.get('emailTemplate').getContent();
+                        console.log(`   📄 Content (via TinyMCE): ${content.length} characters`);
                     } else {
                         content = document.getElementById('emailTemplate').value;
+                        console.log(`   📄 Content (via textarea): ${content.length} characters`);
                     }
+                    
                     if (!content.trim() && !subject.trim()) {
-                        console.log('Skipping async save - empty template');
+                        console.log('⚠️ Skipping async save - empty template');
                         resolve();
                         return;
                     }
+                    
                     const templateKey = `${currentSender}_${subject}_${content}`;
                     if (window.lastSavedTemplateKey === templateKey) {
+                        console.log('⚠️ Skipping async save - template unchanged');
                         resolve();
                         return;
                     }
                     window.lastSavedTemplateKey = templateKey;
+                    
+                    console.log(`🌐 Posting template to /api/save_template/`);
                     fetch('/api/save_template/', {
                         method: 'POST',
                         headers: {
@@ -1192,13 +1233,21 @@
 
         // Load contacts when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            console.log(`🚀 PAGE LOADED - Starting initialization`);
+            
             // Load available senders first, then apply saved sender
+            console.log(`📡 Loading available senders...`);
             loadAvailableSenders(); // This now loads both data and populates dropdown
             
+            console.log(`🔧 Initializing editor...`);
             initializeEditor();
+            console.log(`📊 Loading contact stats...`);
             loadContactStats();
+            console.log(`📋 Loading last template...`);
             loadLastTemplate();
+            console.log(`📂 Loading categories...`);
             loadCategories(); // Load categories for the category filter
+            console.log(`👤 Loading email senders...`);
             loadEmailSenders(); // Load email senders for management
             
             // Set up periodic refresh of contact stats every 30 seconds
@@ -1827,18 +1876,25 @@
         }
 
         function loadAvailableSenders() {
+            console.log(`📡 loadAvailableSenders() - Fetching from /api/get_senders/`);
             fetch('/api/get_senders/')
-                .then(response => response.json())
+                .then(response => {
+                    console.log(`📡 Response status: ${response.status}`);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log(`📦 Received sender data:`, data);
                     if (data.senders) {
                         senderData = data.senders;
+                        console.log(`✅ Stored senderData:`, senderData);
+                        console.log(`👥 Available senders: ${Object.keys(senderData).join(', ')}`);
                         updateSenderDropdownsFromAvailable(data.senders);
                     } else {
-                        console.error('Failed to load available senders:', data.error);
+                        console.error('❌ Failed to load available senders:', data.error);
                     }
                 })
                 .catch(error => {
-                    console.error('Error loading available senders:', error);
+                    console.error('❌ Error loading available senders:', error);
                 });
         }
 
