@@ -615,12 +615,21 @@
                     const newSender = this.value;
                     console.log(`Sender changed from ${oldSender} to ${newSender}`);
                     
-                    // Set flag to prevent auto-save during switching
+                    // Prevent event bubbling during switching
                     isSenderSwitching = true;
                     
-                    // Save current template for old sender, then load new sender's template after save completes
+                    // Save current template for old sender explicitly before switching
                     saveCurrentTemplateAsync(oldSender).then(() => {
+                        // Now switch to new sender
                         saveSender(newSender);
+                        
+                        // Clear current content before loading new template
+                        document.getElementById('emailSubject').value = '';
+                        if (editorInitialized && tinymce.get('emailTemplate')) {
+                            tinymce.get('emailTemplate').setContent('');
+                        } else {
+                            document.getElementById('emailTemplate').value = '';
+                        }
                         
                         // Force reload the template for the new sender
                         console.log(`Loading template for new sender: ${newSender}`);
@@ -1184,8 +1193,7 @@
         // Load contacts when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Load available senders first, then apply saved sender
-            loadAvailableSenders();
-            loadSenderData(); // Load dynamic sender configurations
+            loadAvailableSenders(); // This now loads both data and populates dropdown
             
             initializeEditor();
             loadContactStats();
@@ -1840,21 +1848,33 @@
             if (activeSenderSelect) {
                 const currentValue = activeSenderSelect.value;
                 const senderKeys = Object.keys(senders);
+                console.log('Updating sender dropdown with senders:', senders);
+                console.log('Current dropdown value before update:', currentValue);
+                
                 activeSenderSelect.innerHTML = senderKeys
                     .map(key => {
                         const sender = senders[key];
                         const displayName = sender.display_name || sender.name || sender.email;
+                        console.log(`Creating option: ${key} -> ${displayName}`);
                         return `<option value="${key}">${displayName}</option>`;
                     })
                     .join('');
+                    
                 // Set saved sender or default to first available
                 const savedSender = getSavedSender();
+                console.log('Saved sender from localStorage:', savedSender);
+                
                 if (savedSender && senders[savedSender]) {
                     activeSenderSelect.value = savedSender;
+                    console.log(`Set saved sender: ${savedSender}`);
                 } else if (senderKeys.length > 0) {
                     activeSenderSelect.value = senderKeys[0];
                     saveSender(senderKeys[0]); // Save the default selection
+                    console.log(`Set default sender: ${senderKeys[0]}`);
                 }
+                
+                console.log('Final dropdown value:', activeSenderSelect.value);
+                
                 // Always load the template for the selected sender after a short delay
                 setTimeout(() => {
                     const finalSender = activeSenderSelect.value;
