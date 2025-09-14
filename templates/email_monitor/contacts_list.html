@@ -633,10 +633,64 @@ function getSavedSender() {
     return localStorage.getItem('selectedSender') || null;
 }
 
+// Global variable to store sender data
+let senderData = {};
+
+async function loadSenderData() {
+    try {
+        const response = await fetch('/api/get_senders/');
+        const data = await response.json();
+        if (data.senders) {
+            senderData = data.senders;
+            console.log('Loaded sender data for contacts page:', senderData);
+            
+            // Update the dropdown with loaded senders
+            updateSenderDropdown();
+        } else {
+            console.error('No sender data received:', data);
+            senderData = {};
+        }
+    } catch (error) {
+        console.error('Error loading sender data:', error);
+        senderData = {};
+    }
+}
+
+function updateSenderDropdown() {
+    const activeSenderSelect = document.getElementById('activeSenderSelect');
+    if (!activeSenderSelect) return;
+    
+    // Clear existing options
+    activeSenderSelect.innerHTML = '';
+    
+    if (Object.keys(senderData).length === 0) {
+        activeSenderSelect.innerHTML = '<option value="">No senders configured</option>';
+        return;
+    }
+    
+    // Add options for each sender
+    Object.keys(senderData).forEach(senderKey => {
+        const sender = senderData[senderKey];
+        const option = document.createElement('option');
+        option.value = senderKey;
+        option.textContent = sender.email || sender.name;
+        activeSenderSelect.appendChild(option);
+    });
+    
+    // Set the saved sender as selected
+    const savedSender = getSavedSender();
+    if (savedSender && senderData[savedSender]) {
+        activeSenderSelect.value = savedSender;
+    } else if (Object.keys(senderData).length > 0) {
+        // Select the first available sender if no saved sender or saved sender doesn't exist
+        const firstSender = Object.keys(senderData)[0];
+        activeSenderSelect.value = firstSender;
+        localStorage.setItem('selectedSender', firstSender);
+    }
+}
+
 function getSenderInfo(sender) {
-    // This should be loaded dynamically from API in the future
-    const senderMap = {};
-    return senderMap[sender] || { name: 'Unknown', domain: 'unknown' };
+    return senderData[sender] || { name: 'Unknown', domain: 'unknown' };
 }
 
 function updatePageForSender(sender) {
@@ -673,43 +727,59 @@ function updateIndexLinkWithSender(event, linkElement) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Get sender from URL parameter first, then fallback to localStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlSender = urlParams.get('sender');
-    let currentSender = urlSender || getSavedSender();
-    
-    // If we got sender from URL, save it to localStorage for consistency
-    if (urlSender) {
-        localStorage.setItem('selectedSender', urlSender);
-    }
-    
-    // Initialize activeSenderSelect
-    const activeSenderSelect = document.getElementById('activeSenderSelect');
-    
-    if (activeSenderSelect) {
-        activeSenderSelect.value = currentSender;
+    // Load sender data first
+    loadSenderData().then(() => {
+        // Get sender from URL parameter first, then fallback to localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSender = urlParams.get('sender');
+        let currentSender = urlSender || getSavedSender();
         
-        // Add change handler for active sender
-        activeSenderSelect.addEventListener('change', function() {
-            const selectedSender = this.value;
-            localStorage.setItem('selectedSender', selectedSender);
+        // If we got sender from URL, save it to localStorage for consistency
+        if (urlSender) {
+            localStorage.setItem('selectedSender', urlSender);
+        }
+        
+        // Validate that the current sender exists in loaded data
+        if (currentSender && !senderData[currentSender]) {
+            console.warn(`Saved sender "${currentSender}" not found in available senders`);
+            currentSender = Object.keys(senderData)[0] || null;
+            if (currentSender) {
+                localStorage.setItem('selectedSender', currentSender);
+            }
+        }
+        
+        // Initialize activeSenderSelect
+        const activeSenderSelect = document.getElementById('activeSenderSelect');
+        
+        if (activeSenderSelect && currentSender) {
+            activeSenderSelect.value = currentSender;
             
-            console.log(`Sender changed to: ${getSenderInfo(selectedSender).name}`);
+            // Add change handler for active sender
+            activeSenderSelect.addEventListener('change', function() {
+                const selectedSender = this.value;
+                localStorage.setItem('selectedSender', selectedSender);
+                
+                console.log(`Sender changed to: ${getSenderInfo(selectedSender).name}`);
+                
+                // Reload the page with the new sender filter
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('sender', selectedSender);
+                window.location.href = currentUrl.toString();
+            });
+        }
+        
+        // Apply saved sender first
+        if (currentSender) {
+            updatePageForSender(currentSender);
             
-            // Reload the page with the new sender filter
-            const currentUrl = new URL(window.location);
-            currentUrl.searchParams.set('sender', selectedSender);
-            window.location.href = currentUrl.toString();
-        });
-    }
-    
-    // Apply saved sender first
-    updatePageForSender(currentSender);
-    
-    // Add sender filter to all forms initially
-    addSenderFilterToForms();
-    
-    console.log(`Contacts page loaded for sender: ${getSenderInfo(currentSender).name}`);
+            // Add sender filter to all forms initially
+            addSenderFilterToForms();
+            
+            console.log(`Contacts page loaded for sender: ${getSenderInfo(currentSender).name}`);
+        } else {
+            console.warn('No sender available - user needs to configure senders first');
+        }
+    });
 
     // Rest of existing JavaScript...
     const toggleBtn = document.getElementById('toggleFields');

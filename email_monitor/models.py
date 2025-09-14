@@ -242,7 +242,7 @@ class EmailTemplate(models.Model):
     def __str__(self):
         return f"{self.get_template_type_display()} - {self.sender} - {self.subject[:50]}"
     
-        @classmethod
+    @classmethod
     def get_last_used_template(cls, sender):
         """Get the last used template for a specific sender"""
         if not sender:
@@ -259,8 +259,6 @@ class EmailTemplate(models.Model):
                 content=''
             )
 
-    @classmethod
-    
     @classmethod
     def save_last_used_template(cls, sender, subject, content):
         """Save the template as the last used one for a specific sender"""
