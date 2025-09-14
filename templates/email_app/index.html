@@ -1893,6 +1893,8 @@
                 }
                 
                 console.log('Final dropdown value:', activeSenderSelect.value);
+                console.log('Final dropdown HTML:', activeSenderSelect.innerHTML);
+                console.log('Final dropdown options:', Array.from(activeSenderSelect.options).map(opt => `${opt.value}: "${opt.text}"`));
                 
                 // Attach the change event listener here after dropdown is populated
                 console.log(`🎧 Attaching change event listener to sender dropdown`);
