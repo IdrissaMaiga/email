@@ -157,13 +157,51 @@
                     </svg>
                 </button>
             </div>
+            
+            <!-- Import Method Selection -->
+            <div class="mb-4">
+                <div class="flex border-b border-gray-200">
+                    <button id="fileImportTab" class="py-2 px-4 text-sm font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50 rounded-t-lg">
+                        Upload File
+                    </button>
+                    <button id="textImportTab" class="py-2 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg">
+                        Paste JSON
+                    </button>
+                </div>
+            </div>
+
             <form id="importForm" class="space-y-4">
                 {% csrf_token %}
-                <div>
-                    <label for="importFile" class="block text-sm font-medium text-gray-700">Select JSON File</label>
-                    <input type="file" id="importFile" name="import_file" accept=".json" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <p class="mt-1 text-xs text-gray-500">Upload a JSON file with email sender configurations</p>
+                
+                <!-- File Upload Tab -->
+                <div id="fileImportContent">
+                    <div>
+                        <label for="importFile" class="block text-sm font-medium text-gray-700">Select JSON File</label>
+                        <input type="file" id="importFile" name="import_file" accept=".json" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="mt-1 text-xs text-gray-500">Upload a JSON file with email sender configurations</p>
+                    </div>
                 </div>
+
+                <!-- Text Paste Tab -->
+                <div id="textImportContent" class="hidden">
+                    <div>
+                        <label for="importText" class="block text-sm font-medium text-gray-700">Paste JSON Configuration</label>
+                        <textarea id="importText" name="import_text" rows="12" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm" placeholder='Paste your JSON here, example:
+{
+  "horizoneurope": {
+    "email": "roland.zonai@horizoneurope.io",
+    "name": "Roland Zonai - Horizon Europe IO",
+    "api_key": "re_Cs5WjBoq_KQVASjgHeJv5ru1Nkuomk3BY",
+    "domain": "horizoneurope.io",
+    "webhook_url": "sender.horizoneurope.io/webhook1/",
+    "webhook_secret": "whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf"
+  },
+  "replace_existing": false
+}'></textarea>
+                        <p class="mt-1 text-xs text-gray-500">Paste your JSON sender configurations directly here</p>
+                    </div>
+                </div>
+
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="button" id="cancelImportBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                         Cancel
@@ -435,60 +473,118 @@
 
         function showImportModal() {
             document.getElementById('importModal').classList.remove('hidden');
+            // Reset to file tab by default
+            switchToFileImport();
         }
 
         function hideImportModal() {
             document.getElementById('importModal').classList.add('hidden');
+            // Clear form data
+            document.getElementById('importFile').value = '';
+            document.getElementById('importText').value = '';
+        }
+
+        function switchToFileImport() {
+            // Update tab appearance
+            document.getElementById('fileImportTab').classList.add('text-blue-600', 'border-blue-600', 'bg-blue-50');
+            document.getElementById('fileImportTab').classList.remove('text-gray-500');
+            document.getElementById('textImportTab').classList.add('text-gray-500');
+            document.getElementById('textImportTab').classList.remove('text-blue-600', 'border-blue-600', 'bg-blue-50');
+            
+            // Show/hide content
+            document.getElementById('fileImportContent').classList.remove('hidden');
+            document.getElementById('textImportContent').classList.add('hidden');
+            
+            // Update required fields
+            document.getElementById('importFile').required = true;
+            document.getElementById('importText').required = false;
+        }
+
+        function switchToTextImport() {
+            // Update tab appearance
+            document.getElementById('textImportTab').classList.add('text-blue-600', 'border-blue-600', 'bg-blue-50');
+            document.getElementById('textImportTab').classList.remove('text-gray-500');
+            document.getElementById('fileImportTab').classList.add('text-gray-500');
+            document.getElementById('fileImportTab').classList.remove('text-blue-600', 'border-blue-600', 'bg-blue-50');
+            
+            // Show/hide content
+            document.getElementById('textImportContent').classList.remove('hidden');
+            document.getElementById('fileImportContent').classList.add('hidden');
+            
+            // Update required fields
+            document.getElementById('importText').required = true;
+            document.getElementById('importFile').required = false;
         }
 
         function importSendersFromJson() {
             const fileInput = document.getElementById('importFile');
-            const file = fileInput.files[0];
+            const textInput = document.getElementById('importText');
+            const isFileMode = !document.getElementById('fileImportContent').classList.contains('hidden');
             
-            if (!file) {
-                alert('Please select a file to import');
-                return;
-            }
+            if (isFileMode) {
+                // File mode
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('Please select a file to import');
+                    return;
+                }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importData = JSON.parse(e.target.result);
+                        sendImportData(importData);
+                    } catch (e) {
+                        alert('Invalid JSON format in file: ' + e.message);
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                // Text mode
+                const jsonText = textInput.value.trim();
+                if (!jsonText) {
+                    alert('Please paste JSON configuration');
+                    return;
+                }
+                
                 try {
-                    const importData = JSON.parse(e.target.result);
-                    
-                    fetch('/monitor/api/email_senders/import/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCsrfToken()
-                        },
-                        body: JSON.stringify(importData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            hideImportModal();
-                            loadEmailSenders(); // Reload the sender management list
-                            loadAvailableSenders(); // Refresh the dropdown options
-                            
-                            let message = data.message;
-                            if (data.errors && data.errors.length > 0) {
-                                message += '\n\nErrors encountered:\n' + data.errors.join('\n');
-                            }
-                            alert(message);
-                        } else {
-                            alert('Error importing senders: ' + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error importing senders:', error);
-                        alert('Error importing senders');
-                    });
-                    
+                    const importData = JSON.parse(jsonText);
+                    sendImportData(importData);
                 } catch (e) {
                     alert('Invalid JSON format: ' + e.message);
                 }
-            };
-            reader.readAsText(file);
+            }
+        }
+
+        function sendImportData(importData) {
+            fetch('/monitor/api/email_senders/import/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify(importData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    hideImportModal();
+                    loadEmailSenders(); // Reload the sender management list
+                    loadAvailableSenders(); // Refresh the dropdown options
+                    
+                    let message = data.message;
+                    if (data.errors && data.errors.length > 0) {
+                        message += '\n\nErrors encountered:\n' + data.errors.join('\n');
+                    }
+                    alert(message);
+                } else {
+                    alert('Error importing senders: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error importing senders:', error);
+                alert('Error importing senders');
+            });
         }
 
         function getCsrfToken() {
@@ -547,6 +643,17 @@
             const cancelImportBtn = document.getElementById('cancelImportBtn');
             if (cancelImportBtn) {
                 cancelImportBtn.addEventListener('click', hideImportModal);
+            }
+
+            // Import tab switching
+            const fileImportTab = document.getElementById('fileImportTab');
+            if (fileImportTab) {
+                fileImportTab.addEventListener('click', switchToFileImport);
+            }
+
+            const textImportTab = document.getElementById('textImportTab');
+            if (textImportTab) {
+                textImportTab.addEventListener('click', switchToTextImport);
             }
 
             // Form submissions
