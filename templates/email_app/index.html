@@ -572,9 +572,9 @@
 
         function applySenderToUI() {
             const savedSender = getSavedSender();
-            const senderSelect = document.getElementById('senderSelect');
-            if (senderSelect) {
-                senderSelect.value = savedSender;
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect) {
+                activeSenderSelect.value = savedSender;
             }
             
             // Update UI elements based on sender
@@ -1201,8 +1201,17 @@
             if (senderSelect) {
                 senderSelect.addEventListener('change', function() {
                     const newSender = this.value;
+                    console.log(`Switching to sender: ${newSender}`);
+                    
+                    // Save current template before switching
+                    saveCurrentTemplate();
+                    
+                    // Update sender
                     saveSender(newSender);
                     updateUIForSender(newSender);
+                    
+                    // Load template for new sender
+                    loadLastTemplate();
                     
                     // Refresh data for new sender
                     loadContactStats();
@@ -1215,7 +1224,7 @@
                         loadContactsForSelection();
                     }
                     
-                    console.log(`Switched to sender: ${getSenderInfo(newSender).name}`);
+                    console.log(`Successfully switched to sender: ${getSenderInfo(newSender).name}`);
                 });
             }
             
