@@ -87,7 +87,10 @@ def contacts_list(request):
     """View to display all contacts from CSV with their email status"""
     
     # Get sender parameter to filter email events by sender
-    sender = request.GET.get('sender', 'horizoneurope')
+    sender = request.GET.get('sender')
+    if not sender:
+        return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+        
     sender_email = get_sender_email(sender)
     
     # If no sender email found, return error or redirect to setup
@@ -319,7 +322,10 @@ def contact_email_content_api(request):
     
     try:
         # Get sender parameter to determine which sender's emails to show
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+            
         sender_email = get_sender_email(sender)
         
         # If no sender email found, return error
@@ -489,7 +495,10 @@ def email_content_by_id_api(request):
     
     try:
         # Get sender parameter to determine which API key to use
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+            
         sender_email = get_sender_email(sender)
         
         # If no sender email found, return error
@@ -765,7 +774,10 @@ def contact_stats_api(request):
     
     try:
         # Get sender parameter from request
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+            
         category_filter = request.GET.get('category')  # Optional category filter
         
         # Map sender to email domain for filtering
@@ -869,7 +881,9 @@ def contacts_api(request):
     """API endpoint to get contacts list for custom selection filtered by sender"""
     try:
         # Get sender parameter from request
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
         
         # Map sender to email domain for filtering
         sender_email = get_sender_email(sender)

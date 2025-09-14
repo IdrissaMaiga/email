@@ -228,8 +228,8 @@ class EmailTemplate(models.Model):
     
     template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, 
                                    help_text="Type of template (default or last used)")
-    sender = models.CharField(max_length=50, default='horizoneurope', 
-                            help_text="Sender identifier (horizoneurope, horizon_eu, etc.)")
+    sender = models.CharField(max_length=50, 
+                            help_text="Sender identifier")
     subject = models.TextField(default="EU Grant Advisory Platform - Beta Testing Invitation", 
                               help_text="Email subject")
     content = models.TextField(help_text="Email template content")
@@ -242,37 +242,24 @@ class EmailTemplate(models.Model):
     def __str__(self):
         return f"{self.get_template_type_display()} - {self.sender} - {self.subject[:50]}"
     
+        @classmethod
+    def get_last_used_template(cls, sender):
+        """Get the last used template for a specific sender"""
+        if not sender:
+            raise ValueError("Sender parameter is required")
+            
+        try:
+            template = cls.objects.get(sender=sender)
+            return template
+        except cls.DoesNotExist:
+            # Create a new empty template for this sender
+            return cls.objects.create(
+                sender=sender,
+                subject='',
+                content=''
+            )
+
     @classmethod
-    def get_last_used_template(cls, sender='horizoneurope'):
-        """Get the last used template for a specific sender, or create default if none exists"""
-        template, created = cls.objects.get_or_create(
-            template_type='last_used',
-            sender=sender,
-            defaults={
-                'subject': "EU Grant Advisory Platform - Beta Testing Invitation",
-                'content': """Dear {prospect_first_name} {prospect_last_name},
-
-My name is Roland Zonai, I am a technical due diligence expert of the European Innovation Bank (EIB) and an expert evaluator of the European Innovation Council (EIC). My EC Expert ID is EX2016D281325. I am writing to you regarding a new platform I have developed to address inefficiencies in the EU research funding application process, particularly for Horizon Europe and cascade funding programs.
-
-My evaluation of over 120 EIC Accelerator proposals and Horizon Europe RIA and IA consortiums has identified a recurring challenge: the significant resource expenditure required for research teams to identify and align with the most suitable EU funding instruments.
-
-To address this, I have engineered an EU Grant Advisory Platform and Innovation Funding Alert System. The objective is to provide a tool that systematically maps innovation projects to funding opportunities. It provides an automated monthly intelligence briefing which delivers curated data points on new funding calls, relevant procurement notices, scientific publications, and investment activities pertinent to your specified field of research.
-
-We are currently seeking a small group of research institutions and deeptech startups from {prospect_location_country} to participate in the beta testing phase of this platform to provide feedback on its functionality and utility. We noticed your role as {job_title} and we would like to invite you from {company_name} to participate. You can review the high-level overview of the platform and receive access credentials at the link below:
-https://horizoneurope.io
-
-Kindly let me know if you are open to participating. Would you be available for a brief introductory call next week?
-
-I look forward to the possibility of connecting.
-
-Best Regards,
-Roland Zonai
-Horizon Europe Funding Expert
-‪‪+36306500212‬‬
-‪https://www.linkedin.com/in/rolandzonai/"""
-            }
-        )
-        return template
     
     @classmethod
     def save_last_used_template(cls, sender, subject, content):

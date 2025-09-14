@@ -388,6 +388,7 @@
         let allContacts = [];
         let filteredContacts = [];
         let selectedContacts = new Set();
+        let isSenderSwitching = false; // Flag to prevent auto-save during sender switching
 
         // Initialize TinyMCE editor
         function initializeEditor() {
@@ -433,6 +434,11 @@
         function loadLastTemplate(sender = null) {
             // Always use the currently selected sender from the dropdown
             const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
+            
+            if (!currentSender) {
+                console.warn('No sender available to load template');
+                return;
+            }
             
             console.log(`Loading template for sender: ${currentSender}`);
             
@@ -550,7 +556,7 @@
                 }
                 return activeSenderSelect.value;
             }
-            return localStorage.getItem('selectedSender') || 'horizoneurope';
+            return localStorage.getItem('selectedSender') || null;
         }
 
         function saveSender(sender) {
@@ -609,13 +615,12 @@
                     const newSender = this.value;
                     console.log(`Sender changed from ${oldSender} to ${newSender}`);
                     
+                    // Set flag to prevent auto-save during switching
+                    isSenderSwitching = true;
+                    
                     // Save current template for old sender, then load new sender's template after save completes
                     saveCurrentTemplateAsync(oldSender).then(() => {
                         saveSender(newSender);
-                        const mainSenderSelect = document.getElementById('senderSelect');
-                        if (mainSenderSelect) {
-                            mainSenderSelect.value = newSender;
-                        }
                         
                         // Force reload the template for the new sender
                         console.log(`Loading template for new sender: ${newSender}`);
@@ -632,6 +637,11 @@
                             loadContactsForSelection();
                         }
                         console.log(`Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                        
+                        // Clear the switching flag after a delay to allow template to load
+                        setTimeout(() => {
+                            isSenderSwitching = false;
+                        }, 1000);
                     });
                 };
                 activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
@@ -706,24 +716,16 @@
                     console.log('Loaded sender data:', senderData);
                 } else {
                     console.error('No sender data received:', data);
-                    // Fallback to hardcoded data
-                    senderData = {
-                        'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
-                        'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
-                    };
+                    senderData = {};
                 }
             } catch (error) {
                 console.error('Error loading sender data:', error);
-                // Fallback to hardcoded data
-                senderData = {
-                    'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
-                    'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
-                };
+                senderData = {};
             }
         }
 
         function getSenderInfo(sender) {
-            return senderData[sender] || senderData['horizoneurope'] || { name: 'Unknown', domain: 'unknown' };
+            return senderData[sender] || { name: 'Unknown', domain: 'unknown' };
         }
 
         // Load contact stats automatically on page load
@@ -744,6 +746,12 @@
             
             // Get current sender for filtering (always fresh from dropdown)
             const currentSender = getSavedSender();
+            if (!currentSender) {
+                console.warn('No sender selected, cannot load stats');
+                document.getElementById('csvStatus').textContent = 'Please select a sender first';
+                return;
+            }
+            
             const categoryFilter = document.getElementById('categoryFilter').value;
             
             console.log(`Loading stats for sender: ${currentSender}, category: ${categoryFilter || 'All'}`);
@@ -1398,10 +1406,12 @@
             const emailSubject = document.getElementById('emailSubject');
             if (emailSubject) {
                 emailSubject.addEventListener('input', function() {
+                    if (isSenderSwitching) return; // Skip auto-save during sender switching
+                    
                     clearTimeout(autoSaveTimeout);
                     autoSaveTimeout = setTimeout(() => {
                         const now = Date.now();
-                        if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                        if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN && !isSenderSwitching) {
                             saveCurrentTemplate();
                             showAutoSaveIndicator();
                             lastAutoSaveTime = now;
@@ -1411,6 +1421,8 @@
                 // Also save subject when user clicks away (blur event)
 
                 emailSubject.addEventListener('blur', function() {
+                    if (isSenderSwitching) return; // Skip auto-save during sender switching
+                    
                     clearTimeout(autoSaveTimeout);
                     if (Date.now() - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
                         saveCurrentTemplate();
@@ -1425,10 +1437,12 @@
             function setupAutoSaveForEditor() {
                 if (editorInitialized && tinymce.get('emailTemplate')) {
                     tinymce.get('emailTemplate').on('input', function() {
+                        if (isSenderSwitching) return; // Skip auto-save during sender switching
+                        
                         clearTimeout(autoSaveTimeout);
                         autoSaveTimeout = setTimeout(() => {
                             const now = Date.now();
-                            if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
+                            if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN && !isSenderSwitching) {
                                 saveCurrentTemplate();
                                 showAutoSaveIndicator();
                                 lastAutoSaveTime = now;
@@ -1437,6 +1451,8 @@
                     });
                     // Also save on blur (when user clicks away)
                     tinymce.get('emailTemplate').on('blur', function() {
+                        if (isSenderSwitching) return; // Skip auto-save during sender switching
+                        
                         clearTimeout(autoSaveTimeout);
                         const now = Date.now();
                         if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {

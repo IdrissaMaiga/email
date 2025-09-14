@@ -57,7 +57,10 @@ def get_last_template(request):
         return JsonResponse({'error': 'Only GET method allowed'}, status=405)
     
     try:
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+            
         template = EmailTemplate.get_last_used_template(sender)
         return JsonResponse({
             'subject': template.subject,
@@ -77,7 +80,10 @@ def save_template(request):
         data = json.loads(request.body)
         subject = data.get('subject', '')
         content = data.get('content', '')
-        sender = data.get('sender', 'horizoneurope')
+        sender = data.get('sender')
+        
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
         
         if not content:
             return JsonResponse({'error': 'Template content is required'}, status=400)
@@ -113,7 +119,12 @@ def send_emails(request):
     contact_range_start = data.get('contact_range_start')  # Start ID for contact range
     contact_range_end = data.get('contact_range_end')  # End ID for contact range
     selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
-    sender_key = data.get('sender', 'horizoneurope')  # Which sender to use
+    sender_key = data.get('sender')  # Which sender to use
+    
+    if not sender_key:
+        return JsonResponse({
+            'error': 'Sender parameter is required'
+        }, status=400)
     
     # Get sender configuration from database or settings
     email_senders = get_email_senders()
@@ -361,7 +372,9 @@ def contact_stats_api(request):
     
     try:
         # Get sender parameter to filter stats by sender
-        sender = request.GET.get('sender', 'horizoneurope')
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
         
         # Get sender email using the dynamic system (same as used in email sending)
         sender_email = get_sender_email(sender)

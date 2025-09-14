@@ -100,8 +100,7 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-blue-900 mb-1">Active Sender Account</p>
                         <select id="activeSenderSelect" class="w-full text-lg font-semibold text-blue-700 bg-white border border-blue-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:bg-blue-50 transition-colors min-w-max">
-                            <option value="horizoneurope">roland.zonai@horizoneurope.io</option>
-                            <option value="horizon_eu">roland.zonai@horizon.eu.com</option>
+                            <option value="">Loading senders...</option>
                         </select>
                     </div>
                 </div>
@@ -631,15 +630,13 @@
 <script>
 // Sender management functions (shared across pages)
 function getSavedSender() {
-    return localStorage.getItem('selectedSender') || 'horizoneurope';
+    return localStorage.getItem('selectedSender') || null;
 }
 
 function getSenderInfo(sender) {
-    const senderMap = {
-        'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
-        'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
-    };
-    return senderMap[sender] || senderMap['horizoneurope'];
+    // This should be loaded dynamically from API in the future
+    const senderMap = {};
+    return senderMap[sender] || { name: 'Unknown', domain: 'unknown' };
 }
 
 function updatePageForSender(sender) {
