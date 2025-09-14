@@ -32,6 +32,24 @@ import traceback
 logger = logging.getLogger(__name__)
 
 
+def get_sender_from_email(email):
+    """Get sender key from email address"""
+    try:
+        from .models import EmailSender
+        
+        # Get from database
+        try:
+            sender = EmailSender.objects.get(email=email, is_active=True)
+            return sender.key
+        except EmailSender.DoesNotExist:
+            logger.warning(f"No active sender found for email: {email}")
+            return None
+        
+    except Exception as e:
+        logger.error(f"Error getting sender from email {email}: {str(e)}")
+        return None
+
+
 def get_sender_email(sender_key):
     """Get sender email from database"""
     try:
@@ -392,10 +410,10 @@ def contact_email_content_api(request):
         email_senders = getattr(settings, 'EMAIL_SENDERS', {})
         resend_api_key = None
         
-        if 'roland.zonai@horizoneurope.io' in from_email:
-            resend_api_key = email_senders.get('horizoneurope', {}).get('api_key')
-        elif 'roland.zonai@horizon.eu.com' in from_email:
-            resend_api_key = email_senders.get('horizon_eu', {}).get('api_key')
+        # Dynamically determine sender from email
+        sender = get_sender_from_email(from_email)
+        if sender:
+            resend_api_key = email_senders.get(sender, {}).get('api_key')
         
         # Fallback to environment variable if no match found
         if not resend_api_key:
@@ -491,10 +509,10 @@ def email_content_by_id_api(request):
         email_senders = getattr(settings, 'EMAIL_SENDERS', {})
         resend_api_key = None
         
-        if 'roland.zonai@horizoneurope.io' in email_event.from_email:
-            resend_api_key = email_senders.get('horizoneurope', {}).get('api_key')
-        elif 'roland.zonai@horizon.eu.com' in email_event.from_email:
-            resend_api_key = email_senders.get('horizon_eu', {}).get('api_key')
+        # Dynamically determine sender from email
+        sender = get_sender_from_email(email_event.from_email)
+        if sender:
+            resend_api_key = email_senders.get(sender, {}).get('api_key')
         
         # Fallback to environment variable if no match found
         if not resend_api_key:

@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/contact_stats/', views.contact_stats_api, name='contact_stats_api'),
     path('api/get_template/', views.get_last_template, name='get_last_template'),
     path('api/save_template/', views.save_template, name='save_template'),
+    path('api/get_senders/', views.get_senders_api, name='get_senders_api'),
 ]

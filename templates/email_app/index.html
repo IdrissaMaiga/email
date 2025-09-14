@@ -694,12 +694,36 @@
             }
         }
 
+        // Global variable to store sender data
+        let senderData = {};
+
+        async function loadSenderData() {
+            try {
+                const response = await fetch('/api/get_senders/');
+                const data = await response.json();
+                if (data.senders) {
+                    senderData = data.senders;
+                    console.log('Loaded sender data:', senderData);
+                } else {
+                    console.error('No sender data received:', data);
+                    // Fallback to hardcoded data
+                    senderData = {
+                        'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
+                        'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
+                    };
+                }
+            } catch (error) {
+                console.error('Error loading sender data:', error);
+                // Fallback to hardcoded data
+                senderData = {
+                    'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
+                    'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
+                };
+            }
+        }
+
         function getSenderInfo(sender) {
-            const senderMap = {
-                'horizoneurope': { name: 'roland.zonai@horizoneurope.io', domain: 'horizoneurope.io' },
-                'horizon_eu': { name: 'roland.zonai@horizon.eu.com', domain: 'horizon.eu.com' }
-            };
-            return senderMap[sender] || senderMap['horizoneurope'];
+            return senderData[sender] || senderData['horizoneurope'] || { name: 'Unknown', domain: 'unknown' };
         }
 
         // Load contact stats automatically on page load
@@ -724,18 +748,35 @@
             
             console.log(`Loading stats for sender: ${currentSender}, category: ${categoryFilter || 'All'}`);
             
-            // Build URL with parameters
+            // Build URL with parameters and cache-busting timestamp
             let url = `/monitor/api/contact_stats/?sender=${currentSender}`;
             if (categoryFilter) {
                 url += `&category=${encodeURIComponent(categoryFilter)}`;
+            }
+            // Add cache-busting parameter when force reloading
+            if (forceReload) {
+                url += `&_t=${Date.now()}`;
             }
             
             console.log('Loading stats with URL:', url);
             
             // Fetch contact statistics from our API with sender and category filter
-            fetch(url)
-                .then(response => response.json())
+            fetch(url, {
+                // Disable caching for forced reloads
+                cache: forceReload ? 'no-cache' : 'default',
+                headers: {
+                    'Cache-Control': forceReload ? 'no-cache' : 'default'
+                }
+            })
+                .then(response => {
+                    console.log('Stats API response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Raw stats data received:', data);
                     if (data.error) {
                         document.getElementById('csvStatus').textContent = 'Error loading contact stats';
                         console.error('Contact stats error:', data.error);
@@ -748,7 +789,9 @@
                     console.log('Stats updated for sender:', currentSender, {
                         category: data.category_filter || 'All Categories',
                         total_contacts: data.total_contacts,
-                        not_sent: data.not_sent
+                        not_sent: data.not_sent,
+                        sent: data.sent,
+                        delivered: data.delivered
                     });
                     
                     // Update the statistics cards
@@ -1134,6 +1177,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Load available senders first, then apply saved sender
             loadAvailableSenders();
+            loadSenderData(); // Load dynamic sender configurations
             
             initializeEditor();
             loadContactStats();

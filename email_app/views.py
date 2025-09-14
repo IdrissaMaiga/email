@@ -363,12 +363,8 @@ def contact_stats_api(request):
         # Get sender parameter to filter stats by sender
         sender = request.GET.get('sender', 'horizoneurope')
         
-        # Map sender key to email address for filtering
-        sender_email_map = {
-            'horizoneurope': 'roland.zonai@horizoneurope.io',
-            'horizon_eu': 'roland.zonai@horizon.eu.com'
-        }
-        sender_email = sender_email_map.get(sender, 'roland.zonai@horizoneurope.io')
+        # Get sender email using the dynamic system (same as used in email sending)
+        sender_email = get_sender_email(sender)
         
         # Get ALL contacts (contacts are independent of senders)
         sender_contacts = Contact.objects.all()
@@ -421,6 +417,31 @@ def contact_stats_api(request):
                 'status_counts': 'Contact counts based on their latest email status from this sender only'
             }
         })
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def get_senders_api(request):
+    """Get all active email senders"""
+    try:
+        from email_monitor.models import EmailSender
+        
+        # Get active senders from database
+        senders = EmailSender.objects.filter(is_active=True).values(
+            'key', 'email', 'name', 'domain'
+        )
+        
+        # Convert to dictionary format expected by frontend
+        senders_dict = {}
+        for sender in senders:
+            senders_dict[sender['key']] = {
+                'name': sender['email'],  # Frontend expects email in 'name' field
+                'domain': sender['domain'],
+                'email': sender['email']  # Also provide email separately
+            }
+        
+        return JsonResponse({'senders': senders_dict})
         
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
