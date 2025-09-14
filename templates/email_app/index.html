@@ -434,27 +434,30 @@
             // Always use the currently selected sender from the dropdown
             const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
             
-            // Prevent excessive API calls with cooldown
-            const now = Date.now();
-            const templateKey = `loadTemplate_${currentSender}`;
-            if (window.lastTemplateLoadTime && window.lastTemplateLoadTime[templateKey] && 
-                (now - window.lastTemplateLoadTime[templateKey]) < 3000) {
-                console.log('Skipping template reload - too frequent');
-                return;
-            }
+            console.log(`Loading template for sender: ${currentSender}`);
             
-            if (!window.lastTemplateLoadTime) {
-                window.lastTemplateLoadTime = {};
+            // Clear the current cache for this template load
+            const templateKey = `loadTemplate_${currentSender}`;
+            if (window.lastTemplateLoadTime) {
+                delete window.lastTemplateLoadTime[templateKey];
             }
-            window.lastTemplateLoadTime[templateKey] = now;
             
             fetch(`/api/get_template/?sender=${currentSender}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         console.log(`No saved template found for sender ${currentSender}, using default`);
+                        // Clear the fields if no template found
+                        document.getElementById('emailSubject').value = '';
+                        if (editorInitialized && tinymce.get('emailTemplate')) {
+                            tinymce.get('emailTemplate').setContent('');
+                        } else {
+                            document.getElementById('emailTemplate').value = '';
+                        }
                         return;
                     }
+                    
+                    console.log(`Template loaded for sender ${currentSender}: subject="${data.subject}"`);
                     
                     // Set the subject
                     document.getElementById('emailSubject').value = data.subject;
@@ -475,10 +478,10 @@
                         }, 1000);
                     }
                     
-                    console.log(`Loaded last used template for sender: ${currentSender}`);
+                    console.log(`Successfully loaded template for sender: ${currentSender}`);
                 })
                 .catch(error => {
-                    console.log('Failed to load template:', error);
+                    console.error('Failed to load template:', error);
                 });
         }
 
@@ -538,6 +541,10 @@
             // Always get the sender from the dropdown if available, else fallback to localStorage
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect && activeSenderSelect.value) {
+                // Also update localStorage to keep it in sync
+                if (activeSenderSelect.value !== localStorage.getItem('selectedSender')) {
+                    localStorage.setItem('selectedSender', activeSenderSelect.value);
+                }
                 return activeSenderSelect.value;
             }
             return localStorage.getItem('selectedSender') || 'horizoneurope';
@@ -545,6 +552,11 @@
 
         function saveSender(sender) {
             localStorage.setItem('selectedSender', sender);
+            // Also update dropdown if it exists
+            const activeSenderSelect = document.getElementById('activeSenderSelect');
+            if (activeSenderSelect && activeSenderSelect.value !== sender) {
+                activeSenderSelect.value = sender;
+            }
         }
 
         function getSavedCategory() {
@@ -592,6 +604,8 @@
                 activeSenderSelect._listener = function() {
                     const oldSender = getSavedSender();
                     const newSender = this.value;
+                    console.log(`Sender changed from ${oldSender} to ${newSender}`);
+                    
                     // Save current template for old sender, then load new sender's template after save completes
                     saveCurrentTemplateAsync(oldSender).then(() => {
                         saveSender(newSender);
@@ -599,15 +613,22 @@
                         if (mainSenderSelect) {
                             mainSenderSelect.value = newSender;
                         }
+                        
+                        // Force reload the template for the new sender
+                        console.log(`Loading template for new sender: ${newSender}`);
                         loadLastTemplate(newSender);
-                        loadContactStats();
+                        
+                        // Refresh contact stats for new sender
+                        loadContactStats(true); // Force reload
+                        
+                        // If custom selection is open, reload contacts for new sender
                         const customSection = document.getElementById('customContactSelection');
                         if (customSection && !customSection.classList.contains('hidden')) {
                             selectedContacts.clear();
                             updateSelectedCount();
                             loadContactsForSelection();
                         }
-                        console.log(`Switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
+                        console.log(`Successfully switched from ${getSenderInfo(oldSender).name} to ${getSenderInfo(newSender).name}`);
                     });
                 };
                 activeSenderSelect.addEventListener('change', activeSenderSelect._listener);
@@ -689,9 +710,11 @@
                 refreshIndicator.classList.remove('hidden');
             }
             
-            // Get current sender for filtering
+            // Get current sender for filtering (always fresh from dropdown)
             const currentSender = getSavedSender();
             const categoryFilter = document.getElementById('categoryFilter').value;
+            
+            console.log(`Loading stats for sender: ${currentSender}, category: ${categoryFilter || 'All'}`);
             
             // Build URL with parameters
             let url = `/monitor/api/contact_stats/?sender=${currentSender}`;
@@ -714,7 +737,7 @@
                     // Store the stats globally for filter updates
                     window.contactStats = data;
                     
-                    console.log('Stats updated:', {
+                    console.log('Stats updated for sender:', currentSender, {
                         category: data.category_filter || 'All Categories',
                         total_contacts: data.total_contacts,
                         not_sent: data.not_sent
@@ -1484,11 +1507,12 @@
                     }
                     showMessage(message);
                     
-                    // Refresh contact stats after sending - multiple attempts to catch webhook updates
-                    setTimeout(loadContactStats, 500);   // Quick refresh
-                    setTimeout(loadContactStats, 2000);  // Medium refresh 
-                    setTimeout(loadContactStats, 5000);  // Longer refresh to catch webhook updates
-                    setTimeout(loadContactStats, 10000); // Final refresh for slow webhooks
+                    // Refresh contact stats after sending - use forced reloads to catch webhook updates
+                    console.log('Emails sent successfully, refreshing stats...');
+                    setTimeout(() => loadContactStats(true), 500);   // Quick refresh
+                    setTimeout(() => loadContactStats(true), 2000);  // Medium refresh 
+                    setTimeout(() => loadContactStats(true), 5000);  // Longer refresh to catch webhook updates
+                    setTimeout(() => loadContactStats(true), 10000); // Final refresh for slow webhooks
                     
                     // If custom selection, refresh the contacts list to show updated status
                     if (contactFilter === 'custom') {
@@ -1748,8 +1772,12 @@
                     activeSenderSelect.value = senders[0].key;
                     saveSender(senders[0].key); // Save the default selection
                 }
-                // Always load the template for the selected sender
-                loadLastTemplate(activeSenderSelect.value);
+                // Always load the template for the selected sender after a short delay
+                setTimeout(() => {
+                    const finalSender = activeSenderSelect.value;
+                    console.log(`Initial template load for sender: ${finalSender}`);
+                    loadLastTemplate(finalSender);
+                }, 500);
             }
         }
 
