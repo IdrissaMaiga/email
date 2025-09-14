@@ -449,9 +449,10 @@ def get_senders_api(request):
         senders_dict = {}
         for sender in senders:
             senders_dict[sender['key']] = {
-                'name': sender['email'],  # Frontend expects email in 'name' field
+                'name': sender['name'],  # Use the actual name
+                'email': sender['email'],
                 'domain': sender['domain'],
-                'email': sender['email']  # Also provide email separately
+                'display_name': f"{sender['name']} ({sender['email']})" if sender['name'] != sender['email'] else sender['email']
             }
         
         return JsonResponse({'senders': senders_dict})

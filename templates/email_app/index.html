@@ -1819,10 +1819,11 @@
         }
 
         function loadAvailableSenders() {
-            fetch('/monitor/api/email_senders/available/')
+            fetch('/api/get_senders/')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
+                    if (data.senders) {
+                        senderData = data.senders;
                         updateSenderDropdownsFromAvailable(data.senders);
                     } else {
                         console.error('Failed to load available senders:', data.error);
@@ -1834,20 +1835,25 @@
         }
 
         function updateSenderDropdownsFromAvailable(senders) {
-            // Update active sender select
+            // Update active sender select - convert dictionary to array
             const activeSenderSelect = document.getElementById('activeSenderSelect');
             if (activeSenderSelect) {
                 const currentValue = activeSenderSelect.value;
-                activeSenderSelect.innerHTML = senders
-                    .map(sender => `<option value="${sender.key}">${sender.display_name || sender.name || sender.email}</option>`)
+                const senderKeys = Object.keys(senders);
+                activeSenderSelect.innerHTML = senderKeys
+                    .map(key => {
+                        const sender = senders[key];
+                        const displayName = sender.display_name || sender.name || sender.email;
+                        return `<option value="${key}">${displayName}</option>`;
+                    })
                     .join('');
                 // Set saved sender or default to first available
                 const savedSender = getSavedSender();
-                if (savedSender && senders.find(s => s.key === savedSender)) {
+                if (savedSender && senders[savedSender]) {
                     activeSenderSelect.value = savedSender;
-                } else if (senders.length > 0) {
-                    activeSenderSelect.value = senders[0].key;
-                    saveSender(senders[0].key); // Save the default selection
+                } else if (senderKeys.length > 0) {
+                    activeSenderSelect.value = senderKeys[0];
+                    saveSender(senderKeys[0]); // Save the default selection
                 }
                 // Always load the template for the selected sender after a short delay
                 setTimeout(() => {

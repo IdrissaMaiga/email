@@ -673,7 +673,7 @@ function updateSenderDropdown() {
         const sender = senderData[senderKey];
         const option = document.createElement('option');
         option.value = senderKey;
-        option.textContent = sender.email || sender.name;
+        option.textContent = sender.display_name || sender.name || sender.email;
         activeSenderSelect.appendChild(option);
     });
     

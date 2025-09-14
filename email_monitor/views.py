@@ -89,7 +89,35 @@ def contacts_list(request):
     # Get sender parameter to filter email events by sender
     sender = request.GET.get('sender')
     if not sender:
-        return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+        # Check if there are any active senders at all
+        from .models import EmailSender
+        active_senders = EmailSender.objects.filter(is_active=True)
+        
+        if not active_senders.exists():
+            # No senders configured, show setup message
+            context = {
+                'contacts': [],
+                'stats': {
+                    'total': 0,
+                    'not_sent': 0,
+                    'sent': 0,
+                    'delivered': 0,
+                    'opened': 0,
+                    'clicked': 0,
+                    'bounced': 0,
+                    'failed': 0
+                },
+                'current_sender': None,
+                'sender_email': None,
+                'no_senders_configured': True,
+                'message': 'No email senders configured. Please add email senders first.'
+            }
+            return render(request, 'email_monitor/contacts_list.html', context)
+        else:
+            # Use the first active sender as fallback and redirect with sender parameter
+            first_sender = active_senders.first()
+            from django.shortcuts import redirect
+            return redirect(f"{request.path}?sender={first_sender.key}")
         
     sender_email = get_sender_email(sender)
     
