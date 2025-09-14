@@ -487,9 +487,11 @@
 
         // Save the current template for a specific sender
         function saveCurrentTemplate(sender = null) {
-            // Always use the currently selected sender from the dropdown
-            const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
+            // Use the passed sender parameter if provided, otherwise get current sender
+            const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
             const subject = document.getElementById('emailSubject').value;
+            
+            console.log(`Saving template for sender: ${currentSender}, subject: "${subject}"`);
             
             let content = '';
             if (editorInitialized && tinymce.get('emailTemplate')) {
@@ -499,6 +501,7 @@
             }
             
             if (!content.trim() && !subject.trim()) {
+                console.log('Skipping save - empty template');
                 return; // Don't save empty templates
             }
             
@@ -639,8 +642,12 @@
             // Async version of saveCurrentTemplate that returns a Promise
             function saveCurrentTemplateAsync(sender = null) {
                 return new Promise((resolve) => {
-                    const currentSender = document.getElementById('activeSenderSelect')?.value || sender || getSavedSender();
+                    // Use the passed sender parameter if provided, otherwise get current sender
+                    const currentSender = sender || document.getElementById('activeSenderSelect')?.value || getSavedSender();
                     const subject = document.getElementById('emailSubject').value;
+                    
+                    console.log(`Async saving template for sender: ${currentSender}, subject: "${subject}"`);
+                    
                     let content = '';
                     if (editorInitialized && tinymce.get('emailTemplate')) {
                         content = tinymce.get('emailTemplate').getContent();
@@ -648,6 +655,7 @@
                         content = document.getElementById('emailTemplate').value;
                     }
                     if (!content.trim() && !subject.trim()) {
+                        console.log('Skipping async save - empty template');
                         resolve();
                         return;
                     }
