@@ -186,15 +186,25 @@
                 <div id="textImportContent" class="hidden">
                     <div>
                         <label for="importText" class="block text-sm font-medium text-gray-700">Paste JSON Configuration</label>
-                        <textarea id="importText" name="import_text" rows="12" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm" placeholder='Paste your JSON here, example:
+                        <textarea id="importText" name="import_text" rows="15" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm" placeholder='Paste your JSON here, example:
 {
-  "horizoneurope": {
-    "email": "roland.zonai@horizoneurope.io",
-    "name": "Roland Zonai - Horizon Europe IO",
-    "api_key": "re_Cs5WjBoq_KQVASjgHeJv5ru1Nkuomk3BY",
-    "domain": "horizoneurope.io",
-    "webhook_url": "sender.horizoneurope.io/webhook1/",
-    "webhook_secret": "whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf"
+  "senders": {
+    "horizoneurope": {
+      "email": "roland.zonai@horizoneurope.io",
+      "name": "Roland Zonai - Horizon Europe IO",
+      "api_key": "re_Cs5WjBoq_KQVASjgHeJv5ru1Nkuomk3BY",
+      "domain": "horizoneurope.io",
+      "webhook_url": "sender.horizoneurope.io/webhook1/",
+      "webhook_secret": "whsec_mxDD0UTbIirVJ1//WCon4NpRz4e0jotf"
+    },
+    "horizon_eu": {
+      "email": "roland.zonai@horizon.eu.com",
+      "name": "Roland Zonai - Horizon EU",
+      "api_key": "re_2g11XipG_PZyEkMWAkwJ2eTSMbZVbk5hz",
+      "domain": "horizon.eu.com",
+      "webhook_url": "sender.horizoneurope.io/webhook2/",
+      "webhook_secret": "whsec_tAU54drStmKUyqSmDT2An08p0m3WuvSv"
+    }
   },
   "replace_existing": false
 }'></textarea>
