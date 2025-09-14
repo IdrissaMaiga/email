@@ -673,7 +673,10 @@ function updateSenderDropdown() {
         const sender = senderData[senderKey];
         const option = document.createElement('option');
         option.value = senderKey;
-        option.textContent = sender.display_name || sender.name || sender.email;
+        // Always show format: "Name (email)" for consistency with main page
+        option.textContent = sender.name && sender.name !== sender.email 
+            ? `${sender.name} (${sender.email})` 
+            : sender.email;
         activeSenderSelect.appendChild(option);
     });
     

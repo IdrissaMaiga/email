@@ -1862,8 +1862,15 @@
                 activeSenderSelect.innerHTML = senderKeys
                     .map(key => {
                         const sender = senders[key];
-                        const displayName = sender.display_name || sender.name || sender.email;
-                        console.log(`Creating option: ${key} -> ${displayName}`);
+                        console.log(`📋 Sender data for ${key}:`, sender);
+                        // Always show format: "Name (email)" for consistency with contacts page
+                        const displayName = sender.name && sender.name !== sender.email 
+                            ? `${sender.name} (${sender.email})` 
+                            : sender.email;
+                        console.log(`📋 Creating option: ${key} -> "${displayName}"`);
+                        console.log(`   - display_name: "${sender.display_name}"`);
+                        console.log(`   - name: "${sender.name}"`);
+                        console.log(`   - email: "${sender.email}"`);
                         return `<option value="${key}">${displayName}</option>`;
                     })
                     .join('');
