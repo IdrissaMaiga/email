@@ -239,8 +239,14 @@ def contacts_list(request):
     
     # Filter by category if specified
     category_filter = request.GET.get('category')
+    print(f"🔍 CATEGORY DEBUG: Raw category_filter = '{category_filter}' (type: {type(category_filter)})")
     if category_filter and category_filter != 'all':
+        print(f"🔍 CATEGORY DEBUG: Filtering by category_id = '{category_filter}'")
         contacts = contacts.filter(category_id=category_filter)
+        print(f"🔍 CATEGORY DEBUG: Contacts after filter = {contacts.count()}")
+    else:
+        print(f"🔍 CATEGORY DEBUG: No category filter applied")
+        print(f"🔍 CATEGORY DEBUG: Total contacts = {contacts.count()}")
     
     # Search by name or email
     search = request.GET.get('search')
@@ -319,14 +325,18 @@ def contacts_list(request):
     # Get all distinct categories for filtering with counts
     categories = []
     distinct_categories = Contact.objects.values('category_id', 'category_name').distinct().order_by('category_id')
+    print(f"🔍 CATEGORY DEBUG: Found {len(distinct_categories)} distinct categories:")
     for category in distinct_categories:
         cat_id = category['category_id']
         count = Contact.objects.filter(category_id=cat_id).count()
+        print(f"🔍 CATEGORY DEBUG: - Category '{cat_id}' = '{category['category_name']}' ({count} contacts)")
         categories.append({
             'category_id': cat_id,
             'category_name': category['category_name'],
             'count': count
         })
+    
+    print(f"🔍 CATEGORY DEBUG: current_category being passed to template = '{category_filter}'")
     
     context = {
         'page_obj': page_obj,
