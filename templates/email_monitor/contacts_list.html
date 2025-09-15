@@ -190,7 +190,10 @@
                         {% for category in categories %}
                         <a href="?category={{ category.category_id }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
                            class="px-3 py-1 rounded-full text-sm {% if current_category == category.category_id %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
-                           onclick="console.log('🔗 CATEGORY LINK CLICKED:', '{{ category.category_id }}', 'URL:', this.href); return true;">
+                           onclick="console.log('🔗 CATEGORY LINK CLICKED:', '{{ category.category_id }}', 'FULL URL:', this.href, 'CURRENT URL:', window.location.href); 
+                                   console.log('🔗 URL PARAMS BEFORE:', window.location.search); 
+                                   setTimeout(() => console.log('🔗 URL PARAMS AFTER (in 100ms):', window.location.search), 100);
+                                   return true;">
                             {{ category.category_name }} ({{ category.count }})
                         </a>
                         {% endfor %}
@@ -765,7 +768,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSenderSelect && currentSender) {
             activeSenderSelect.value = currentSender;
             
-            // Add change handler for active sender
+            // TEMPORARILY DISABLED - Add change handler for active sender
+            /*
             activeSenderSelect.addEventListener('change', function() {
                 const selectedSender = this.value;
                 localStorage.setItem('selectedSender', selectedSender);
@@ -788,6 +792,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(`🔍 SENDER DEBUG: Reloading page with new sender: ${currentUrl.toString()}`);
                 window.location.href = currentUrl.toString();
             });
+            */
         }
         
         // Apply saved sender first
