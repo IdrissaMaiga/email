@@ -763,38 +763,30 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSenderSelect && currentSender) {
             activeSenderSelect.value = currentSender;
             
-            // DISABLED FOR TESTING - Smart change handler for active sender
-            console.log('🔍 SENDER: Handler setup skipped for testing');
-            /*
+            // Smart change handler for active sender - re-enabled
             activeSenderSelect.addEventListener('change', function() {
-                // Check if category navigation is in progress
-                if (window.categoryNavigating) {
-                    console.log(`🔍 SENDER DEBUG: Category navigation in progress, skipping sender change`);
-                    return;
-                }
-                
                 const selectedSender = this.value;
                 localStorage.setItem('selectedSender', selectedSender);
                 
                 console.log(`🔍 SENDER DEBUG: Sender changed to: ${getSenderInfo(selectedSender).name}`);
                 console.log(`🔍 SENDER DEBUG: Current URL: ${window.location.href}`);
                 
-                // Build new URL maintaining all current filters
+                // Build new URL maintaining all current filters (including category!)
                 const currentUrl = new URL(window.location);
                 const urlParams = new URLSearchParams(window.location.search);
                 
-                // Add/update sender parameter
+                // Add/update sender parameter while preserving all others
                 urlParams.set('sender', selectedSender);
                 
-                // Construct the new URL with all existing parameters
+                // Construct the new URL with all existing parameters preserved
                 const newUrl = `${currentUrl.pathname}?${urlParams.toString()}`;
                 
                 console.log(`🔍 SENDER DEBUG: Navigating to: ${newUrl}`);
+                console.log(`🔍 SENDER DEBUG: Preserved parameters:`, Array.from(urlParams.entries()));
                 
                 // Use window.location.href for clean navigation
                 window.location.href = newUrl;
             });
-            */
         }
         
         // Apply saved sender first

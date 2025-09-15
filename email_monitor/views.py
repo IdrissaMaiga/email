@@ -117,7 +117,14 @@ def contacts_list(request):
             # Use the first active sender as fallback and redirect with sender parameter
             first_sender = active_senders.first()
             from django.shortcuts import redirect
-            return redirect(f"{request.path}?sender={first_sender.key}")
+            from django.http import QueryDict
+            
+            # Preserve existing URL parameters
+            query_params = request.GET.copy()
+            query_params['sender'] = first_sender.key
+            query_string = query_params.urlencode()
+            
+            return redirect(f"{request.path}?{query_string}")
         
     sender_email = get_sender_email(sender)
     
