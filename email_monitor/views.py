@@ -239,6 +239,8 @@ def contacts_list(request):
     
     # Filter by category if specified
     category_filter = request.GET.get('category')
+    if category_filter == 'None' or category_filter == '':
+        category_filter = None
     print(f"🔍 CATEGORY DEBUG: Raw category_filter = '{category_filter}' (type: {type(category_filter)})")
     if category_filter and category_filter != 'all':
         print(f"🔍 CATEGORY DEBUG: Filtering by category_id = '{category_filter}'")
