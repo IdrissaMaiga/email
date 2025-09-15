@@ -193,9 +193,10 @@
                         {% for category in categories %}
                         <a href="?category={{ category.category_id }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
                            class="px-3 py-1 rounded-full text-sm {% if current_category == category.category_id %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
-                           onclick="console.log('🔗 CATEGORY LINK CLICKED:', '{{ category.category_id }}', 'FULL URL:', this.href); 
-                                   window.categoryNavigating = true; 
-                                   setTimeout(() => { window.categoryNavigating = false; }, 1000);
+                           onclick="console.log('🔗 CATEGORY CLICKED:', '{{ category.category_id }}', 'HREF:', this.href); 
+                                   console.log('🔗 BEFORE CLICK - URL:', window.location.href, 'SEARCH:', window.location.search);
+                                   setTimeout(() => console.log('🔗 AFTER CLICK (50ms):', window.location.href), 50);
+                                   setTimeout(() => console.log('🔗 AFTER CLICK (200ms):', window.location.href), 200);
                                    return true;">
                             {{ category.category_name }} ({{ category.count }})
                         </a>
@@ -771,7 +772,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSenderSelect && currentSender) {
             activeSenderSelect.value = currentSender;
             
-            // Smart change handler for active sender
+            // DISABLED FOR TESTING - Smart change handler for active sender
+            console.log('🔍 SENDER: Handler setup skipped for testing');
+            /*
             activeSenderSelect.addEventListener('change', function() {
                 // Check if category navigation is in progress
                 if (window.categoryNavigating) {
@@ -800,6 +803,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Use window.location.href for clean navigation
                 window.location.href = newUrl;
             });
+            */
         }
         
         // Apply saved sender first
