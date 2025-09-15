@@ -617,13 +617,29 @@
         }
 
         function applyCategoryToUI() {
-            const savedCategory = getSavedCategory();
             const categorySelect = document.getElementById('categoryFilter');
-            if (categorySelect && savedCategory) {
-                categorySelect.value = savedCategory;
-                // Trigger status message update to show the restored category selection
-                updateStatusMessage();
+            if (!categorySelect) return;
+            
+            // Check for URL parameter first
+            if (window.pendingCategoryFromUrl) {
+                console.log(`🔗 Setting category from URL: ${window.pendingCategoryFromUrl}`);
+                categorySelect.value = window.pendingCategoryFromUrl;
+                // Save this category so it persists
+                saveCategory(window.pendingCategoryFromUrl);
+                // Clear the pending URL category
+                window.pendingCategoryFromUrl = null;
+                // Force reload stats to show the correct category
+                setTimeout(() => loadContactStats(true), 100);
+            } else {
+                // Fall back to saved category
+                const savedCategory = getSavedCategory();
+                if (savedCategory) {
+                    categorySelect.value = savedCategory;
+                }
             }
+            
+            // Trigger status message update to show the restored category selection
+            updateStatusMessage();
         }
 
         function updateUIForSender(sender) {
@@ -1187,18 +1203,33 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log(`🚀 PAGE LOADED - Starting initialization`);
             
+            // Read URL parameters first and set up the page state
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryFromUrl = urlParams.get('category');
+            
+            if (categoryFromUrl) {
+                console.log(`🔗 URL CATEGORY DETECTED: ${categoryFromUrl}`);
+                // We'll set the dropdown after categories are loaded
+                window.pendingCategoryFromUrl = categoryFromUrl;
+            }
+            
             // Load available senders first, then apply saved sender
             console.log(`📡 Loading available senders...`);
             loadAvailableSenders(); // This now loads both data and populates dropdown
             
             console.log(`🔧 Initializing editor...`);
             initializeEditor();
-            console.log(`📊 Loading contact stats...`);
-            loadContactStats();
-            console.log(`📋 Loading last template...`);
-            loadLastTemplate();
-            console.log(`📂 Loading categories...`);
-            loadCategories(); // Load categories for the category filter
+            console.log(`� Loading categories...`);
+            loadCategories(); // Load categories for the category filter (will check for pendingCategoryFromUrl)
+            
+            // Wait a moment for categories to load, then load stats
+            setTimeout(() => {
+                console.log(`� Loading contact stats...`);
+                loadContactStats();
+                console.log(`� Loading last template...`);
+                loadLastTemplate();
+            }, 500);
+            
             console.log(`👤 Loading email senders...`);
             loadEmailSenders(); // Load email senders for management
             

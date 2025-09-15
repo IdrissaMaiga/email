@@ -376,11 +376,22 @@ def contact_stats_api(request):
         if not sender:
             return JsonResponse({'error': 'Sender parameter is required'}, status=400)
         
+        # Get category parameter to filter stats by category
+        category_filter = request.GET.get('category')
+        
         # Get sender email using the dynamic system (same as used in email sending)
         sender_email = get_sender_email(sender)
         
         # Get ALL contacts (contacts are independent of senders)
         sender_contacts = Contact.objects.all()
+        
+        # Apply category filter if specified
+        if category_filter and category_filter != 'all':
+            print(f"📊 STATS DEBUG: Filtering by category_id = '{category_filter}'")
+            sender_contacts = sender_contacts.filter(category_id=category_filter)
+            print(f"📊 STATS DEBUG: Contacts after category filter = {sender_contacts.count()}")
+        else:
+            print(f"📊 STATS DEBUG: No category filter applied, total contacts = {sender_contacts.count()}")
         
         total_contacts = sender_contacts.count()
         
@@ -411,6 +422,8 @@ def contact_stats_api(request):
         failed_count = contacts_with_latest_event.filter(latest_event_type='email.failed').count()
         complained_count = contacts_with_latest_event.filter(latest_event_type='email.complained').count()
         
+        print(f"📊 STATS DEBUG: Stats for category '{category_filter or 'All'}': Total={total_contacts}, NotSent={not_sent_count}, Sent={sent_count}")
+        
         return JsonResponse({
             'total_contacts': total_contacts,
             'total_email_events': contacts_with_latest_event.exclude(latest_event_type__isnull=True).count(),
@@ -424,10 +437,12 @@ def contact_stats_api(request):
             'complained': complained_count,
             'sender': sender,
             'sender_email': sender_email,
+            'category_filter': category_filter,
             'stats_explanation': {
-                'total_contacts': 'Total number of contact records in database (shared across all senders)',
+                'total_contacts': f'Total number of contact records {"in category " + category_filter if category_filter else "(all categories)"}',
                 'total_email_events': 'Number of contacts with email events from this sender',
-                'status_counts': 'Contact counts based on their latest email status from this sender only'
+                'status_counts': 'Contact counts based on their latest email status from this sender only',
+                'category_filtered': bool(category_filter)
             }
         })
         
