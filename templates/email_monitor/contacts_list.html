@@ -184,15 +184,18 @@
                     <div class="flex flex-wrap gap-2">
                         <a href="{% url 'contacts_list' %}?{% if current_search %}search={{ current_search }}&{% endif %}{% if current_sort %}sort_by={{ current_sort }}&{% endif %}{% if current_status %}status={{ current_status }}&{% endif %}" 
                            class="px-3 py-1 rounded-full text-sm {% if not current_category %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
-                           onclick="console.log('🔗 ALL CATEGORIES CLICKED, URL:', this.href); return true;">
+                           onclick="console.log('🔗 ALL CATEGORIES CLICKED, URL:', this.href); 
+                                   window.categoryNavigating = true; 
+                                   setTimeout(() => { window.categoryNavigating = false; }, 1000);
+                                   return true;">
                             All Categories
                         </a>
                         {% for category in categories %}
                         <a href="?category={{ category.category_id }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
                            class="px-3 py-1 rounded-full text-sm {% if current_category == category.category_id %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}"
-                           onclick="console.log('🔗 CATEGORY LINK CLICKED:', '{{ category.category_id }}', 'FULL URL:', this.href, 'CURRENT URL:', window.location.href); 
-                                   console.log('🔗 URL PARAMS BEFORE:', window.location.search); 
-                                   setTimeout(() => console.log('🔗 URL PARAMS AFTER (in 100ms):', window.location.search), 100);
+                           onclick="console.log('🔗 CATEGORY LINK CLICKED:', '{{ category.category_id }}', 'FULL URL:', this.href); 
+                                   window.categoryNavigating = true; 
+                                   setTimeout(() => { window.categoryNavigating = false; }, 1000);
                                    return true;">
                             {{ category.category_name }} ({{ category.count }})
                         </a>
@@ -768,31 +771,35 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSenderSelect && currentSender) {
             activeSenderSelect.value = currentSender;
             
-            // TEMPORARILY DISABLED - Add change handler for active sender
-            /*
+            // Smart change handler for active sender
             activeSenderSelect.addEventListener('change', function() {
+                // Check if category navigation is in progress
+                if (window.categoryNavigating) {
+                    console.log(`🔍 SENDER DEBUG: Category navigation in progress, skipping sender change`);
+                    return;
+                }
+                
                 const selectedSender = this.value;
                 localStorage.setItem('selectedSender', selectedSender);
                 
                 console.log(`🔍 SENDER DEBUG: Sender changed to: ${getSenderInfo(selectedSender).name}`);
                 console.log(`🔍 SENDER DEBUG: Current URL: ${window.location.href}`);
                 
-                // Check if we're in the middle of category filtering
-                const urlParams = new URLSearchParams(window.location.search);
-                const hasCategory = urlParams.has('category');
-                
-                if (hasCategory) {
-                    console.log(`🔍 SENDER DEBUG: Category filtering in progress, NOT reloading page`);
-                    return; // Don't reload if category filtering is happening
-                }
-                
-                // Reload the page with the new sender filter
+                // Build new URL maintaining all current filters
                 const currentUrl = new URL(window.location);
-                currentUrl.searchParams.set('sender', selectedSender);
-                console.log(`🔍 SENDER DEBUG: Reloading page with new sender: ${currentUrl.toString()}`);
-                window.location.href = currentUrl.toString();
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Add/update sender parameter
+                urlParams.set('sender', selectedSender);
+                
+                // Construct the new URL with all existing parameters
+                const newUrl = `${currentUrl.pathname}?${urlParams.toString()}`;
+                
+                console.log(`🔍 SENDER DEBUG: Navigating to: ${newUrl}`);
+                
+                // Use window.location.href for clean navigation
+                window.location.href = newUrl;
             });
-            */
         }
         
         // Apply saved sender first
