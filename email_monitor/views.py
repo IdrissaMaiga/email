@@ -32,6 +32,27 @@ import traceback
 logger = logging.getLogger(__name__)
 
 
+def extract_email_from_sender_string(sender_string):
+    """Extract email address from sender string like 'Name <email@domain.com>' or just 'email@domain.com'"""
+    import re
+    if not sender_string:
+        return None
+    
+    # Try to extract email from "Name <email@domain.com>" format
+    email_match = re.search(r'<([^>]+)>', sender_string)
+    if email_match:
+        return email_match.group(1).strip()
+    
+    # If no brackets found, assume the whole string is the email (after stripping whitespace)
+    email = sender_string.strip()
+    
+    # Basic email validation
+    if '@' in email and '.' in email:
+        return email
+    
+    return None
+
+
 def get_sender_from_email(email):
     """Get sender key from email address"""
     try:
@@ -458,7 +479,12 @@ def contact_email_content_api(request):
         
         # Determine which API key to use based on the sender
         # First try to get the sender from the recent event
-        from_email = most_recent_event.from_email if most_recent_event.from_email else ''
+        from_email_raw = most_recent_event.from_email if most_recent_event.from_email else ''
+        
+        # Extract just the email address from the sender string
+        from_email = extract_email_from_sender_string(from_email_raw)
+        
+        print(f"🔍 Raw from_email: '{from_email_raw}' -> Extracted: '{from_email}'")
         
         # Get the appropriate API key from database
         resend_api_key = None
@@ -560,12 +586,16 @@ def email_content_by_id_api(request):
         # Get API key from database
         resend_api_key = None
         if email_event.from_email:
+            # Extract email address from sender string
+            from_email = extract_email_from_sender_string(email_event.from_email)
+            print(f"🔍 Raw from_email: '{email_event.from_email}' -> Extracted: '{from_email}'")
+            
             try:
-                sender_obj = EmailSender.objects.get(email=email_event.from_email, is_active=True)
+                sender_obj = EmailSender.objects.get(email=from_email, is_active=True)
                 resend_api_key = sender_obj.api_key
-                print(f"✅ Found sender {sender_obj.name} for email {email_event.from_email}")
+                print(f"✅ Found sender {sender_obj.name} for email {from_email}")
             except EmailSender.DoesNotExist:
-                print(f"❌ No active sender found for email: {email_event.from_email}")
+                print(f"❌ No active sender found for email: {from_email}")
                 
         # Fallback to any active sender if no specific match
         if not resend_api_key:
@@ -578,7 +608,7 @@ def email_content_by_id_api(request):
                 print(f"❌ Error getting fallback sender: {str(e)}")
 
         if not resend_api_key:
-            return JsonResponse({'error': f'Resend API key not configured for sender: {email_event.from_email}'}, status=500)
+            return JsonResponse({'error': f'Resend API key not configured for sender: {from_email}'}, status=500)
         
         # Make request to Resend API to get email content
         headers = {
