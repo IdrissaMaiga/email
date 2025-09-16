@@ -401,7 +401,10 @@ def contact_email_content_api(request):
                 default=Value('Not Sent'),
                 output_field=CharField()
             )
-        ).get(email=email)
+        ).filter(email=email).first()
+        
+        if not contact:
+            return JsonResponse({'error': 'Contact not found'}, status=404)
         
         # Find the last 3 email events for this contact FROM THIS SENDER (all event types)
         recent_events = EmailEvent.objects.filter(
@@ -734,16 +737,19 @@ def webhook_handler(request, sender_key):
         # Update contact status based on email event
         if event_data.get('to_email'):
             try:
-                contact = Contact.objects.get(email=event_data['to_email'])
-                print(f"✅ CONTACT: Found contact {contact.full_name} ({contact.email})")
+                contact = Contact.objects.filter(email=event_data['to_email']).first()
+                if contact:
+                    print(f"✅ CONTACT: Found contact {contact.full_name} ({contact.email})")
+                else:
+                    print(f"⚠️ CONTACT: No contact found for email {event_data.get('to_email')}")
                 
                 # Note: We no longer update contact status since contacts are independent entities
                 # Email status is tracked through EmailEvent objects, not on the contact itself
                 # This allows one contact to have multiple email statuses from different senders
                 
-            except Contact.DoesNotExist:
-                # Contact doesn't exist, could be from external emails
-                print(f"⚠️ CONTACT: No contact found for email {event_data.get('to_email')}")
+            except Exception as e:
+                # Handle any other database issues
+                print(f"❌ CONTACT ERROR: {str(e)} for email {event_data.get('to_email')}")
                 pass
         
         logger.info(f"New webhook event: {event_type} for {event_data.get('to_email')}")
