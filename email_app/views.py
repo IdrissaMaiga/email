@@ -334,13 +334,15 @@ def send_emails(request):
                 
                 if response and 'id' in response:
                     emails_sent += 1
-                    # Email sent successfully - no need to update contact status
-                    # The EmailEvent model will track the status via webhooks
+                    print(f"✅ EMAIL SENT: Successfully sent to {recipient_email} with Resend ID {response['id']}")
+                    # Email sent successfully - EmailEvent will be created via webhook
                 else:
                     failed_emails.append(recipient_email)
+                    print(f"❌ EMAIL FAILED: No response ID for {recipient_email}")
                     
             except Exception as email_error:
                 failed_emails.append(f"{recipient_email}: {str(email_error)}")
+                print(f"❌ EMAIL ERROR: {recipient_email}: {str(email_error)}")
         
         message = f'Emails sent successfully! ({emails_sent} emails sent with tracking enabled)'
         if failed_emails:
@@ -422,7 +424,20 @@ def contact_stats_api(request):
         failed_count = contacts_with_latest_event.filter(latest_event_type='email.failed').count()
         complained_count = contacts_with_latest_event.filter(latest_event_type='email.complained').count()
         
+        # Debug: Check what EmailEvents exist for this sender
+        total_events = EmailEvent.objects.filter(from_email__icontains=sender_email).count()
+        recent_events = EmailEvent.objects.filter(from_email__icontains=sender_email).order_by('-created_at')[:5]
+        
         print(f"📊 STATS DEBUG: Stats for category '{category_filter or 'All'}': Total={total_contacts}, NotSent={not_sent_count}, Sent={sent_count}")
+        print(f"📊 STATS DEBUG: Total EmailEvents for sender '{sender_email}': {total_events}")
+        print(f"📊 STATS DEBUG: Recent EmailEvents:")
+        for event in recent_events:
+            print(f"  - {event.event_type} to {event.to_email} at {event.created_at}")
+        
+        # Debug: Show sample contact with latest event
+        sample_contact = contacts_with_latest_event.first()
+        if sample_contact:
+            print(f"📊 STATS DEBUG: Sample contact '{sample_contact.email}' has latest_event_type: {sample_contact.latest_event_type}")
         
         return JsonResponse({
             'total_contacts': total_contacts,

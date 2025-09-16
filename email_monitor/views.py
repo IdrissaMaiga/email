@@ -628,30 +628,37 @@ def webhook_handler(request, sender_key):
     Common webhook handler for all sender configurations
     """
     try:
-        # Get sender configuration
-        email_senders = getattr(settings, 'EMAIL_SENDERS', {})
-        if sender_key not in email_senders:
-            logger.error(f"Invalid sender key: {sender_key}")
-            return HttpResponse(status=400)
-        
-        sender_config = email_senders[sender_key]
-        webhook_secret = sender_config.get('webhook_secret')
+        # Get sender configuration from database
+        try:
+            from .models import EmailSender
+            sender_obj = EmailSender.objects.get(key=sender_key, is_active=True)
+            webhook_secret = sender_obj.webhook_secret
+        except EmailSender.DoesNotExist:
+            # Fallback to settings if not in database
+            email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+            if sender_key not in email_senders:
+                logger.error(f"Invalid sender key: {sender_key}")
+                return HttpResponse("Invalid sender key", status=400)
+            
+            sender_config = email_senders[sender_key]
+            webhook_secret = sender_config.get('webhook_secret')
         
         if not webhook_secret:
             logger.error(f"No webhook secret configured for sender: {sender_key}")
-            return HttpResponse(status=400)
+            return HttpResponse("No webhook secret configured", status=400)
         
         # Verify webhook signature
         if not verify_webhook_signature(request, webhook_secret):
             logger.error(f"Invalid webhook signature for sender: {sender_key}")
-            return HttpResponse(status=403)
+            return HttpResponse("Invalid signature", status=403)
         
         # Parse webhook payload
         raw_body = request.body.decode('utf-8')
         payload = json.loads(raw_body)
         
         # Log the full payload for debugging
-        logger.info(f"Received webhook payload for {sender_key}: {payload}")
+        logger.info(f"✅ WEBHOOK: Received payload for {sender_key}: {payload}")
+        print(f"✅ WEBHOOK: Received payload for {sender_key}: {payload}")
         
         event_type = payload.get('type')
         data = payload.get('data', {})
@@ -722,10 +729,13 @@ def webhook_handler(request, sender_key):
         # Create event record (allow duplicates)
         event = EmailEvent.objects.create(**event_data)
         
+        print(f"✅ EMAIL EVENT: Created {event_type} event for {event_data.get('to_email')} with ID {event_id}")
+        
         # Update contact status based on email event
         if event_data.get('to_email'):
             try:
                 contact = Contact.objects.get(email=event_data['to_email'])
+                print(f"✅ CONTACT: Found contact {contact.full_name} ({contact.email})")
                 
                 # Note: We no longer update contact status since contacts are independent entities
                 # Email status is tracked through EmailEvent objects, not on the contact itself
@@ -733,6 +743,7 @@ def webhook_handler(request, sender_key):
                 
             except Contact.DoesNotExist:
                 # Contact doesn't exist, could be from external emails
+                print(f"⚠️ CONTACT: No contact found for email {event_data.get('to_email')}")
                 pass
         
         logger.info(f"New webhook event: {event_type} for {event_data.get('to_email')}")
