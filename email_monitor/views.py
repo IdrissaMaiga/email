@@ -1842,9 +1842,9 @@ def email_senders_api(request):
                     'domain': sender.domain,
                     'is_active': sender.is_active,
                     'display_name': f"{sender.name} ({sender.email})",  # Add display_name field
-                    'has_api_key': bool(sender.api_key),  # Don't expose the actual API key
-                    'has_webhook_url': bool(sender.webhook_url),
-                    'has_webhook_secret': bool(sender.webhook_secret),
+                    'api_key': sender.api_key,  # Show actual API key
+                    'webhook_url': sender.webhook_url,  # Show actual webhook URL
+                    'webhook_secret': sender.webhook_secret,  # Show actual webhook secret
                     'created_at': sender.created_at.isoformat(),
                     'updated_at': sender.updated_at.isoformat()
                 })
