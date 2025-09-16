@@ -115,8 +115,8 @@
                 </div>
                 <div>
                     <label for="senderApiKey" class="block text-sm font-medium text-gray-700">API Key</label>
-                    <input type="password" id="senderApiKey" name="api_key" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <p class="mt-1 text-xs text-gray-500">API key for the email service</p>
+                    <input type="text" id="senderApiKey" name="api_key" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono">
+                    <p class="mt-1 text-xs text-gray-500">Resend API key for this sender</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -126,8 +126,8 @@
                     </div>
                     <div>
                         <label for="senderWebhookSecret" class="block text-sm font-medium text-gray-700">Webhook Secret</label>
-                        <input type="password" id="senderWebhookSecret" name="webhook_secret" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <p class="mt-1 text-xs text-gray-500">Optional webhook secret</p>
+                        <input type="text" id="senderWebhookSecret" name="webhook_secret" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono">
+                        <p class="mt-1 text-xs text-gray-500">Webhook secret for verifying requests</p>
                     </div>
                 </div>
                 <div class="flex items-center">
@@ -298,8 +298,8 @@
             }
 
             const sendersHtml = senders.map(sender => `
-                <div class="bg-gray-50 rounded-lg p-4 flex justify-between items-center">
-                    <div class="flex-1">
+                <div class="bg-gray-50 rounded-lg p-4 border">
+                    <div class="flex justify-between items-start mb-3">
                         <div class="flex items-center space-x-3">
                             <div class="flex-shrink-0">
                                 <div class="w-8 h-8 rounded-full ${sender.is_active ? 'bg-green-100' : 'bg-red-100'} flex items-center justify-center">
@@ -309,21 +309,44 @@
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-lg font-medium text-gray-900">${sender.name}</h4>
                                 <p class="text-sm text-gray-500">${sender.email}</p>
-                                <p class="text-xs text-gray-400">Key: ${sender.key} | Domain: ${sender.domain}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 text-xs rounded-full ${sender.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                ${sender.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                            <div class="flex space-x-1">
+                                <button onclick="editSender(${sender.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                    Edit
+                                </button>
+                                <button onclick="deleteSender(${sender.id}, '${sender.name}')" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="px-2 py-1 text-xs rounded-full ${sender.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                            ${sender.is_active ? 'Active' : 'Inactive'}
-                        </span>
-                        <div class="flex space-x-1">
-                            <button onclick="editSender(${sender.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                Edit
-                            </button>
-                            <button onclick="deleteSender(${sender.id}, '${sender.name}')" class="text-red-600 hover:text-red-800 text-sm font-medium">
-                                Delete
-                            </button>
+                    
+                    <!-- Configuration Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 pt-3 border-t border-gray-200">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 uppercase tracking-wide">Sender Key</label>
+                            <p class="mt-1 text-sm text-gray-900 font-mono bg-gray-100 px-2 py-1 rounded">${sender.key}</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 uppercase tracking-wide">Domain</label>
+                            <p class="mt-1 text-sm text-gray-900 font-mono bg-gray-100 px-2 py-1 rounded">${sender.domain}</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 uppercase tracking-wide">API Key</label>
+                            <p class="mt-1 text-sm text-gray-900 font-mono bg-blue-50 px-2 py-1 rounded border border-blue-200">${sender.api_key || 'Not configured'}</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 uppercase tracking-wide">Webhook URL</label>
+                            <p class="mt-1 text-sm text-gray-900 font-mono bg-purple-50 px-2 py-1 rounded border border-purple-200">${sender.webhook_url || 'Not configured'}</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-gray-600 uppercase tracking-wide">Webhook Secret</label>
+                            <p class="mt-1 text-sm text-gray-900 font-mono bg-yellow-50 px-2 py-1 rounded border border-yellow-200">${sender.webhook_secret || 'Not configured'}</p>
                         </div>
                     </div>
                 </div>
@@ -348,9 +371,9 @@
                 document.getElementById('senderDomain').value = sender.domain;
                 document.getElementById('senderWebhookUrl').value = sender.webhook_url || '';
                 document.getElementById('senderIsActive').checked = sender.is_active;
-                // Don't pre-fill sensitive fields like API key and webhook secret
-                document.getElementById('senderApiKey').placeholder = 'Leave blank to keep current API key';
-                document.getElementById('senderWebhookSecret').placeholder = 'Leave blank to keep current webhook secret';
+                // Show current API key and webhook secret (no protection)
+                document.getElementById('senderApiKey').value = sender.api_key || '';
+                document.getElementById('senderWebhookSecret').value = sender.webhook_secret || '';
             } else {
                 title.textContent = 'Add Email Sender';
                 form.reset();

@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.core.exceptions import RequestDataTooBig
-from .models import EmailEvent, EmailCampaign, Contact
+from .models import EmailEvent, EmailCampaign, Contact, EmailSender
 from .forms import ContactForm, ContactSearchForm, CSVUploadForm
 import json
 import csv
@@ -460,25 +460,20 @@ def contact_email_content_api(request):
         # First try to get the sender from the recent event
         from_email = most_recent_event.from_email if most_recent_event.from_email else ''
         
-        # Get the appropriate API key based on sender email
-        email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+        # Get the appropriate API key from database
         resend_api_key = None
+        sender_obj = None
         
-        # Dynamically determine sender from email
-        sender = get_sender_from_email(from_email)
-        if sender:
-            resend_api_key = email_senders.get(sender, {}).get('api_key')
-        
-        # Fallback to environment variable if no match found
-        if not resend_api_key:
-            resend_api_key = os.getenv('RESEND_API_KEY')
-            # If still no API key, try the first available one
-            if not resend_api_key and email_senders:
-                first_sender = list(email_senders.values())[0]
-                resend_api_key = first_sender.get('api_key')
+        if from_email:
+            try:
+                sender_obj = EmailSender.objects.get(email=from_email, is_active=True)
+                resend_api_key = sender_obj.api_key
+                print(f"✅ Found sender {sender_obj.name} for email {from_email}")
+            except EmailSender.DoesNotExist:
+                print(f"❌ No active sender found for email: {from_email}")
         
         if not resend_api_key:
-            return JsonResponse({'error': 'Resend API key not configured'}, status=500)
+            return JsonResponse({'error': f'Resend API key not configured for sender: {from_email}'}, status=500)
         
         # Make request to Resend API to get email content
         headers = {
@@ -562,24 +557,28 @@ def email_content_by_id_api(request):
         if not email_event:
             return JsonResponse({'error': 'Email event not found for this sender'}, status=404)
         
-        # Get the appropriate API key based on sender
-        email_senders = getattr(settings, 'EMAIL_SENDERS', {})
+        # Get API key from database
         resend_api_key = None
-        
-        # Dynamically determine sender from email
-        sender = get_sender_from_email(email_event.from_email)
-        if sender:
-            resend_api_key = email_senders.get(sender, {}).get('api_key')
-        
-        # Fallback to environment variable if no match found
+        if email_event.from_email:
+            try:
+                sender_obj = EmailSender.objects.get(email=email_event.from_email, is_active=True)
+                resend_api_key = sender_obj.api_key
+                print(f"✅ Found sender {sender_obj.name} for email {email_event.from_email}")
+            except EmailSender.DoesNotExist:
+                print(f"❌ No active sender found for email: {email_event.from_email}")
+                
+        # Fallback to any active sender if no specific match
         if not resend_api_key:
-            resend_api_key = os.getenv('RESEND_API_KEY')
-            if not resend_api_key and email_senders:
-                first_sender = list(email_senders.values())[0]
-                resend_api_key = first_sender.get('api_key')
-        
+            try:
+                fallback_sender = EmailSender.objects.filter(is_active=True).first()
+                if fallback_sender:
+                    resend_api_key = fallback_sender.api_key
+                    print(f"✅ Using fallback sender {fallback_sender.name}")
+            except Exception as e:
+                print(f"❌ Error getting fallback sender: {str(e)}")
+
         if not resend_api_key:
-            return JsonResponse({'error': 'Resend API key not configured'}, status=500)
+            return JsonResponse({'error': f'Resend API key not configured for sender: {email_event.from_email}'}, status=500)
         
         # Make request to Resend API to get email content
         headers = {
