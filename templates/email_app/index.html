@@ -621,6 +621,12 @@
             // Hide control buttons
             document.getElementById('pauseCampaign').classList.add('hidden');
             document.getElementById('stopCampaign').classList.add('hidden');
+            
+            // Clear progress display after 10 seconds to show ready state
+            setTimeout(() => {
+                clearCampaignProgress();
+                addProgressLog('Ready to start new email campaign...', 'info');
+            }, 10000);
         }
         
         function updateProgressBar(percent) {
@@ -638,6 +644,29 @@
             if (total > 0) {
                 const rate = Math.round((sent / total) * 100);
                 document.getElementById('progressSuccessRate').textContent = `${rate}%`;
+            }
+        }
+        
+        function clearCampaignProgress() {
+            // Reset progress display to initial state
+            document.getElementById('progressTotalContacts').textContent = '-';
+            document.getElementById('progressEmailsSent').textContent = '0';
+            document.getElementById('progressSuccessRate').textContent = '-';
+            document.getElementById('progressStatus').textContent = 'Ready';
+            
+            // Reset progress bar
+            updateProgressBar(0);
+            
+            // Hide control buttons
+            document.getElementById('pauseCampaign').classList.add('hidden');
+            document.getElementById('stopCampaign').classList.add('hidden');
+            
+            // Reset campaign state
+            isEmailCampaignRunning = false;
+            
+            // Close WebSocket if open
+            if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                progressWebSocket.close();
             }
         }
         
@@ -691,18 +720,19 @@
                 .then(data => {
                     if (data.has_active_campaign) {
                         const campaign = data.campaign;
-                        console.log('🔄 Found active campaign:', campaign);
+                        console.log('🔄 Found campaign:', campaign);
                         
-                        // Update progress display
-                        document.getElementById('progressTotalContacts').textContent = campaign.total_contacts;
-                        document.getElementById('progressEmailsSent').textContent = campaign.emails_sent;
-                        document.getElementById('progressSuccessRate').textContent = `${campaign.success_rate}%`;
-                        
-                        // Update progress bar
-                        updateProgressBar(campaign.progress_percentage);
-                        
-                        // Update status
+                        // Only show campaign data if it's actually running
                         if (campaign.status === 'running') {
+                            // Update progress display for running campaign
+                            document.getElementById('progressTotalContacts').textContent = campaign.total_contacts;
+                            document.getElementById('progressEmailsSent').textContent = campaign.emails_sent;
+                            document.getElementById('progressSuccessRate').textContent = `${campaign.success_rate}%`;
+                            
+                            // Update progress bar
+                            updateProgressBar(campaign.progress_percentage);
+                            
+                            // Update status
                             document.getElementById('progressStatus').textContent = 'Campaign in progress';
                             addProgressLog(`🔄 Resumed tracking campaign: sending to ${campaign.total_contacts} contacts (${campaign.emails_sent} sent so far)`, 'info');
                             
@@ -713,20 +743,24 @@
                             // Show control buttons
                             document.getElementById('pauseCampaign').classList.remove('hidden');
                             document.getElementById('stopCampaign').classList.remove('hidden');
-                        } else if (campaign.status === 'completed') {
-                            document.getElementById('progressStatus').textContent = 'Campaign completed';
-                            addProgressLog(`✅ Previous campaign completed: sent to ${campaign.total_contacts} contacts (${campaign.emails_sent} sent, ${campaign.success_rate}% success rate)`, 'success');
+                            
+                            // Update timeout setting
+                            document.getElementById('emailTimeout').value = campaign.email_timeout;
+                        } else {
+                            // Campaign exists but is completed/failed - clear UI and show ready state
+                            console.log(`✅ Found ${campaign.status} campaign - clearing UI`);
+                            clearCampaignProgress();
+                            addProgressLog('Ready to start new email campaign...', 'info');
                         }
-                        
-                        // Update timeout setting
-                        document.getElementById('emailTimeout').value = campaign.email_timeout;
                     } else {
                         console.log('✅ No active campaign found');
+                        clearCampaignProgress();
                         addProgressLog('Ready to start new email campaign...', 'info');
                     }
                 })
                 .catch(error => {
                     console.error('Failed to check campaign status:', error);
+                    clearCampaignProgress();
                     addProgressLog('Failed to check for active campaigns', 'warning');
                 });
         }
