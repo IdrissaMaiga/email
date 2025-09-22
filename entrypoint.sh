@@ -21,8 +21,8 @@ python manage.py collectstatic --noinput
 # Start the server
 echo "Starting server..."
 if [ "$DJANGO_DEBUG" = "False" ]; then
-    echo "Starting production server with Gunicorn..."
-    gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 180 --max-requests 1000 --max-requests-jitter 50 --preload email_sender.wsgi:application
+    echo "Starting production server with Daphne (ASGI)..."
+    daphne -b 0.0.0.0 -p 8000 email_sender.asgi:application
 else
     echo "Starting development server..."
     python manage.py runserver 0.0.0.0:8000
