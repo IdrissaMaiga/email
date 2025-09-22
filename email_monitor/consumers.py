@@ -78,6 +78,13 @@ class EmailProgressConsumer(AsyncWebsocketConsumer):
         """Send email progress update to WebSocket"""
         await self.send(text_data=json.dumps(event))
     
+    async def progress_update(self, event):
+        """Send real-time progress update to WebSocket"""
+        await self.send(text_data=json.dumps({
+            'message_type': event['message_type'],
+            'data': event['data']
+        }))
+    
     async def email_batch_start(self, event):
         """Send batch start notification"""
         await self.send(text_data=json.dumps(event))
