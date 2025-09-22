@@ -14,8 +14,8 @@ class EmailEventAdmin(admin.ModelAdmin):
 class EmailCampaignAdmin(admin.ModelAdmin):
     list_display = ['id', 'session_id', 'status', 'total_contacts', 'emails_sent', 'emails_failed', 'created_at']
     list_filter = ['status', 'created_at']
-    search_fields = ['session_id']
-    readonly_fields = ['created_at', 'updated_at']
+    search_fields = ['session_id', 'campaign_name']
+    readonly_fields = ['created_at', 'started_at', 'completed_at']
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):

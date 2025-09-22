@@ -168,56 +168,6 @@ class Contact(models.Model):
         return f"{self.first_name} {self.last_name}".strip()
 
 
-class EmailCampaign(models.Model):
-    """Model to track email campaigns"""
-    
-    name = models.CharField(max_length=200, help_text="Campaign name")
-    subject = models.TextField(help_text="Email subject used")
-    template = models.TextField(help_text="Email template used")
-    created_at = models.DateTimeField(default=timezone.now)
-    sent_count = models.IntegerField(default=0, help_text="Total emails sent")
-    delivered_count = models.IntegerField(default=0, help_text="Total emails delivered")
-    opened_count = models.IntegerField(default=0, help_text="Total emails opened")
-    clicked_count = models.IntegerField(default=0, help_text="Total emails clicked")
-    bounced_count = models.IntegerField(default=0, help_text="Total emails bounced")
-    complained_count = models.IntegerField(default=0, help_text="Total complaints")
-    failed_count = models.IntegerField(default=0, help_text="Total failed emails")
-    
-    class Meta:
-        ordering = ['-created_at']
-    
-    def __str__(self):
-        return f"{self.name} ({self.created_at.date()})"
-    
-    @property
-    def delivery_rate(self):
-        """Calculate delivery rate as percentage"""
-        if self.sent_count == 0:
-            return 0
-        return round((self.delivered_count / self.sent_count) * 100, 2)
-    
-    @property
-    def open_rate(self):
-        """Calculate open rate as percentage"""
-        if self.delivered_count == 0:
-            return 0
-        return round((self.opened_count / self.delivered_count) * 100, 2)
-    
-    @property
-    def click_rate(self):
-        """Calculate click rate as percentage"""
-        if self.delivered_count == 0:
-            return 0
-        return round((self.clicked_count / self.delivered_count) * 100, 2)
-    
-    @property
-    def bounce_rate(self):
-        """Calculate bounce rate as percentage"""
-        if self.sent_count == 0:
-            return 0
-        return round((self.bounced_count / self.sent_count) * 100, 2)
-
-
 class EmailTemplate(models.Model):
     """Model to store email templates for each sender"""
     
