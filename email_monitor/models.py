@@ -399,6 +399,12 @@ class EmailCampaign(models.Model):
         self.completed_at = timezone.now()
         self.save()
     
+    def mark_as_failed(self):
+        """Mark campaign as failed"""
+        self.status = 'failed'
+        self.completed_at = timezone.now()
+        self.save()
+    
     def increment_sent(self):
         """Increment sent email count"""
         self.emails_sent += 1

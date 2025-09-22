@@ -104,6 +104,7 @@ def send_emails(request):
     from email_monitor.models import Contact, EmailCampaign
     import uuid
     import time
+    import threading
     from asgiref.sync import async_to_sync
     from channels.layers import get_channel_layer
     from django.utils import timezone
@@ -304,167 +305,181 @@ def send_emails(request):
             'session_id': session_id
         })
         
-        emails_sent = 0
-        failed_emails = []
-        
-        # Process contacts sequentially
-        for i, contact in enumerate(contacts_list):
-            contact_index = i + 1
-            progress_percent = round((contact_index / total_contacts) * 100)
-            
-            recipient_email = contact.email.strip()
-            if not recipient_email:
-                continue
-
-            # Validate email format
-            import re
-            email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-            if not re.match(email_pattern, recipient_email):
-                failed_emails.append(f"{recipient_email}: Invalid email format")
-                broadcast_progress('email_error', {
-                    'contact_email': recipient_email,
-                    'contact_name': contact.full_name,
-                    'error': 'Invalid email format',
-                    'progress_percent': progress_percent
-                })
-                continue
-
-            # Broadcast email start
-            broadcast_progress('email_start', {
-                'contact_email': recipient_email,
-                'contact_name': contact.full_name,
-                'contact_id': contact.id,
-                'progress_percent': progress_percent
-            })
-
-            # Create contact data dictionary for template replacement
-            contact_data = {
-                'prospect_first_name': contact.first_name or '',
-                'prospect_last_name': contact.last_name or '',
-                'company_name': contact.company_name or '',
-                'job_title': contact.job_title or '',
-                'prospect_location_city': contact.location_city or '',
-                'prospect_location_country': contact.location_country or '',
-                'company_industry': contact.company_industry or '',
-                'company_website': contact.company_website or '',
-                'linkedin_url': contact.linkedin_url or '',
-                'linkedin_headline': contact.linkedin_headline or '',
-                'phone_number': contact.phone_number or '',
-                'tailored_tone_first_line': contact.tailored_tone_first_line or '',
-                'tailored_tone_ps_statement': contact.tailored_tone_ps_statement or '',
-                'tailored_tone_subject': contact.tailored_tone_subject or '',
-                'custom_ai_1': contact.custom_ai_1 or '',
-                'custom_ai_2': contact.custom_ai_2 or '',
-                'company_description': contact.company_description or '',
-                'websitecontent': contact.websitecontent or '',
-                # Add full name for convenience
-                'full_name': contact.full_name,
-            }
-
-            # Replace placeholders in template (HTML content)
-            email_html_content = template
-
-            # Find placeholders in template
-            placeholders = re.findall(r'\{(.*?)\}', template)
-            
-            for placeholder in placeholders:
-                value = contact_data.get(placeholder, f'[{placeholder} not found]')
-                email_html_content = email_html_content.replace(f'{{{placeholder}}}', str(value))
-            
-            # Create simple plain text version by removing basic HTML tags
-            email_text_content = re.sub(r'<[^>]+>', '', email_html_content)
-            # Clean up extra whitespace
-            email_text_content = re.sub(r'\n\s*\n', '\n\n', email_text_content.strip())
-            
+        # Start email processing in background thread
+        def process_emails_background():
+            """Background function to process emails without blocking the HTTP request"""
             try:
-                # Send email with Resend API
-                params = {
-                    "from": f"{sender_name} <{from_email}>" if sender_name else from_email,
-                    "to": [recipient_email],
-                    "subject": subject,
-                    "html": email_html_content,
-                    "text": email_text_content,
-                    # Enable tracking
-                    "tags": [
-                        {"name": "campaign", "value": "email_campaign"},
-                        {"name": "environment", "value": "production"},
-                        {"name": "contact_id", "value": str(contact.id)}
-                    ],
-                    "headers": {
-                        "X-Entity-Ref-ID": f"contact-{contact.id}"
-                    }
-                }
+                emails_sent = 0
+                failed_emails = []
                 
-                # Send the email
-                response = resend.Emails.send(params)
-                
-                if response and 'id' in response:
-                    emails_sent += 1
-                    campaign.increment_sent()  # Update campaign progress
+                # Process contacts sequentially
+                for i, contact in enumerate(contacts_list):
+                    contact_index = i + 1
+                    progress_percent = round((contact_index / total_contacts) * 100)
                     
-                    # Broadcast email success
-                    broadcast_progress('email_success', {
+                    recipient_email = contact.email.strip()
+                    if not recipient_email:
+                        continue
+
+                    # Validate email format
+                    import re
+                    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                    if not re.match(email_pattern, recipient_email):
+                        failed_emails.append(f"{recipient_email}: Invalid email format")
+                        broadcast_progress('email_error', {
+                            'contact_email': recipient_email,
+                            'contact_name': contact.full_name,
+                            'error': 'Invalid email format',
+                            'progress_percent': progress_percent
+                        })
+                        continue
+
+                    # Broadcast email start
+                    broadcast_progress('email_start', {
                         'contact_email': recipient_email,
                         'contact_name': contact.full_name,
                         'contact_id': contact.id,
-                        'resend_id': response['id'],
                         'progress_percent': progress_percent
                     })
+
+                    # Create contact data dictionary for template replacement
+                    contact_data = {
+                        'prospect_first_name': contact.first_name or '',
+                        'prospect_last_name': contact.last_name or '',
+                        'company_name': contact.company_name or '',
+                        'job_title': contact.job_title or '',
+                        'prospect_location_city': contact.location_city or '',
+                        'prospect_location_country': contact.location_country or '',
+                        'company_industry': contact.company_industry or '',
+                        'company_website': contact.company_website or '',
+                        'linkedin_url': contact.linkedin_url or '',
+                        'linkedin_headline': contact.linkedin_headline or '',
+                        'phone_number': contact.phone_number or '',
+                        'tailored_tone_first_line': contact.tailored_tone_first_line or '',
+                        'tailored_tone_ps_statement': contact.tailored_tone_ps_statement or '',
+                        'tailored_tone_subject': contact.tailored_tone_subject or '',
+                        'custom_ai_1': contact.custom_ai_1 or '',
+                        'custom_ai_2': contact.custom_ai_2 or '',
+                        'company_description': contact.company_description or '',
+                        'websitecontent': contact.websitecontent or '',
+                        # Add full name for convenience
+                        'full_name': contact.full_name,
+                    }
+
+                    # Replace placeholders in template (HTML content)
+                    email_html_content = template
+
+                    # Find placeholders in template
+                    placeholders = re.findall(r'\{(.*?)\}', template)
                     
-                    print(f"✅ EMAIL SENT: Successfully sent to {recipient_email} with Resend ID {response['id']}")
-                else:
-                    failed_emails.append(recipient_email)
-                    campaign.increment_failed()  # Update campaign progress
-                    broadcast_progress('email_error', {
-                        'contact_email': recipient_email,
-                        'contact_name': contact.full_name,
-                        'error': 'No response ID from Resend',
-                        'progress_percent': progress_percent
-                    })
-                    print(f"❌ EMAIL FAILED: No response ID for {recipient_email}")
+                    for placeholder in placeholders:
+                        value = contact_data.get(placeholder, f'[{placeholder} not found]')
+                        email_html_content = email_html_content.replace(f'{{{placeholder}}}', str(value))
                     
-            except Exception as email_error:
-                failed_emails.append(f"{recipient_email}: {str(email_error)}")
-                campaign.increment_failed()  # Update campaign progress
-                broadcast_progress('email_error', {
-                    'contact_email': recipient_email,
-                    'contact_name': contact.full_name,
-                    'error': str(email_error),
-                    'progress_percent': progress_percent
+                    # Create simple plain text version by removing basic HTML tags
+                    email_text_content = re.sub(r'<[^>]+>', '', email_html_content)
+                    # Clean up extra whitespace
+                    email_text_content = re.sub(r'\n\s*\n', '\n\n', email_text_content.strip())
+                    
+                    try:
+                        # Send email with Resend API
+                        params = {
+                            "from": f"{sender_name} <{from_email}>" if sender_name else from_email,
+                            "to": [recipient_email],
+                            "subject": subject,
+                            "html": email_html_content,
+                            "text": email_text_content,
+                            # Enable tracking
+                            "tags": [
+                                {"name": "campaign", "value": "email_campaign"},
+                                {"name": "environment", "value": "production"},
+                                {"name": "contact_id", "value": str(contact.id)}
+                            ],
+                            "headers": {
+                                "X-Entity-Ref-ID": f"contact-{contact.id}"
+                            }
+                        }
+                        
+                        # Send the email
+                        response = resend.Emails.send(params)
+                        
+                        if response and 'id' in response:
+                            emails_sent += 1
+                            campaign.increment_sent()  # Update campaign progress
+                            
+                            # Broadcast email success
+                            broadcast_progress('email_success', {
+                                'contact_email': recipient_email,
+                                'contact_name': contact.full_name,
+                                'contact_id': contact.id,
+                                'resend_id': response['id'],
+                                'progress_percent': progress_percent
+                            })
+                            
+                            print(f"✅ EMAIL SENT: Successfully sent to {recipient_email} with Resend ID {response['id']}")
+                        else:
+                            failed_emails.append(recipient_email)
+                            campaign.increment_failed()  # Update campaign progress
+                            broadcast_progress('email_error', {
+                                'contact_email': recipient_email,
+                                'contact_name': contact.full_name,
+                                'error': 'No response ID from Resend',
+                                'progress_percent': progress_percent
+                            })
+                            print(f"❌ EMAIL FAILED: No response ID for {recipient_email}")
+                            
+                    except Exception as email_error:
+                        failed_emails.append(f"{recipient_email}: {str(email_error)}")
+                        campaign.increment_failed()  # Update campaign progress
+                        broadcast_progress('email_error', {
+                            'contact_email': recipient_email,
+                            'contact_name': contact.full_name,
+                            'error': str(email_error),
+                            'progress_percent': progress_percent
+                        })
+                        print(f"❌ EMAIL ERROR: {recipient_email}: {str(email_error)}")
+                    
+                    # Add delay between emails (respecting timeout setting)
+                    time.sleep(email_timeout)  # Use the actual timeout setting
+                
+                # Mark campaign as completed
+                campaign.mark_as_completed()
+                
+                # Broadcast campaign complete
+                success_rate = round((emails_sent / total_contacts) * 100) if total_contacts > 0 else 0
+                broadcast_progress('campaign_complete', {
+                    'emails_sent': emails_sent,
+                    'total_contacts': total_contacts,
+                    'success_rate': success_rate,
+                    'failed_count': len(failed_emails),
+                    'session_id': session_id
                 })
-                print(f"❌ EMAIL ERROR: {recipient_email}: {str(email_error)}")
-            
-            # Add delay between emails (respecting timeout setting)
-            time.sleep(email_timeout)  # Use the actual timeout setting
+                
+                # Save the template as the last used template
+                try:
+                    EmailTemplate.save_last_used_template(sender_key, subject, template)
+                except Exception as e:
+                    print(f"Failed to save template: {e}")  # Log but don't fail the email sending
+                    
+            except Exception as e:
+                campaign.mark_as_failed()
+                broadcast_progress('campaign_error', {
+                    'error': str(e),
+                    'session_id': session_id
+                })
+                print(f"❌ CAMPAIGN ERROR: {str(e)}")
         
-        # Mark campaign as completed
-        campaign.mark_as_completed()
+        # Start background processing
+        email_thread = threading.Thread(target=process_emails_background, daemon=True)
+        email_thread.start()
         
-        # Broadcast campaign complete
-        success_rate = round((emails_sent / total_contacts) * 100) if total_contacts > 0 else 0
-        broadcast_progress('campaign_complete', {
-            'emails_sent': emails_sent,
-            'total_contacts': total_contacts,
-            'success_rate': success_rate,
-            'failed_count': len(failed_emails),
-            'session_id': session_id
-        })
-        
-        message = f'Emails sent successfully! ({emails_sent} emails sent with tracking enabled)'
-        if failed_emails:
-            message += f'. Failed: {len(failed_emails)} emails'
-        
-        # Save the template as the last used template
-        try:
-            EmailTemplate.save_last_used_template(sender_key, subject, template)
-        except Exception as e:
-            print(f"Failed to save template: {e}")  # Log but don't fail the email sending
-        
+        # Return immediately with campaign started confirmation
         return JsonResponse({
-            'message': message,
-            'emails_sent': emails_sent,
-            'failed_count': len(failed_emails),
-            'failed_emails': failed_emails[:10] if failed_emails else []  # Show first 10 failures
+            'message': f'Email campaign started successfully! Processing {total_contacts} contacts in background.',
+            'campaign_started': True,
+            'session_id': session_id,
+            'total_contacts': total_contacts,
+            'estimated_duration_minutes': round((total_contacts * email_timeout) / 60, 1)
         })
         
     except Exception as e:
