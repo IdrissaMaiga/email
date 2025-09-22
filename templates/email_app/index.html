@@ -379,17 +379,17 @@
         
         <!-- Messages -->
         <div id="messages" class="mt-6"></div>
+        </div>
         
-        <!-- Real-time Email Progress Modal -->
-        <div id="emailProgressModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-            <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 shadow-lg rounded-md bg-white">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">Email Campaign Progress</h3>
-                    <button id="closeProgressModal" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
+        <!-- Email Campaign Progress - Always Visible -->
+        <div id="emailProgressSection" class="max-w-6xl mx-auto mt-6">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Email Campaign Progress</h3>
+                    <div class="flex items-center">
+                        <div id="connectionStatus" class="w-3 h-3 rounded-full bg-gray-400 mr-2"></div>
+                        <span id="connectionText" class="text-sm text-gray-600">Ready</span>
+                    </div>
                 </div>
                 
                 <!-- Campaign Overview -->
@@ -419,7 +419,7 @@
                     </div>
                     <div class="flex justify-between text-sm text-gray-600">
                         <span id="progressPercentage">0%</span>
-                        <span id="progressStatus">Initializing...</span>
+                        <span id="progressStatus">Ready to start campaign</span>
                     </div>
                 </div>
                 
@@ -449,24 +449,18 @@
                 <div class="mb-4">
                     <h4 class="text-sm font-medium text-gray-700 mb-2">Live Activity Log</h4>
                     <div id="progressLog" class="bg-gray-900 text-green-400 p-3 rounded-lg h-48 overflow-y-auto font-mono text-xs">
-                        <div class="text-gray-500">Waiting for campaign to start...</div>
+                        <div class="text-gray-500">Campaign starting...</div>
                     </div>
                 </div>
                 
-                <!-- Connection Status -->
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center">
-                        <div id="connectionStatus" class="w-3 h-3 rounded-full bg-gray-400 mr-2"></div>
-                        <span id="connectionText" class="text-sm text-gray-600">Connecting...</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button id="pauseCampaign" class="hidden px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
-                            Pause
-                        </button>
-                        <button id="stopCampaign" class="hidden px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
-                            Stop Campaign
-                        </button>
-                    </div>
+                <!-- Campaign Control Buttons -->
+                <div class="flex justify-end space-x-2">
+                    <button id="pauseCampaign" class="hidden px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                        Pause
+                    </button>
+                    <button id="stopCampaign" class="hidden px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                        Stop Campaign
+                    </button>
                 </div>
             </div>
         </div>
@@ -651,13 +645,6 @@
             // Hide control buttons
             document.getElementById('pauseCampaign').classList.add('hidden');
             document.getElementById('stopCampaign').classList.add('hidden');
-            
-            // Auto-close modal after 5 seconds
-            setTimeout(() => {
-                if (!document.getElementById('emailProgressModal').classList.contains('hidden')) {
-                    closeProgressModal();
-                }
-            }, 5000);
         }
         
         function updateProgressBar(percent) {
@@ -697,9 +684,7 @@
             log.scrollTop = log.scrollHeight; // Auto-scroll to bottom
         }
         
-        function showProgressModal() {
-            document.getElementById('emailProgressModal').classList.remove('hidden');
-            
+        function initializeEmailProgress() {
             // Reset progress state
             document.getElementById('progressEmailsSent').textContent = '0';
             document.getElementById('progressSuccessRate').textContent = '-';
@@ -711,21 +696,21 @@
             document.getElementById('progressLog').innerHTML = '<div class="text-gray-500">Campaign starting...</div>';
         }
         
-        function closeProgressModal() {
-            document.getElementById('emailProgressModal').classList.add('hidden');
-            
+        function resetEmailProgress() {
             if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
                 progressWebSocket.close();
             }
             
             isEmailCampaignRunning = false;
+            
+            // Reset to ready state
+            document.getElementById('progressStatus').textContent = 'Ready to start campaign';
+            document.getElementById('connectionText').textContent = 'Ready';
+            document.getElementById('connectionStatus').className = 'w-3 h-3 rounded-full bg-gray-400 mr-2';
         }
         
-        // Event listeners for modal controls
+        // Event listeners for progress controls
         document.addEventListener('DOMContentLoaded', function() {
-            // Close modal button
-            document.getElementById('closeProgressModal').addEventListener('click', closeProgressModal);
-            
             // Update settings button
             document.getElementById('updateSettings').addEventListener('click', function() {
                 if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
@@ -1563,6 +1548,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log(`🚀 PAGE LOADED - Starting initialization`);
             
+            // Initialize progress log
+            document.getElementById('progressLog').innerHTML = '<div class="text-gray-500">Ready to start email campaign...</div>';
+            
             // Read URL parameters first and set up the page state
             const urlParams = new URLSearchParams(window.location.search);
             const categoryFromUrl = urlParams.get('category');
@@ -1912,8 +1900,8 @@
             // Set up WebSocket connection for real-time progress
             connectProgressWebSocket(sessionId);
             
-            // Show progress modal
-            showProgressModal();
+            // Initialize progress tracking
+            initializeEmailProgress();
             isEmailCampaignRunning = true;
 
             const requestBody = {
