@@ -201,8 +201,16 @@ ASGI_APPLICATION = 'email_sender.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'CONFIG': {
+            'capacity': 300,  # Maximum number of messages to store
+            'expiry': 60,     # Message expiry time in seconds
+        },
     },
 }
+
+# WebSocket timeout settings
+WEBSOCKET_TIMEOUT = 30  # Connection timeout in seconds
+WEBSOCKET_HEARTBEAT_INTERVAL = 25  # Heartbeat interval in seconds
 
 # Email sending configuration
 EMAIL_SENDING_TIMEOUT = 30  # Default timeout in seconds (adjustable via UI)

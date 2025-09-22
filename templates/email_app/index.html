@@ -488,6 +488,11 @@
         // WebSocket variables for real-time progress
         let progressWebSocket = null;
         let currentSessionId = null;
+        let reconnectAttempts = 0;
+        let maxReconnectAttempts = 5;
+        let reconnectDelay = 3000; // Start with 3 seconds
+        let heartbeatInterval = null;
+        let heartbeatTimeout = null;
         let isEmailCampaignRunning = false;
 
         // WebSocket connection management
@@ -505,29 +510,51 @@
             progressWebSocket.onopen = function(event) {
                 updateConnectionStatus(true);
                 addProgressLog('WebSocket connected - Ready for real-time updates', 'success');
+                reconnectAttempts = 0; // Reset reconnect attempts on successful connection
+                startHeartbeat(); // Start heartbeat to keep connection alive
             };
             
             progressWebSocket.onmessage = function(event) {
                 const data = JSON.parse(event.data);
+                
+                // Handle heartbeat response
+                if (data.type === 'pong') {
+                    clearTimeout(heartbeatTimeout);
+                    return;
+                }
+                
                 handleProgressMessage(data);
             };
             
             progressWebSocket.onclose = function(event) {
                 updateConnectionStatus(false);
-                if (isEmailCampaignRunning) {
-                    addProgressLog('Connection lost - Attempting to reconnect...', 'warning');
-                    // Attempt to reconnect after 3 seconds
+                stopHeartbeat(); // Stop heartbeat when connection closes
+                
+                // Only attempt to reconnect if we're in the middle of a campaign
+                if (isEmailCampaignRunning && reconnectAttempts < maxReconnectAttempts) {
+                    reconnectAttempts++;
+                    addProgressLog(`Connection lost - Attempting to reconnect... (${reconnectAttempts}/${maxReconnectAttempts})`, 'warning');
+                    
+                    // Exponential backoff: increase delay with each attempt
+                    const delay = reconnectDelay * Math.pow(1.5, reconnectAttempts - 1);
+                    
                     setTimeout(() => {
                         if (currentSessionId && isEmailCampaignRunning) {
                             connectProgressWebSocket(currentSessionId);
                         }
-                    }, 3000);
+                    }, delay);
+                } else if (!isEmailCampaignRunning) {
+                    addProgressLog('WebSocket disconnected', 'info');
+                } else {
+                    addProgressLog('Failed to reconnect to WebSocket after maximum attempts', 'error');
                 }
             };
             
             progressWebSocket.onerror = function(error) {
-                addProgressLog('WebSocket error: ' + error, 'error');
+                console.error('WebSocket error:', error);
+                addProgressLog('WebSocket connection error', 'error');
                 updateConnectionStatus(false);
+                stopHeartbeat(); // Stop heartbeat on error
             };
         }
         
@@ -541,6 +568,35 @@
             } else {
                 statusDot.className = 'w-3 h-3 rounded-full bg-red-500 mr-2';
                 statusText.textContent = 'Disconnected';
+            }
+        }
+        
+        function startHeartbeat() {
+            // Send ping every 30 seconds
+            heartbeatInterval = setInterval(() => {
+                if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                    progressWebSocket.send(JSON.stringify({
+                        type: 'ping',
+                        timestamp: Date.now()
+                    }));
+                    
+                    // Set timeout for pong response (5 seconds)
+                    heartbeatTimeout = setTimeout(() => {
+                        console.log('❤️ Heartbeat timeout - connection may be dead');
+                        progressWebSocket.close(); // This will trigger reconnection logic
+                    }, 5000);
+                }
+            }, 30000);
+        }
+        
+        function stopHeartbeat() {
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
+            if (heartbeatTimeout) {
+                clearTimeout(heartbeatTimeout);
+                heartbeatTimeout = null;
             }
         }
         
@@ -731,9 +787,18 @@
             // Reset campaign state
             isEmailCampaignRunning = false;
             
+            // Reset reconnection state
+            reconnectAttempts = 0;
+            currentSessionId = null;
+            
+            // Stop heartbeat
+            stopHeartbeat();
+            
             // Close WebSocket if open
             if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
                 progressWebSocket.close();
+                progressWebSocket = null;
+                updateConnectionStatus(false);
             }
         }
         
@@ -831,6 +896,11 @@
         
         // Event listeners for progress controls
         document.addEventListener('DOMContentLoaded', function() {
+            // Load saved timeout on page load
+            const savedTimeout = getSavedTimeout();
+            document.getElementById('emailTimeout').value = savedTimeout;
+            console.log(`📥 Loaded saved timeout: ${savedTimeout} seconds`);
+            
             // Update settings button
             document.getElementById('updateSettings').addEventListener('click', function() {
                 if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
@@ -848,6 +918,11 @@
                 const timeout = parseInt(this.value);
                 if (timeout >= 1 && timeout <= 300) {
                     saveTimeout(timeout);
+                } else {
+                    // Reset to valid range if out of bounds
+                    const validTimeout = Math.max(1, Math.min(300, timeout));
+                    this.value = validTimeout;
+                    saveTimeout(validTimeout);
                 }
             });
             
