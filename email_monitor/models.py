@@ -350,3 +350,14 @@ class EmailSender(models.Model):
                 'webhook_secret': sender.webhook_secret
             }
         return configs
+
+
+class CampaignProgress(models.Model):
+    sender = models.CharField(max_length=255)
+    session_id = models.CharField(max_length=255, unique=True)
+    started_at = models.DateTimeField(default=timezone.now)
+    last_event = models.JSONField(default=dict)  # Stores the latest progress event
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"CampaignProgress(sender={self.sender}, session_id={self.session_id}, active={self.is_active})"

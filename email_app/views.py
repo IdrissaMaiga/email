@@ -7,7 +7,7 @@ import re
 import os
 import json
 import resend
-from email_monitor.models import Contact, EmailTemplate
+from email_monitor.models import Contact, EmailTemplate, CampaignProgress
 from email_monitor.views import get_sender_email
 
 # Store CSV data in memory (for simplicity; could use database or session for persistence)
@@ -131,8 +131,20 @@ def send_emails(request):
     channel_layer = get_channel_layer()
     room_group_name = f'email_progress_{session_id}'
     
+    def save_campaign_progress(message_type, data_dict):
+        """Save the latest campaign progress to the database"""
+        CampaignProgress.objects.update_or_create(
+            session_id=session_id,
+            defaults={
+                'sender': sender_key,
+                'last_event': {'type': message_type, 'data': data_dict},
+                'is_active': True
+            }
+        )
+
     def broadcast_progress(message_type, data_dict):
-        """Broadcast progress update via WebSocket"""
+        """Broadcast progress update via WebSocket and save to DB"""
+        save_campaign_progress(message_type, data_dict)
         if channel_layer:
             async_to_sync(channel_layer.group_send)(
                 room_group_name,
@@ -412,7 +424,7 @@ def send_emails(request):
                 print(f"❌ EMAIL ERROR: {recipient_email}: {str(email_error)}")
             
             # Add delay between emails (respecting timeout setting)
-            time.sleep(min(email_timeout / 10, 2))  # Small delay between emails
+            time.sleep(email_timeout)  # Use the actual timeout setting
         
         # Broadcast campaign complete
         success_rate = round((emails_sent / total_contacts) * 100) if total_contacts > 0 else 0
@@ -566,5 +578,26 @@ def get_senders_api(request):
         
         return JsonResponse({'senders': senders_dict})
         
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+from django.views.decorators.http import require_GET
+
+@require_GET
+def get_campaign_progress(request):
+    sender = request.GET.get('sender')
+    if not sender:
+        return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+    try:
+        campaign = CampaignProgress.objects.filter(sender=sender, is_active=True).order_by('-started_at').first()
+        if campaign:
+            return JsonResponse({
+                'session_id': campaign.session_id,
+                'last_event': campaign.last_event,
+                'started_at': campaign.started_at,
+                'is_active': campaign.is_active
+            })
+        else:
+            return JsonResponse({'message': 'No active campaign found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

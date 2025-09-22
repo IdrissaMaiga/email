@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import get_campaign_progress
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -9,4 +10,5 @@ urlpatterns = [
     path('api/get_template/', views.get_last_template, name='get_last_template'),
     path('api/save_template/', views.save_template, name='save_template'),
     path('api/get_senders/', views.get_senders_api, name='get_senders_api'),
+    path('api/campaign-progress/', get_campaign_progress, name='get_campaign_progress'),
 ]
