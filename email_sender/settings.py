@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'email_app',
     'email_monitor',
 ]
@@ -192,3 +193,18 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # DISABLE ALL CONTENT SECURITY
 CONTENT_SECURITY_POLICY = None
 FEATURE_POLICY = None
+
+# WebSocket and Channels Configuration
+ASGI_APPLICATION = 'email_sender.asgi.application'
+
+# Channel Layer Configuration for WebSockets (In-Memory - No Redis)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+# Email sending configuration
+EMAIL_SENDING_TIMEOUT = 30  # Default timeout in seconds (adjustable via UI)
+EMAIL_BATCH_SIZE = 10       # Number of emails to send per batch
+EMAIL_BATCH_DELAY = 1       # Delay between batches in seconds

@@ -100,8 +100,10 @@ def save_template(request):
         return JsonResponse({'error': f'Failed to save template: {str(e)}'}, status=500)
 
 def send_emails(request):
-    """Send emails using Resend API with click and open tracking enabled"""
+    """Send emails using Resend API with click and open tracking enabled and real-time WebSocket progress"""
     from email_monitor.models import Contact
+    import uuid
+    import time
     
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST method allowed'}, status=405)
@@ -120,6 +122,10 @@ def send_emails(request):
     contact_range_end = data.get('contact_range_end')  # End ID for contact range
     selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
     sender_key = data.get('sender')  # Which sender to use
+    session_id = data.get('session_id') or str(uuid.uuid4())  # WebSocket session ID
+    email_timeout = data.get('email_timeout', 30)  # Timeout per email (adjustable)
+    batch_size = data.get('batch_size', 10)  # Emails per batch
+    batch_delay = data.get('batch_delay', 1)  # Delay between batches
     
     if not sender_key:
         return JsonResponse({

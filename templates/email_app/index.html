@@ -379,6 +379,97 @@
         
         <!-- Messages -->
         <div id="messages" class="mt-6"></div>
+        
+        <!-- Real-time Email Progress Modal -->
+        <div id="emailProgressModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+            <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 shadow-lg rounded-md bg-white">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Email Campaign Progress</h3>
+                    <button id="closeProgressModal" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Campaign Overview -->
+                <div class="mb-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Total Contacts</p>
+                            <p id="progressTotalContacts" class="text-xl font-bold text-gray-900">-</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Emails Sent</p>
+                            <p id="progressEmailsSent" class="text-xl font-bold text-green-600">0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Success Rate</p>
+                            <p id="progressSuccessRate" class="text-xl font-bold text-blue-600">-</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Current Batch</p>
+                            <p id="progressCurrentBatch" class="text-xl font-bold text-purple-600">-</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+                        <div id="progressBar" class="bg-blue-600 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span id="progressPercentage">0%</span>
+                        <span id="progressStatus">Initializing...</span>
+                    </div>
+                </div>
+                
+                <!-- Configuration Controls -->
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="text-sm font-medium text-gray-700 mb-3">Campaign Settings (Adjustable)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="emailTimeout" class="block text-xs font-medium text-gray-600">Email Timeout (seconds)</label>
+                            <input type="number" id="emailTimeout" min="5" max="300" value="30" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="batchSize" class="block text-xs font-medium text-gray-600">Batch Size</label>
+                            <input type="number" id="batchSize" min="1" max="100" value="10" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="batchDelay" class="block text-xs font-medium text-gray-600">Batch Delay (seconds)</label>
+                            <input type="number" id="batchDelay" min="0" max="60" value="1" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <button id="updateSettings" class="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                        Update Settings
+                    </button>
+                </div>
+                
+                <!-- Real-time Log -->
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">Live Activity Log</h4>
+                    <div id="progressLog" class="bg-gray-900 text-green-400 p-3 rounded-lg h-48 overflow-y-auto font-mono text-xs">
+                        <div class="text-gray-500">Waiting for campaign to start...</div>
+                    </div>
+                </div>
+                
+                <!-- Connection Status -->
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div id="connectionStatus" class="w-3 h-3 rounded-full bg-gray-400 mr-2"></div>
+                        <span id="connectionText" class="text-sm text-gray-600">Connecting...</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button id="pauseCampaign" class="hidden px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                            Pause
+                        </button>
+                        <button id="stopCampaign" class="hidden px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                            Stop Campaign
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -389,6 +480,275 @@
         let filteredContacts = [];
         let selectedContacts = new Set();
         let isSenderSwitching = false; // Flag to prevent auto-save during sender switching
+        
+        // WebSocket variables for real-time progress
+        let progressWebSocket = null;
+        let currentSessionId = null;
+        let isEmailCampaignRunning = false;
+
+        // WebSocket connection management
+        function connectProgressWebSocket(sessionId) {
+            if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                progressWebSocket.close();
+            }
+            
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/email-progress/${sessionId}/`;
+            
+            progressWebSocket = new WebSocket(wsUrl);
+            currentSessionId = sessionId;
+            
+            progressWebSocket.onopen = function(event) {
+                updateConnectionStatus(true);
+                addProgressLog('WebSocket connected - Ready for real-time updates', 'success');
+            };
+            
+            progressWebSocket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleProgressMessage(data);
+            };
+            
+            progressWebSocket.onclose = function(event) {
+                updateConnectionStatus(false);
+                if (isEmailCampaignRunning) {
+                    addProgressLog('Connection lost - Attempting to reconnect...', 'warning');
+                    // Attempt to reconnect after 3 seconds
+                    setTimeout(() => {
+                        if (currentSessionId && isEmailCampaignRunning) {
+                            connectProgressWebSocket(currentSessionId);
+                        }
+                    }, 3000);
+                }
+            };
+            
+            progressWebSocket.onerror = function(error) {
+                addProgressLog('WebSocket error: ' + error, 'error');
+                updateConnectionStatus(false);
+            };
+        }
+        
+        function updateConnectionStatus(connected) {
+            const statusDot = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('connectionText');
+            
+            if (connected) {
+                statusDot.className = 'w-3 h-3 rounded-full bg-green-500 mr-2';
+                statusText.textContent = 'Connected';
+            } else {
+                statusDot.className = 'w-3 h-3 rounded-full bg-red-500 mr-2';
+                statusText.textContent = 'Disconnected';
+            }
+        }
+        
+        function handleProgressMessage(data) {
+            const messageType = data.message_type || data.type;
+            
+            switch (messageType) {
+                case 'connection':
+                    addProgressLog(`Connected to session: ${data.session_id}`, 'success');
+                    break;
+                    
+                case 'campaign_start':
+                    handleCampaignStart(data.data);
+                    break;
+                    
+                case 'batch_start':
+                    handleBatchStart(data.data);
+                    break;
+                    
+                case 'email_start':
+                    handleEmailStart(data.data);
+                    break;
+                    
+                case 'email_success':
+                    handleEmailSuccess(data.data);
+                    break;
+                    
+                case 'email_error':
+                    handleEmailError(data.data);
+                    break;
+                    
+                case 'batch_complete':
+                    handleBatchComplete(data.data);
+                    break;
+                    
+                case 'campaign_complete':
+                    handleCampaignComplete(data.data);
+                    break;
+                    
+                case 'timeout_updated':
+                    addProgressLog(`Timeout updated to ${data.timeout} seconds`, 'info');
+                    break;
+                    
+                case 'pong':
+                    // Heartbeat response
+                    break;
+                    
+                default:
+                    console.log('Unknown message type:', messageType, data);
+            }
+        }
+        
+        function handleCampaignStart(data) {
+            document.getElementById('progressTotalContacts').textContent = data.total_contacts;
+            document.getElementById('progressCurrentBatch').textContent = '1';
+            document.getElementById('progressStatus').textContent = 'Campaign started';
+            
+            addProgressLog(`🚀 Campaign started: ${data.total_contacts} contacts, batch size: ${data.batch_size}`, 'info');
+            addProgressLog(`📧 Sender: ${data.sender}`, 'info');
+            addProgressLog(`📝 Subject: ${data.subject}`, 'info');
+            
+            // Show control buttons
+            document.getElementById('pauseCampaign').classList.remove('hidden');
+            document.getElementById('stopCampaign').classList.remove('hidden');
+        }
+        
+        function handleBatchStart(data) {
+            document.getElementById('progressCurrentBatch').textContent = data.batch_number;
+            addProgressLog(`📦 Batch ${data.batch_number} started: ${data.batch_size} emails (${data.batch_start}-${data.batch_end})`, 'info');
+        }
+        
+        function handleEmailStart(data) {
+            document.getElementById('progressStatus').textContent = `Sending to ${data.contact_name || data.contact_email}`;
+            updateProgressBar(data.progress_percent);
+            addProgressLog(`📤 Sending to ${data.contact_name} (${data.contact_email})`, 'info');
+        }
+        
+        function handleEmailSuccess(data) {
+            const sent = parseInt(document.getElementById('progressEmailsSent').textContent) + 1;
+            document.getElementById('progressEmailsSent').textContent = sent;
+            
+            updateProgressBar(data.progress_percent);
+            updateSuccessRate();
+            
+            addProgressLog(`✅ Success: ${data.contact_name} (${data.contact_email}) - ID: ${data.resend_id}`, 'success');
+        }
+        
+        function handleEmailError(data) {
+            addProgressLog(`❌ Error: ${data.contact_email} - ${data.error}`, 'error');
+        }
+        
+        function handleBatchComplete(data) {
+            addProgressLog(`✅ Batch ${data.batch_number} complete: ${data.emails_sent_in_batch} emails sent. Total: ${data.total_sent_so_far}`, 'success');
+            
+            if (data.remaining_contacts > 0) {
+                addProgressLog(`⏳ ${data.remaining_contacts} contacts remaining...`, 'info');
+            }
+        }
+        
+        function handleCampaignComplete(data) {
+            isEmailCampaignRunning = false;
+            updateProgressBar(100);
+            document.getElementById('progressStatus').textContent = 'Campaign completed';
+            
+            addProgressLog(`🎉 Campaign completed!`, 'success');
+            addProgressLog(`📊 Final stats: ${data.emails_sent}/${data.total_contacts} sent (${data.success_rate}%)`, 'success');
+            
+            if (data.failed_count > 0) {
+                addProgressLog(`⚠️ ${data.failed_count} emails failed`, 'warning');
+            }
+            
+            // Hide control buttons
+            document.getElementById('pauseCampaign').classList.add('hidden');
+            document.getElementById('stopCampaign').classList.add('hidden');
+            
+            // Auto-close modal after 5 seconds
+            setTimeout(() => {
+                if (!document.getElementById('emailProgressModal').classList.contains('hidden')) {
+                    closeProgressModal();
+                }
+            }, 5000);
+        }
+        
+        function updateProgressBar(percent) {
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = document.getElementById('progressPercentage');
+            
+            progressBar.style.width = `${percent}%`;
+            progressPercentage.textContent = `${percent}%`;
+        }
+        
+        function updateSuccessRate() {
+            const sent = parseInt(document.getElementById('progressEmailsSent').textContent);
+            const total = parseInt(document.getElementById('progressTotalContacts').textContent);
+            
+            if (total > 0) {
+                const rate = Math.round((sent / total) * 100);
+                document.getElementById('progressSuccessRate').textContent = `${rate}%`;
+            }
+        }
+        
+        function addProgressLog(message, type = 'info') {
+            const log = document.getElementById('progressLog');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const colorClass = {
+                'success': 'text-green-400',
+                'error': 'text-red-400',
+                'warning': 'text-yellow-400',
+                'info': 'text-blue-400'
+            }[type] || 'text-gray-400';
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `${colorClass} mb-1`;
+            logEntry.innerHTML = `<span class="text-gray-500">[${timestamp}]</span> ${message}`;
+            
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight; // Auto-scroll to bottom
+        }
+        
+        function showProgressModal() {
+            document.getElementById('emailProgressModal').classList.remove('hidden');
+            
+            // Reset progress state
+            document.getElementById('progressEmailsSent').textContent = '0';
+            document.getElementById('progressSuccessRate').textContent = '-';
+            document.getElementById('progressCurrentBatch').textContent = '-';
+            document.getElementById('progressStatus').textContent = 'Initializing...';
+            updateProgressBar(0);
+            
+            // Clear log
+            document.getElementById('progressLog').innerHTML = '<div class="text-gray-500">Campaign starting...</div>';
+        }
+        
+        function closeProgressModal() {
+            document.getElementById('emailProgressModal').classList.add('hidden');
+            
+            if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                progressWebSocket.close();
+            }
+            
+            isEmailCampaignRunning = false;
+        }
+        
+        // Event listeners for modal controls
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close modal button
+            document.getElementById('closeProgressModal').addEventListener('click', closeProgressModal);
+            
+            // Update settings button
+            document.getElementById('updateSettings').addEventListener('click', function() {
+                if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                    const timeout = parseInt(document.getElementById('emailTimeout').value);
+                    progressWebSocket.send(JSON.stringify({
+                        type: 'update_timeout',
+                        timeout: timeout
+                    }));
+                    addProgressLog(`Timeout updated to ${timeout} seconds`, 'info');
+                }
+            });
+            
+            // Campaign control buttons (placeholder - implement as needed)
+            document.getElementById('pauseCampaign').addEventListener('click', function() {
+                addProgressLog('Pause functionality not yet implemented', 'warning');
+            });
+            
+            document.getElementById('stopCampaign').addEventListener('click', function() {
+                if (confirm('Are you sure you want to stop the email campaign?')) {
+                    addProgressLog('Stop functionality not yet implemented', 'warning');
+                }
+            });
+        });
 
         // Initialize TinyMCE editor
         function initializeEditor() {
@@ -1511,7 +1871,7 @@
             setTimeout(setupAutoSaveForEditor, 2000);
         });
 
-        // Send emails with tracking
+        // Send emails with tracking and WebSocket integration
         document.getElementById('sendEmailsTracking').addEventListener('click', function() {
             const contactFilter = document.getElementById('contactFilter').value;
             const categoryFilter = document.getElementById('categoryFilter').value;
@@ -1537,34 +1897,6 @@
             let template = '';
             if (editorInitialized && tinymce.get('emailTemplate')) {
                 template = tinymce.get('emailTemplate').getContent();
-                // Auto-save template when subject or content changes
-                let autoSaveTimeout;
-                let lastAutoSaveTime = 0;
-                const AUTO_SAVE_COOLDOWN = 5000; // 5 seconds minimum between saves
-                // Auto-save subject changes
-                const emailSubject = document.getElementById('emailSubject');
-                if (emailSubject) {
-                    emailSubject.addEventListener('input', function() {
-                        clearTimeout(autoSaveTimeout);
-                        autoSaveTimeout = setTimeout(() => {
-                            const now = Date.now();
-                            if (now - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
-                                saveCurrentTemplate();
-                                showAutoSaveIndicator();
-                                lastAutoSaveTime = now;
-                            }
-                        }, 2000); // Save 2 seconds after user stops typing
-                    });
-                    // Also save subject when user clicks away (blur event)
-                    emailSubject.addEventListener('blur', function() {
-                        clearTimeout(autoSaveTimeout);
-                        if (Date.now() - lastAutoSaveTime >= AUTO_SAVE_COOLDOWN) {
-                            saveCurrentTemplate();
-                            showAutoSaveIndicator();
-                            lastAutoSaveTime = Date.now();
-                        }
-                    });
-                }
             } else {
                 template = document.getElementById('emailTemplate').value;
             }
@@ -1574,16 +1906,21 @@
                 return;
             }
 
-            // Show loading state
-            const button = document.getElementById('sendEmailsTracking');
-            const originalText = button.textContent;
-            button.textContent = 'Sending Emails...';
-            button.disabled = true;
+            // Generate session ID for WebSocket tracking
+            const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            // Set up WebSocket connection for real-time progress
+            connectProgressWebSocket(sessionId);
+            
+            // Show progress modal
+            showProgressModal();
+            isEmailCampaignRunning = true;
 
             const requestBody = {
                 template: template,
                 subject: subject,
-                sender: getSavedSender() // Use saved sender instead of dropdown value
+                sender: getSavedSender(), // Use saved sender instead of dropdown value
+                session_id: sessionId // Add session ID for WebSocket tracking
             };
             
             // Add category filter if specified
@@ -1614,40 +1951,23 @@
             .then(data => {
                 if (data.error) {
                     showMessage(data.error, true);
+                    addProgressLog(`❌ Failed to start email campaign: ${data.error}`, 'error');
+                    isEmailCampaignRunning = false;
                 } else {
-                    let message = data.message;
-                    if (data.failed_count > 0) {
-                        message += `<br><strong>Failed emails:</strong> ${data.failed_count}`;
-                        if (data.failed_emails && data.failed_emails.length > 0) {
-                            message += '<br><small>' + data.failed_emails.slice(0, 3).join(', ') + '</small>';
-                        }
-                    }
-                    showMessage(message);
+                    // Success is now handled through WebSocket progress updates
+                    addProgressLog(`✅ Email campaign initiated successfully`, 'success');
                     
-                    // Refresh contact stats after sending - use forced reloads to catch webhook updates
-                    console.log('Emails sent successfully, refreshing stats...');
-                    setTimeout(() => loadContactStats(true), 500);   // Quick refresh
-                    setTimeout(() => loadContactStats(true), 2000);  // Medium refresh 
-                    setTimeout(() => loadContactStats(true), 5000);  // Longer refresh to catch webhook updates
-                    setTimeout(() => loadContactStats(true), 10000); // Final refresh for slow webhooks
-                    
-                    // If custom selection, refresh the contacts list to show updated status
+                    // Clear selected contacts if using custom selection
                     if (contactFilter === 'custom') {
-                        setTimeout(() => {
-                            loadContactsForSelection();
-                            selectedContacts.clear();
-                            updateSelectedCount();
-                        }, 1000);
+                        selectedContacts.clear();
+                        updateSelectedCount();
                     }
                 }
             })
             .catch(error => {
                 showMessage('Error: ' + error, true);
-            })
-            .finally(() => {
-                // Reset button state
-                button.textContent = originalText;
-                button.disabled = false;
+                addProgressLog(`❌ Network error: ${error}`, 'error');
+                isEmailCampaignRunning = false;
             });
         });
 

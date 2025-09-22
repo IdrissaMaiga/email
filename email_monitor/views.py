@@ -267,14 +267,8 @@ def contacts_list(request):
     
     # Filter by category if specified
     category_filter = request.GET.get('category')
-    print(f"🔍 CATEGORY DEBUG: Raw category_filter = '{category_filter}' (type: {type(category_filter)})")
     if category_filter and category_filter != 'all':
-        print(f"🔍 CATEGORY DEBUG: Filtering by category_id = '{category_filter}'")
         contacts = contacts.filter(category_id=category_filter)
-        print(f"🔍 CATEGORY DEBUG: Contacts after filter = {contacts.count()}")
-    else:
-        print(f"🔍 CATEGORY DEBUG: No category filter applied")
-        print(f"🔍 CATEGORY DEBUG: Total contacts = {contacts.count()}")
     
     # Search by name or email
     search = request.GET.get('search')
@@ -353,18 +347,14 @@ def contacts_list(request):
     # Get all distinct categories for filtering with counts
     categories = []
     distinct_categories = Contact.objects.values('category_id', 'category_name').distinct().order_by('category_id')
-    print(f"🔍 CATEGORY DEBUG: Found {len(distinct_categories)} distinct categories:")
     for category in distinct_categories:
         cat_id = category['category_id']
         count = Contact.objects.filter(category_id=cat_id).count()
-        print(f"🔍 CATEGORY DEBUG: - Category '{cat_id}' = '{category['category_name']}' ({count} contacts)")
         categories.append({
             'category_id': cat_id,
             'category_name': category['category_name'],
             'count': count
         })
-    
-    print(f"🔍 CATEGORY DEBUG: current_category being passed to template = '{category_filter}'")
     
     context = {
         'page_obj': page_obj,
@@ -484,8 +474,6 @@ def contact_email_content_api(request):
         # Extract just the email address from the sender string
         from_email = extract_email_from_sender_string(from_email_raw)
         
-        print(f"🔍 Raw from_email: '{from_email_raw}' -> Extracted: '{from_email}'")
-        
         # Get the appropriate API key from database
         resend_api_key = None
         sender_obj = None
@@ -494,9 +482,8 @@ def contact_email_content_api(request):
             try:
                 sender_obj = EmailSender.objects.get(email=from_email, is_active=True)
                 resend_api_key = sender_obj.api_key
-                print(f"✅ Found sender {sender_obj.name} for email {from_email}")
             except EmailSender.DoesNotExist:
-                print(f"❌ No active sender found for email: {from_email}")
+                pass
         
         if not resend_api_key:
             return JsonResponse({'error': f'Resend API key not configured for sender: {from_email}'}, status=500)
@@ -588,14 +575,12 @@ def email_content_by_id_api(request):
         if email_event.from_email:
             # Extract email address from sender string
             from_email = extract_email_from_sender_string(email_event.from_email)
-            print(f"🔍 Raw from_email: '{email_event.from_email}' -> Extracted: '{from_email}'")
             
             try:
                 sender_obj = EmailSender.objects.get(email=from_email, is_active=True)
                 resend_api_key = sender_obj.api_key
-                print(f"✅ Found sender {sender_obj.name} for email {from_email}")
             except EmailSender.DoesNotExist:
-                print(f"❌ No active sender found for email: {from_email}")
+                pass
                 
         # Fallback to any active sender if no specific match
         if not resend_api_key:
@@ -603,9 +588,8 @@ def email_content_by_id_api(request):
                 fallback_sender = EmailSender.objects.filter(is_active=True).first()
                 if fallback_sender:
                     resend_api_key = fallback_sender.api_key
-                    print(f"✅ Using fallback sender {fallback_sender.name}")
             except Exception as e:
-                print(f"❌ Error getting fallback sender: {str(e)}")
+                pass
 
         if not resend_api_key:
             return JsonResponse({'error': f'Resend API key not configured for sender: {from_email}'}, status=500)
