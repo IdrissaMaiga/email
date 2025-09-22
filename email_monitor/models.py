@@ -199,11 +199,26 @@ class EmailTemplate(models.Model):
             raise ValueError("Sender parameter is required")
             
         try:
-            template = cls.objects.get(sender=sender)
-            return template
-        except cls.DoesNotExist:
-            # Create a new empty template for this sender
+            # Get the most recent 'last_used' template for this sender
+            template = cls.objects.filter(
+                sender=sender, 
+                template_type='last_used'
+            ).order_by('-updated_at').first()
+            
+            if template:
+                return template
+            else:
+                # Create a new empty template for this sender
+                return cls.objects.create(
+                    template_type='last_used',
+                    sender=sender,
+                    subject='',
+                    content=''
+                )
+        except Exception as e:
+            # Create a new empty template for this sender if any error occurs
             return cls.objects.create(
+                template_type='last_used',
                 sender=sender,
                 subject='',
                 content=''
