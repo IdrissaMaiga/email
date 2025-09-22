@@ -279,6 +279,13 @@ def send_emails(request):
         contacts_list = list(contacts)
         total_contacts = len(contacts_list)
         
+        print(f"🔍 EMAIL CAMPAIGN DEBUG:")
+        print(f"   📊 Total contacts found: {total_contacts}")
+        print(f"   🎯 Filter: {contact_filter}")
+        print(f"   📂 Category: {category_filter}")
+        print(f"   🆔 Range: {contact_range_start}-{contact_range_end}")
+        print(f"   📧 Sender: {sender_key}")
+        
         # Create campaign record for persistence
         campaign = EmailCampaign.objects.create(
             session_id=session_id,
@@ -302,7 +309,8 @@ def send_emails(request):
             'total_contacts': total_contacts,
             'sender': f"{sender_name} <{from_email}>",
             'subject': subject,
-            'session_id': session_id
+            'session_id': session_id,
+            'filter_info': f"{contact_filter} contacts" + (f" from category {category_filter}" if category_filter else "")
         })
         
         # Start email processing in background thread
@@ -315,11 +323,13 @@ def send_emails(request):
                 # Process contacts sequentially
                 for i, contact in enumerate(contacts_list):
                     contact_index = i + 1
-                    progress_percent = round((contact_index / total_contacts) * 100)
                     
                     recipient_email = contact.email.strip()
                     if not recipient_email:
                         continue
+
+                    # Calculate progress based on contacts processed so far (not including current)
+                    progress_percent = round((i / total_contacts) * 100) if total_contacts > 0 else 0
 
                     # Validate email format
                     import re
@@ -407,35 +417,46 @@ def send_emails(request):
                             emails_sent += 1
                             campaign.increment_sent()  # Update campaign progress
                             
+                            # Calculate progress after completing this email
+                            completed_progress = round((contact_index / total_contacts) * 100)
+                            
                             # Broadcast email success
                             broadcast_progress('email_success', {
                                 'contact_email': recipient_email,
                                 'contact_name': contact.full_name,
                                 'contact_id': contact.id,
                                 'resend_id': response['id'],
-                                'progress_percent': progress_percent
+                                'progress_percent': completed_progress
                             })
                             
                             print(f"✅ EMAIL SENT: Successfully sent to {recipient_email} with Resend ID {response['id']}")
                         else:
                             failed_emails.append(recipient_email)
                             campaign.increment_failed()  # Update campaign progress
+                            
+                            # Calculate progress after completing this email
+                            completed_progress = round((contact_index / total_contacts) * 100)
+                            
                             broadcast_progress('email_error', {
                                 'contact_email': recipient_email,
                                 'contact_name': contact.full_name,
                                 'error': 'No response ID from Resend',
-                                'progress_percent': progress_percent
+                                'progress_percent': completed_progress
                             })
                             print(f"❌ EMAIL FAILED: No response ID for {recipient_email}")
                             
                     except Exception as email_error:
                         failed_emails.append(f"{recipient_email}: {str(email_error)}")
                         campaign.increment_failed()  # Update campaign progress
+                        
+                        # Calculate progress after completing this email
+                        completed_progress = round((contact_index / total_contacts) * 100)
+                        
                         broadcast_progress('email_error', {
                             'contact_email': recipient_email,
                             'contact_name': contact.full_name,
                             'error': str(email_error),
-                            'progress_percent': progress_percent
+                            'progress_percent': completed_progress
                         })
                         print(f"❌ EMAIL ERROR: {recipient_email}: {str(email_error)}")
                     

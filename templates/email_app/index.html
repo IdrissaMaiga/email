@@ -396,7 +396,7 @@
                 <div class="mb-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div class="text-center">
-                            <p class="text-sm text-gray-500">Total Contacts</p>
+                            <p class="text-sm text-gray-500">Sending To</p>
                             <p id="progressTotalContacts" class="text-xl font-bold text-gray-900">-</p>
                         </div>
                         <div class="text-center">
@@ -570,9 +570,12 @@
             document.getElementById('progressTotalContacts').textContent = data.total_contacts;
             document.getElementById('progressStatus').textContent = 'Campaign started';
             
-            addProgressLog(`🚀 Campaign started: ${data.total_contacts} contacts`, 'info');
+            addProgressLog(`🚀 Campaign started: sending to ${data.total_contacts} contacts`, 'info');
             addProgressLog(`📧 Sender: ${data.sender}`, 'info');
             addProgressLog(`📝 Subject: ${data.subject}`, 'info');
+            if (data.filter_info) {
+                addProgressLog(`🎯 Filter: ${data.filter_info}`, 'info');
+            }
             
             // Show control buttons
             document.getElementById('pauseCampaign').classList.remove('hidden');
@@ -701,7 +704,7 @@
                         // Update status
                         if (campaign.status === 'running') {
                             document.getElementById('progressStatus').textContent = 'Campaign in progress';
-                            addProgressLog(`🔄 Resumed tracking campaign: ${campaign.emails_sent}/${campaign.total_contacts} emails sent`, 'info');
+                            addProgressLog(`🔄 Resumed tracking campaign: sending to ${campaign.total_contacts} contacts (${campaign.emails_sent} sent so far)`, 'info');
                             
                             // Try to reconnect to WebSocket
                             connectProgressWebSocket(campaign.session_id);
@@ -712,7 +715,7 @@
                             document.getElementById('stopCampaign').classList.remove('hidden');
                         } else if (campaign.status === 'completed') {
                             document.getElementById('progressStatus').textContent = 'Campaign completed';
-                            addProgressLog(`✅ Previous campaign completed: ${campaign.emails_sent}/${campaign.total_contacts} emails sent (${campaign.success_rate}%)`, 'success');
+                            addProgressLog(`✅ Previous campaign completed: sent to ${campaign.total_contacts} contacts (${campaign.emails_sent} sent, ${campaign.success_rate}% success rate)`, 'success');
                         }
                         
                         // Update timeout setting
