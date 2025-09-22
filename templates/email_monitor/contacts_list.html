@@ -176,10 +176,7 @@
                 <div class="mt-3">
                     <p class="text-sm font-medium text-gray-700 mb-2">Filter by Category:</p>
                     
-                    <!-- Debug Info -->
-                    <div class="mb-2 text-xs text-gray-500">
-                        Debug: current_category = "{{ current_category|default:'NULL' }}" | URL params: {{ request.GET.urlencode }}
-                    </div>
+
                     
                     <div class="flex flex-wrap gap-2">
                         <a href="{% url 'contacts_list' %}?{% if current_search %}search={{ current_search }}&{% endif %}{% if current_sort %}sort_by={{ current_sort }}&{% endif %}{% if current_status %}status={{ current_status }}&{% endif %}" 
