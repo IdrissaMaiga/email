@@ -425,7 +425,7 @@
                     <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="emailTimeout" class="block text-xs font-medium text-gray-600">Email Timeout (seconds)</label>
-                            <input type="number" id="emailTimeout" min="5" max="300" value="30" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="number" id="emailTimeout" min="1" max="300" value="5" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                     </div>
                     <button id="updateSettings" class="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
@@ -449,6 +449,28 @@
                     <button id="stopCampaign" class="hidden px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
                         Stop Campaign
                     </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Campaign History -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-xl font-semibold text-gray-900">Campaign History</h3>
+                    <div class="flex space-x-2">
+                        <button id="refreshHistory" class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Refresh
+                        </button>
+                        <button id="markStuckCampaigns" class="px-3 py-1 text-sm bg-orange-500 text-white rounded hover:bg-orange-600">
+                            Mark Stuck as Finished
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div id="campaignHistoryContainer">
+                        <div class="text-center text-gray-500">Loading campaign history...</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -553,6 +575,14 @@
                     handleCampaignComplete(data.data);
                     break;
                     
+                case 'campaign_paused':
+                    handleCampaignPaused(data.data);
+                    break;
+                    
+                case 'campaign_stopped':
+                    handleCampaignStopped(data.data);
+                    break;
+                    
                 case 'timeout_updated':
                     addProgressLog(`Timeout updated to ${data.timeout} seconds`, 'info');
                     break;
@@ -629,6 +659,36 @@
             }, 10000);
         }
         
+        function handleCampaignPaused(data) {
+            console.log('⏸️ Campaign Paused', data);
+            addProgressLog(`⏸️ Campaign paused at ${data.emails_sent} emails sent`, 'warning');
+            document.getElementById('progressStatus').textContent = 'Campaign paused';
+            
+            // Update pause button to resume
+            const pauseBtn = document.getElementById('pauseCampaign');
+            if (pauseBtn) {
+                pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume Campaign';
+                pauseBtn.onclick = () => resumeCampaign();
+            }
+        }
+        
+        function handleCampaignStopped(data) {
+            console.log('🛑 Campaign Stopped', data);
+            isEmailCampaignRunning = false;
+            addProgressLog(`🛑 Campaign stopped. Sent ${data.emails_sent} emails`, 'error');
+            document.getElementById('progressStatus').textContent = 'Campaign stopped';
+            
+            // Hide control buttons
+            document.getElementById('pauseCampaign').classList.add('hidden');
+            document.getElementById('stopCampaign').classList.add('hidden');
+            
+            // Clear the UI after a short delay
+            setTimeout(() => {
+                clearCampaignProgress();
+                addProgressLog('Ready to start new email campaign...', 'info');
+            }, 5000);
+        }
+        
         function updateProgressBar(percent) {
             const progressBar = document.getElementById('progressBar');
             const progressPercentage = document.getElementById('progressPercentage');
@@ -657,9 +717,16 @@
             // Reset progress bar
             updateProgressBar(0);
             
-            // Hide control buttons
+            // Hide control buttons and reset pause button text
             document.getElementById('pauseCampaign').classList.add('hidden');
             document.getElementById('stopCampaign').classList.add('hidden');
+            
+            // Reset pause button to original state
+            const pauseBtn = document.getElementById('pauseCampaign');
+            if (pauseBtn) {
+                pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Campaign';
+                pauseBtn.onclick = () => pauseCampaign();
+            }
             
             // Reset campaign state
             isEmailCampaignRunning = false;
@@ -743,9 +810,6 @@
                             // Show control buttons
                             document.getElementById('pauseCampaign').classList.remove('hidden');
                             document.getElementById('stopCampaign').classList.remove('hidden');
-                            
-                            // Update timeout setting
-                            document.getElementById('emailTimeout').value = campaign.email_timeout;
                         } else {
                             // Campaign exists but is completed/failed - clear UI and show ready state
                             console.log(`✅ Found ${campaign.status} campaign - clearing UI`);
@@ -779,15 +843,32 @@
                 }
             });
             
+            // Save timeout when user changes it
+            document.getElementById('emailTimeout').addEventListener('change', function() {
+                const timeout = parseInt(this.value);
+                if (timeout >= 1 && timeout <= 300) {
+                    saveTimeout(timeout);
+                }
+            });
+            
             // Campaign control buttons (placeholder - implement as needed)
             document.getElementById('pauseCampaign').addEventListener('click', function() {
-                addProgressLog('Pause functionality not yet implemented', 'warning');
+                pauseCampaign();
             });
             
             document.getElementById('stopCampaign').addEventListener('click', function() {
-                if (confirm('Are you sure you want to stop the email campaign?')) {
-                    addProgressLog('Stop functionality not yet implemented', 'warning');
+                if (confirm('Are you sure you want to stop the email campaign? This cannot be undone.')) {
+                    stopCampaign();
                 }
+            });
+            
+            // Campaign history event listeners
+            document.getElementById('refreshHistory').addEventListener('click', function() {
+                loadCampaignHistory();
+            });
+            
+            document.getElementById('markStuckCampaigns').addEventListener('click', function() {
+                markStuckCampaignsFinished();
             });
         });
 
@@ -1004,6 +1085,16 @@
 
         function saveCategory(category) {
             localStorage.setItem('selectedCategory', category);
+        }
+
+        function getSavedTimeout() {
+            const saved = localStorage.getItem('emailTimeout');
+            return saved ? parseInt(saved) : 1; // Default to 1 second
+        }
+
+        function saveTimeout(timeout) {
+            localStorage.setItem('emailTimeout', timeout.toString());
+            console.log(`💾 Saved timeout: ${timeout} seconds`);
         }
 
         function applySenderToUI() {
@@ -1600,12 +1691,283 @@
             }, 5000);
         }
 
+        function pauseCampaign() {
+            fetch('/api/campaign_control/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    action: 'pause'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    addProgressLog(`❌ Failed to pause campaign: ${data.error}`, 'error');
+                    return;
+                }
+                
+                addProgressLog('⏸️ Campaign paused successfully', 'warning');
+                
+                // Update UI
+                document.getElementById('progressStatus').textContent = 'Campaign paused';
+                document.getElementById('pauseCampaign').textContent = 'Resume';
+                document.getElementById('pauseCampaign').classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
+                document.getElementById('pauseCampaign').classList.add('bg-green-500', 'hover:bg-green-600');
+                
+                // Change pause button to resume functionality
+                document.getElementById('pauseCampaign').onclick = function() {
+                    resumeCampaign();
+                };
+            })
+            .catch(error => {
+                console.error('Failed to pause campaign:', error);
+                addProgressLog('❌ Failed to pause campaign', 'error');
+            });
+        }
+
+        function resumeCampaign() {
+            fetch('/api/campaign_control/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    action: 'resume'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    addProgressLog(`❌ Failed to resume campaign: ${data.error}`, 'error');
+                    return;
+                }
+                
+                addProgressLog('▶️ Campaign resumed successfully', 'success');
+                
+                // Update UI
+                document.getElementById('progressStatus').textContent = 'Campaign in progress';
+                document.getElementById('pauseCampaign').textContent = 'Pause';
+                document.getElementById('pauseCampaign').classList.remove('bg-green-500', 'hover:bg-green-600');
+                document.getElementById('pauseCampaign').classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+                
+                // Change resume button back to pause functionality
+                document.getElementById('pauseCampaign').onclick = function() {
+                    pauseCampaign();
+                };
+            })
+            .catch(error => {
+                console.error('Failed to resume campaign:', error);
+                addProgressLog('❌ Failed to resume campaign', 'error');
+            });
+        }
+
+        function stopCampaign() {
+            fetch('/api/campaign_control/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    action: 'stop'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    addProgressLog(`❌ Failed to stop campaign: ${data.error}`, 'error');
+                    return;
+                }
+                
+                addProgressLog('🛑 Campaign stopped successfully', 'warning');
+                
+                // Update UI to show stopped state
+                document.getElementById('progressStatus').textContent = 'Campaign stopped';
+                
+                // Hide control buttons
+                document.getElementById('pauseCampaign').classList.add('hidden');
+                document.getElementById('stopCampaign').classList.add('hidden');
+                
+                // Reset campaign state
+                isEmailCampaignRunning = false;
+                
+                // Close WebSocket
+                if (progressWebSocket && progressWebSocket.readyState === WebSocket.OPEN) {
+                    progressWebSocket.close();
+                }
+                
+                // Refresh campaign history to show the stopped campaign
+                loadCampaignHistory();
+                
+                // Show final stats after a moment
+                setTimeout(() => {
+                    clearCampaignProgress();
+                    addProgressLog('Ready to start new email campaign...', 'info');
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Failed to stop campaign:', error);
+                addProgressLog('❌ Failed to stop campaign', 'error');
+            });
+        }
+
+        // Utility function to get CSRF cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Campaign history functions
+        function loadCampaignHistory() {
+            fetch('/api/campaign_history/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('campaignHistoryContainer').innerHTML = 
+                            `<div class="text-red-500">Error: ${data.error}</div>`;
+                        return;
+                    }
+                    
+                    displayCampaignHistory(data.campaigns);
+                })
+                .catch(error => {
+                    console.error('Failed to load campaign history:', error);
+                    document.getElementById('campaignHistoryContainer').innerHTML = 
+                        '<div class="text-red-500">Failed to load campaign history</div>';
+                });
+        }
+
+        function displayCampaignHistory(campaigns) {
+            const container = document.getElementById('campaignHistoryContainer');
+            
+            if (campaigns.length === 0) {
+                container.innerHTML = '<div class="text-gray-500 text-center">No campaigns found in the last 30 days</div>';
+                return;
+            }
+
+            const table = `
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sender</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Success Rate</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${campaigns.map(campaign => createCampaignRow(campaign)).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        function createCampaignRow(campaign) {
+            const statusColor = {
+                'completed': 'bg-green-100 text-green-800',
+                'failed': 'bg-red-100 text-red-800',
+                'running': 'bg-blue-100 text-blue-800',
+                'preparing': 'bg-yellow-100 text-yellow-800',
+                'paused': 'bg-gray-100 text-gray-800'
+            }[campaign.status] || 'bg-gray-100 text-gray-800';
+
+            const createdDate = new Date(campaign.created_at).toLocaleDateString();
+            const createdTime = new Date(campaign.created_at).toLocaleTimeString();
+            
+            const durationText = campaign.duration_minutes ? 
+                `${campaign.duration_minutes} min` : 
+                (campaign.status === 'running' ? 'In progress' : '-');
+
+            return `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+                            ${campaign.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-xs truncate" title="${campaign.subject}">
+                        ${campaign.subject}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${campaign.sender_key}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${campaign.emails_sent}/${campaign.total_contacts} (${campaign.progress_percentage}%)
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${campaign.success_rate}%
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${durationText}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div>${createdDate}</div>
+                        <div class="text-xs text-gray-400">${createdTime}</div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function markStuckCampaignsFinished() {
+            if (!confirm('This will mark campaigns stuck in "running" state for more than 1 hour as finished. Continue?')) {
+                return;
+            }
+            
+            fetch('/api/mark_stuck_campaigns/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
+                    return;
+                }
+                
+                alert(`${data.message}`);
+                loadCampaignHistory(); // Refresh the history
+            })
+            .catch(error => {
+                console.error('Failed to mark stuck campaigns:', error);
+                alert('Failed to mark stuck campaigns');
+            });
+        }
+
         // Load contacts when page loads
         document.addEventListener('DOMContentLoaded', function() {
             console.log(`🚀 PAGE LOADED - Starting initialization`);
             
             // Initialize progress log
             document.getElementById('progressLog').innerHTML = '<div class="text-gray-500">Ready to start email campaign...</div>';
+            
+            // Load saved timeout setting
+            const savedTimeout = getSavedTimeout();
+            document.getElementById('emailTimeout').value = savedTimeout;
+            console.log(`⏱️ Loaded saved timeout: ${savedTimeout} seconds`);
             
             // Read URL parameters first and set up the page state
             const urlParams = new URLSearchParams(window.location.search);
@@ -1640,6 +2002,10 @@
             // Check for active campaign and resume if needed
             console.log(`🔍 Checking for active campaign...`);
             checkAndResumeActiveCampaign();
+            
+            // Load campaign history
+            console.log(`📊 Loading campaign history...`);
+            loadCampaignHistory();
             
             // Set up periodic refresh of contact stats every 30 seconds
             setInterval(loadContactStats, 30000);

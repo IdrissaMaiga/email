@@ -127,7 +127,7 @@ def send_emails(request):
     selected_contact_ids = data.get('selected_contact_ids')  # Custom selection of contact IDs
     sender_key = data.get('sender')  # Which sender to use
     session_id = data.get('session_id') or str(uuid.uuid4())  # WebSocket session ID
-    email_timeout = data.get('email_timeout', 30)  # Timeout per email (adjustable)
+    email_timeout = data.get('email_timeout', 1)  # Timeout per email (adjustable, default 1 second)
     
     # Initialize WebSocket broadcasting
     channel_layer = get_channel_layer()
@@ -352,6 +352,32 @@ def send_emails(request):
                         'progress_percent': progress_percent
                     })
 
+                    # Check if campaign has been paused or stopped
+                    campaign.refresh_from_db()  # Get latest status from database
+                    
+                    if campaign.status == 'paused':
+                        # Wait while paused, check every 5 seconds
+                        while campaign.status == 'paused':
+                            print(f"⏸️ Campaign paused, waiting...")
+                            broadcast_progress('campaign_paused', {
+                                'message': 'Campaign is paused',
+                                'contact_email': recipient_email,
+                                'progress_percent': progress_percent
+                            })
+                            time.sleep(5)
+                            campaign.refresh_from_db()
+                    
+                    if campaign.status in ['completed', 'failed']:
+                        # Campaign has been stopped
+                        print(f"🛑 Campaign stopped with status: {campaign.status}")
+                        broadcast_progress('campaign_stopped', {
+                            'message': f'Campaign stopped ({campaign.status})',
+                            'emails_sent': emails_sent,
+                            'total_contacts': total_contacts,
+                            'session_id': session_id
+                        })
+                        return  # Exit the background function
+
                     # Create contact data dictionary for template replacement
                     contact_data = {
                         'prospect_first_name': contact.first_name or '',
@@ -547,6 +573,181 @@ def get_campaign_status(request):
     except Exception as e:
         return JsonResponse({
             'error': f'Failed to get campaign status: {str(e)}'
+        }, status=500)
+
+
+def get_campaign_history(request):
+    """API endpoint to get campaign history"""
+    from email_monitor.models import EmailCampaign
+    from django.utils import timezone
+    from datetime import timedelta
+    
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Only GET method allowed'}, status=405)
+    
+    try:
+        # Get campaigns from the last 30 days, ordered by most recent
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        campaigns = EmailCampaign.objects.filter(
+            created_at__gte=thirty_days_ago
+        ).order_by('-created_at')[:50]  # Limit to 50 most recent
+        
+        campaign_list = []
+        for campaign in campaigns:
+            # Calculate duration if campaign has start and end times
+            duration_minutes = None
+            if campaign.started_at and campaign.completed_at:
+                duration_seconds = (campaign.completed_at - campaign.started_at).total_seconds()
+                duration_minutes = round(duration_seconds / 60, 1)
+            
+            campaign_list.append({
+                'id': campaign.id,
+                'session_id': campaign.session_id,
+                'status': campaign.status,
+                'sender_key': campaign.sender_key,
+                'subject': campaign.subject,
+                'total_contacts': campaign.total_contacts,
+                'emails_sent': campaign.emails_sent,
+                'emails_failed': campaign.emails_failed,
+                'progress_percentage': campaign.progress_percentage,
+                'success_rate': campaign.success_rate,
+                'email_timeout': campaign.email_timeout,
+                'created_at': campaign.created_at.isoformat(),
+                'started_at': campaign.started_at.isoformat() if campaign.started_at else None,
+                'completed_at': campaign.completed_at.isoformat() if campaign.completed_at else None,
+                'duration_minutes': duration_minutes,
+            })
+        
+        return JsonResponse({
+            'campaigns': campaign_list,
+            'total_count': len(campaign_list)
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': f'Failed to get campaign history: {str(e)}'
+        }, status=500)
+
+
+def mark_stuck_campaigns_finished(request):
+    """API endpoint to mark stuck campaigns as finished"""
+    from email_monitor.models import EmailCampaign
+    from django.utils import timezone
+    from datetime import timedelta
+    
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+    
+    try:
+        # Find campaigns that are stuck in running/preparing state for more than 1 hour
+        one_hour_ago = timezone.now() - timedelta(hours=1)
+        
+        stuck_campaigns = EmailCampaign.objects.filter(
+            status__in=['running', 'preparing'],
+            created_at__lt=one_hour_ago
+        )
+        
+        marked_count = 0
+        for campaign in stuck_campaigns:
+            # Mark as completed if any emails were sent, otherwise mark as failed
+            if campaign.emails_sent > 0:
+                campaign.status = 'completed'
+            else:
+                campaign.status = 'failed'
+            
+            if not campaign.completed_at:
+                campaign.completed_at = timezone.now()
+            
+            campaign.save()
+            marked_count += 1
+            
+            print(f"🔧 Marked stuck campaign {campaign.session_id} as {campaign.status}")
+        
+        return JsonResponse({
+            'message': f'Marked {marked_count} stuck campaigns as finished',
+            'marked_count': marked_count
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': f'Failed to mark stuck campaigns: {str(e)}'
+        }, status=500)
+
+
+def campaign_control(request):
+    """API endpoint to control campaign (pause/resume/stop)"""
+    from email_monitor.models import EmailCampaign
+    from django.utils import timezone
+    
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        action = data.get('action')
+        
+        if action not in ['pause', 'resume', 'stop']:
+            return JsonResponse({'error': 'Invalid action. Must be pause, resume, or stop'}, status=400)
+        
+        # Get the currently active campaign
+        campaign = EmailCampaign.get_active_campaign()
+        
+        if not campaign:
+            return JsonResponse({'error': 'No active campaign found'}, status=404)
+        
+        if action == 'pause':
+            if campaign.status != 'running':
+                return JsonResponse({'error': 'Campaign is not running'}, status=400)
+            
+            campaign.status = 'paused'
+            campaign.save()
+            
+            print(f"⏸️ Campaign {campaign.session_id} paused")
+            return JsonResponse({
+                'message': 'Campaign paused successfully',
+                'status': campaign.status
+            })
+            
+        elif action == 'resume':
+            if campaign.status != 'paused':
+                return JsonResponse({'error': 'Campaign is not paused'}, status=400)
+            
+            campaign.status = 'running'
+            campaign.save()
+            
+            print(f"▶️ Campaign {campaign.session_id} resumed")
+            return JsonResponse({
+                'message': 'Campaign resumed successfully',
+                'status': campaign.status
+            })
+            
+        elif action == 'stop':
+            if campaign.status not in ['running', 'paused', 'preparing']:
+                return JsonResponse({'error': 'Campaign is not active'}, status=400)
+            
+            # Mark as completed if any emails were sent, otherwise failed
+            if campaign.emails_sent > 0:
+                campaign.status = 'completed'
+            else:
+                campaign.status = 'failed'
+            
+            campaign.completed_at = timezone.now()
+            campaign.save()
+            
+            print(f"🛑 Campaign {campaign.session_id} stopped and marked as {campaign.status}")
+            return JsonResponse({
+                'message': f'Campaign stopped and marked as {campaign.status}',
+                'status': campaign.status,
+                'emails_sent': campaign.emails_sent,
+                'total_contacts': campaign.total_contacts
+            })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'error': f'Failed to control campaign: {str(e)}'
         }, status=500)
 
 
