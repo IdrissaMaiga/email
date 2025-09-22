@@ -493,6 +493,7 @@
         let reconnectDelay = 3000; // Start with 3 seconds
         let heartbeatInterval = null;
         let heartbeatTimeout = null;
+        let wsConnectionPromise = null;
         let isEmailCampaignRunning = false;
 
         // WebSocket connection management
@@ -504,58 +505,73 @@
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/ws/email-progress/${sessionId}/`;
             
-            progressWebSocket = new WebSocket(wsUrl);
-            currentSessionId = sessionId;
-            
-            progressWebSocket.onopen = function(event) {
-                updateConnectionStatus(true);
-                addProgressLog('WebSocket connected - Ready for real-time updates', 'success');
-                reconnectAttempts = 0; // Reset reconnect attempts on successful connection
-                startHeartbeat(); // Start heartbeat to keep connection alive
-            };
-            
-            progressWebSocket.onmessage = function(event) {
-                const data = JSON.parse(event.data);
+            // Return a promise that resolves when WebSocket is connected
+            wsConnectionPromise = new Promise((resolve, reject) => {
+                progressWebSocket = new WebSocket(wsUrl);
+                currentSessionId = sessionId;
                 
-                // Handle heartbeat response
-                if (data.type === 'pong') {
-                    clearTimeout(heartbeatTimeout);
-                    return;
-                }
+                let connectionTimeout = setTimeout(() => {
+                    reject(new Error('WebSocket connection timeout'));
+                }, 10000); // 10 second timeout
                 
-                handleProgressMessage(data);
-            };
-            
-            progressWebSocket.onclose = function(event) {
-                updateConnectionStatus(false);
-                stopHeartbeat(); // Stop heartbeat when connection closes
+                progressWebSocket.onopen = function(event) {
+                    clearTimeout(connectionTimeout);
+                    updateConnectionStatus(true);
+                    addProgressLog('WebSocket connected - Ready for real-time updates', 'success');
+                    reconnectAttempts = 0; // Reset reconnect attempts on successful connection
+                    startHeartbeat(); // Start heartbeat to keep connection alive
+                    resolve(); // Resolve the promise when connected
+                };
                 
-                // Only attempt to reconnect if we're in the middle of a campaign
-                if (isEmailCampaignRunning && reconnectAttempts < maxReconnectAttempts) {
-                    reconnectAttempts++;
-                    addProgressLog(`Connection lost - Attempting to reconnect... (${reconnectAttempts}/${maxReconnectAttempts})`, 'warning');
+                progressWebSocket.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
                     
-                    // Exponential backoff: increase delay with each attempt
-                    const delay = reconnectDelay * Math.pow(1.5, reconnectAttempts - 1);
+                    // Handle heartbeat response
+                    if (data.type === 'pong') {
+                        clearTimeout(heartbeatTimeout);
+                        return;
+                    }
                     
-                    setTimeout(() => {
-                        if (currentSessionId && isEmailCampaignRunning) {
-                            connectProgressWebSocket(currentSessionId);
-                        }
-                    }, delay);
-                } else if (!isEmailCampaignRunning) {
-                    addProgressLog('WebSocket disconnected', 'info');
-                } else {
-                    addProgressLog('Failed to reconnect to WebSocket after maximum attempts', 'error');
-                }
-            };
+                    console.log('📨 WebSocket message received:', data.type || data.message_type, data);
+                    handleProgressMessage(data);
+                };
+                
+                progressWebSocket.onclose = function(event) {
+                    clearTimeout(connectionTimeout);
+                    updateConnectionStatus(false);
+                    stopHeartbeat(); // Stop heartbeat when connection closes
+                    
+                    // Only attempt to reconnect if we're in the middle of a campaign
+                    if (isEmailCampaignRunning && reconnectAttempts < maxReconnectAttempts) {
+                        reconnectAttempts++;
+                        addProgressLog(`Connection lost - Attempting to reconnect... (${reconnectAttempts}/${maxReconnectAttempts})`, 'warning');
+                        
+                        // Exponential backoff: increase delay with each attempt
+                        const delay = reconnectDelay * Math.pow(1.5, reconnectAttempts - 1);
+                        
+                        setTimeout(() => {
+                            if (currentSessionId && isEmailCampaignRunning) {
+                                connectProgressWebSocket(currentSessionId);
+                            }
+                        }, delay);
+                    } else if (!isEmailCampaignRunning) {
+                        addProgressLog('WebSocket disconnected', 'info');
+                    } else {
+                        addProgressLog('Failed to reconnect to WebSocket after maximum attempts', 'error');
+                    }
+                };
+                
+                progressWebSocket.onerror = function(error) {
+                    clearTimeout(connectionTimeout);
+                    console.error('WebSocket error:', error);
+                    addProgressLog('WebSocket connection error', 'error');
+                    updateConnectionStatus(false);
+                    stopHeartbeat(); // Stop heartbeat on error
+                    reject(error); // Reject the promise on error
+                };
+            });
             
-            progressWebSocket.onerror = function(error) {
-                console.error('WebSocket error:', error);
-                addProgressLog('WebSocket connection error', 'error');
-                updateConnectionStatus(false);
-                stopHeartbeat(); // Stop heartbeat on error
-            };
+            return wsConnectionPromise;
         }
         
         function updateConnectionStatus(connected) {
@@ -604,6 +620,9 @@
             const messageType = data.message_type || data.type;
             console.log('📨 WebSocket message received:', messageType, data);
             
+            // Add message to debug log for tracking
+            addProgressLog(`📡 Received: ${messageType}`, 'info');
+            
             switch (messageType) {
                 case 'connection':
                     addProgressLog(`Connected to session: ${data.session_id}`, 'success');
@@ -626,16 +645,22 @@
                     handleEmailError(data.data);
                     break;
                     
+                case 'progress_update':
+                    handleProgressUpdate(data.data);
+                    break;
+                    
                 case 'campaign_complete':
                     console.log('🎉 Handling campaign_complete:', data.data);
                     handleCampaignComplete(data.data);
                     break;
                     
                 case 'campaign_paused':
+                    console.log('⏸️ Handling campaign_paused:', data.data);
                     handleCampaignPaused(data.data);
                     break;
                     
                 case 'campaign_stopped':
+                    console.log('🛑 Handling campaign_stopped:', data.data);
                     handleCampaignStopped(data.data);
                     break;
                     
@@ -644,11 +669,13 @@
                     break;
                     
                 case 'pong':
-                    // Heartbeat response
+                    // Heartbeat response - handled silently
                     break;
                     
                 default:
-                    console.log('Unknown message type:', messageType, data);
+                    console.warn('📨 Unknown WebSocket message type:', messageType, data);
+                    addProgressLog(`⚠️ Unknown message: ${messageType}`, 'warning');
+                    break;
             }
         }
         
@@ -686,6 +713,22 @@
         
         function handleEmailError(data) {
             addProgressLog(`❌ Error: ${data.contact_email} - ${data.error}`, 'error');
+        }
+        
+        function handleProgressUpdate(data) {
+            // Handle general progress updates
+            if (data.progress_percent !== undefined) {
+                updateProgressBar(data.progress_percent);
+            }
+            if (data.emails_sent !== undefined) {
+                document.getElementById('progressEmailsSent').textContent = data.emails_sent;
+            }
+            if (data.status) {
+                document.getElementById('progressStatus').textContent = data.status;
+            }
+            
+            // Log the progress update
+            console.log('📊 Progress update:', data);
         }
         
         function handleCampaignComplete(data) {
@@ -2398,66 +2441,81 @@
             // Generate session ID for WebSocket tracking
             const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
-            // Set up WebSocket connection for real-time progress
-            connectProgressWebSocket(sessionId);
-            
-            // Initialize progress tracking
+            // Initialize progress tracking first
             initializeEmailProgress();
             isEmailCampaignRunning = true;
-
-            const requestBody = {
-                template: template,
-                subject: subject,
-                sender: getSavedSender(), // Use saved sender instead of dropdown value
-                session_id: sessionId // Add session ID for WebSocket tracking
-            };
             
-            // Add category filter if specified
-            if (categoryFilter) {
-                requestBody.category_filter = categoryFilter;
-            }
+            // Set up WebSocket connection and wait for it to be ready
+            addProgressLog('🔌 Establishing WebSocket connection...', 'info');
+            connectProgressWebSocket(sessionId)
+                .then(() => {
+                    // WebSocket is now connected, start the email campaign
+                    addProgressLog('🚀 Starting email campaign...', 'info');
+                    startEmailCampaign();
+                })
+                .catch((error) => {
+                    console.error('Failed to establish WebSocket connection:', error);
+                    addProgressLog('❌ Failed to establish WebSocket connection. Starting campaign without real-time updates.', 'warning');
+                    // Start campaign anyway, but without real-time updates
+                    startEmailCampaign();
+                });
             
-            // Handle custom selection vs filter-based selection
-            if (contactFilter === 'custom') {
-                requestBody.selected_contact_ids = Array.from(selectedContacts);
-            } else {
-                requestBody.contact_filter = contactFilter;
-                // Add range if specified and valid
-                if ((rangeStart || rangeEnd) && window.isRangeValid) {
-                    if (rangeStart) requestBody.contact_range_start = parseInt(rangeStart);
-                    if (rangeEnd) requestBody.contact_range_end = parseInt(rangeEnd);
+            function startEmailCampaign() {
+                const requestBody = {
+                    template: template,
+                    subject: subject,
+                    sender: getSavedSender(), // Use saved sender instead of dropdown value
+                    session_id: sessionId, // Add session ID for WebSocket tracking
+                    email_timeout: getSavedTimeout() // Add timeout from UI settings
+                };
+                
+                // Add category filter if specified
+                if (categoryFilter) {
+                    requestBody.category_filter = categoryFilter;
                 }
-            }
-
-            fetch('/send_emails/', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    showMessage(data.error, true);
-                    addProgressLog(`❌ Failed to start email campaign: ${data.error}`, 'error');
-                    isEmailCampaignRunning = false;
+                
+                // Handle custom selection vs filter-based selection
+                if (contactFilter === 'custom') {
+                    requestBody.selected_contact_ids = Array.from(selectedContacts);
                 } else {
-                    // Success is now handled through WebSocket progress updates
-                    addProgressLog(`✅ Email campaign initiated successfully`, 'success');
-                    
-                    // Clear selected contacts if using custom selection
-                    if (contactFilter === 'custom') {
-                        selectedContacts.clear();
-                        updateSelectedCount();
+                    requestBody.contact_filter = contactFilter;
+                    // Add range if specified and valid
+                    if ((rangeStart || rangeEnd) && window.isRangeValid) {
+                        if (rangeStart) requestBody.contact_range_start = parseInt(rangeStart);
+                        if (rangeEnd) requestBody.contact_range_end = parseInt(rangeEnd);
                     }
                 }
-            })
-            .catch(error => {
-                showMessage('Error: ' + error, true);
-                addProgressLog(`❌ Network error: ${error}`, 'error');
-                isEmailCampaignRunning = false;
-            });
+
+                fetch('/send_emails/', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        showMessage(data.error, true);
+                        addProgressLog(`❌ Failed to start email campaign: ${data.error}`, 'error');
+                        isEmailCampaignRunning = false;
+                    } else {
+                        // Success is now handled through WebSocket progress updates
+                        addProgressLog(`✅ Email campaign initiated successfully`, 'success');
+                        
+                        // Clear selected contacts if using custom selection
+                        if (contactFilter === 'custom') {
+                            selectedContacts.clear();
+                            updateSelectedCount();
+                        }
+                    }
+                })
+                .catch(error => {
+                    showMessage('Error: ' + error, true);
+                    addProgressLog(`❌ Network error: ${error}`, 'error');
+                    isEmailCampaignRunning = false;
+                });
+            }
         });
 
         // Function to navigate to contacts page with status filter
