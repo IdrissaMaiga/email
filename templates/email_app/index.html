@@ -532,7 +532,6 @@
                         return;
                     }
                     
-                    console.log('📨 WebSocket message received:', data.type || data.message_type, data);
                     handleProgressMessage(data);
                 };
                 
@@ -563,7 +562,6 @@
                 
                 progressWebSocket.onerror = function(error) {
                     clearTimeout(connectionTimeout);
-                    console.error('WebSocket error:', error);
                     addProgressLog('WebSocket connection error', 'error');
                     updateConnectionStatus(false);
                     stopHeartbeat(); // Stop heartbeat on error
@@ -598,7 +596,6 @@
                     
                     // Set timeout for pong response (5 seconds)
                     heartbeatTimeout = setTimeout(() => {
-                        console.log('❤️ Heartbeat timeout - connection may be dead');
                         progressWebSocket.close(); // This will trigger reconnection logic
                     }, 5000);
                 }
@@ -618,10 +615,6 @@
         
         function handleProgressMessage(data) {
             const messageType = data.message_type || data.type;
-            console.log('📨 WebSocket message received:', messageType, data);
-            
-            // Add message to debug log for tracking
-            addProgressLog(`📡 Received: ${messageType}`, 'info');
             
             switch (messageType) {
                 case 'connection':
@@ -629,7 +622,6 @@
                     break;
                     
                 case 'campaign_start':
-                    console.log('🚀 Handling campaign_start:', data.data);
                     handleCampaignStart(data.data);
                     break;
                     
@@ -650,17 +642,14 @@
                     break;
                     
                 case 'campaign_complete':
-                    console.log('🎉 Handling campaign_complete:', data.data);
                     handleCampaignComplete(data.data);
                     break;
                     
                 case 'campaign_paused':
-                    console.log('⏸️ Handling campaign_paused:', data.data);
                     handleCampaignPaused(data.data);
                     break;
                     
                 case 'campaign_stopped':
-                    console.log('🛑 Handling campaign_stopped:', data.data);
                     handleCampaignStopped(data.data);
                     break;
                     
@@ -673,8 +662,7 @@
                     break;
                     
                 default:
-                    console.warn('📨 Unknown WebSocket message type:', messageType, data);
-                    addProgressLog(`⚠️ Unknown message: ${messageType}`, 'warning');
+                    console.warn('Unknown WebSocket message type:', messageType);
                     break;
             }
         }
@@ -726,9 +714,6 @@
             if (data.status) {
                 document.getElementById('progressStatus').textContent = data.status;
             }
-            
-            // Log the progress update
-            console.log('📊 Progress update:', data);
         }
         
         function handleCampaignComplete(data) {
@@ -759,7 +744,6 @@
         }
         
         function handleCampaignPaused(data) {
-            console.log('⏸️ Campaign Paused', data);
             addProgressLog(`⏸️ Campaign paused at ${data.emails_sent} emails sent`, 'warning');
             document.getElementById('progressStatus').textContent = 'Campaign paused';
             
@@ -772,7 +756,6 @@
         }
         
         function handleCampaignStopped(data) {
-            console.log('🛑 Campaign Stopped', data);
             isEmailCampaignRunning = false;
             addProgressLog(`🛑 Campaign stopped. Sent ${data.emails_sent} emails`, 'error');
             document.getElementById('progressStatus').textContent = 'Campaign stopped';
@@ -942,7 +925,6 @@
             // Load saved timeout on page load
             const savedTimeout = getSavedTimeout();
             document.getElementById('emailTimeout').value = savedTimeout;
-            console.log(`📥 Loaded saved timeout: ${savedTimeout} seconds`);
             
             // Update settings button
             document.getElementById('updateSettings').addEventListener('click', function() {
@@ -1212,7 +1194,6 @@
 
         function saveTimeout(timeout) {
             localStorage.setItem('emailTimeout', timeout.toString());
-            console.log(`💾 Saved timeout: ${timeout} seconds`);
         }
 
         function applySenderToUI() {
@@ -2446,15 +2427,12 @@
             isEmailCampaignRunning = true;
             
             // Set up WebSocket connection and wait for it to be ready
-            addProgressLog('🔌 Establishing WebSocket connection...', 'info');
             connectProgressWebSocket(sessionId)
                 .then(() => {
                     // WebSocket is now connected, start the email campaign
-                    addProgressLog('🚀 Starting email campaign...', 'info');
                     startEmailCampaign();
                 })
                 .catch((error) => {
-                    console.error('Failed to establish WebSocket connection:', error);
                     addProgressLog('❌ Failed to establish WebSocket connection. Starting campaign without real-time updates.', 'warning');
                     // Start campaign anyway, but without real-time updates
                     startEmailCampaign();
