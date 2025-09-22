@@ -85,14 +85,6 @@ class EmailProgressConsumer(AsyncWebsocketConsumer):
             'data': event['data']
         }))
     
-    async def email_batch_start(self, event):
-        """Send batch start notification"""
-        await self.send(text_data=json.dumps(event))
-    
-    async def email_batch_complete(self, event):
-        """Send batch completion notification"""
-        await self.send(text_data=json.dumps(event))
-    
     async def email_send_complete(self, event):
         """Send campaign completion notification"""
         await self.send(text_data=json.dumps(event))

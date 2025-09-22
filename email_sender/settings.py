@@ -206,5 +206,3 @@ CHANNEL_LAYERS = {
 
 # Email sending configuration
 EMAIL_SENDING_TIMEOUT = 30  # Default timeout in seconds (adjustable via UI)
-EMAIL_BATCH_SIZE = 10       # Number of emails to send per batch
-EMAIL_BATCH_DELAY = 1       # Delay between batches in seconds

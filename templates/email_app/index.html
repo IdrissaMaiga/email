@@ -394,7 +394,7 @@
                 
                 <!-- Campaign Overview -->
                 <div class="mb-6">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div class="text-center">
                             <p class="text-sm text-gray-500">Total Contacts</p>
                             <p id="progressTotalContacts" class="text-xl font-bold text-gray-900">-</p>
@@ -406,10 +406,6 @@
                         <div class="text-center">
                             <p class="text-sm text-gray-500">Success Rate</p>
                             <p id="progressSuccessRate" class="text-xl font-bold text-blue-600">-</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-sm text-gray-500">Current Batch</p>
-                            <p id="progressCurrentBatch" class="text-xl font-bold text-purple-600">-</p>
                         </div>
                     </div>
                     
@@ -426,18 +422,10 @@
                 <!-- Configuration Controls -->
                 <div class="mb-6 p-4 bg-gray-50 rounded-lg">
                     <h4 class="text-sm font-medium text-gray-700 mb-3">Campaign Settings (Adjustable)</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="emailTimeout" class="block text-xs font-medium text-gray-600">Email Timeout (seconds)</label>
                             <input type="number" id="emailTimeout" min="5" max="300" value="30" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label for="batchSize" class="block text-xs font-medium text-gray-600">Batch Size</label>
-                            <input type="number" id="batchSize" min="1" max="100" value="10" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label for="batchDelay" class="block text-xs font-medium text-gray-600">Batch Delay (seconds)</label>
-                            <input type="number" id="batchDelay" min="0" max="60" value="1" class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
                     </div>
                     <button id="updateSettings" class="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
@@ -548,11 +536,6 @@
                     handleCampaignStart(data.data);
                     break;
                     
-                case 'batch_start':
-                    console.log('📦 Handling batch_start:', data.data);
-                    handleBatchStart(data.data);
-                    break;
-                    
                 case 'email_start':
                     handleEmailStart(data.data);
                     break;
@@ -563,11 +546,6 @@
                     
                 case 'email_error':
                     handleEmailError(data.data);
-                    break;
-                    
-                case 'batch_complete':
-                    console.log('✅ Handling batch_complete:', data.data);
-                    handleBatchComplete(data.data);
                     break;
                     
                 case 'campaign_complete':
@@ -590,21 +568,15 @@
         
         function handleCampaignStart(data) {
             document.getElementById('progressTotalContacts').textContent = data.total_contacts;
-            document.getElementById('progressCurrentBatch').textContent = '1';
             document.getElementById('progressStatus').textContent = 'Campaign started';
             
-            addProgressLog(`🚀 Campaign started: ${data.total_contacts} contacts, batch size: ${data.batch_size}`, 'info');
+            addProgressLog(`🚀 Campaign started: ${data.total_contacts} contacts`, 'info');
             addProgressLog(`📧 Sender: ${data.sender}`, 'info');
             addProgressLog(`📝 Subject: ${data.subject}`, 'info');
             
             // Show control buttons
             document.getElementById('pauseCampaign').classList.remove('hidden');
             document.getElementById('stopCampaign').classList.remove('hidden');
-        }
-        
-        function handleBatchStart(data) {
-            document.getElementById('progressCurrentBatch').textContent = data.batch_number;
-            addProgressLog(`📦 Batch ${data.batch_number} started: ${data.batch_size} emails (${data.batch_start}-${data.batch_end})`, 'info');
         }
         
         function handleEmailStart(data) {
@@ -625,17 +597,6 @@
         
         function handleEmailError(data) {
             addProgressLog(`❌ Error: ${data.contact_email} - ${data.error}`, 'error');
-        }
-        
-        function handleBatchComplete(data) {
-            addProgressLog(`✅ Batch ${data.batch_number} complete: ${data.emails_sent_in_batch} emails sent. Total: ${data.total_sent_so_far}`, 'success');
-            
-            // Update success rate based on current progress
-            updateSuccessRate();
-            
-            if (data.remaining_contacts > 0) {
-                addProgressLog(`⏳ ${data.remaining_contacts} contacts remaining...`, 'info');
-            }
         }
         
         function handleCampaignComplete(data) {
@@ -700,7 +661,6 @@
             // Reset progress state
             document.getElementById('progressEmailsSent').textContent = '0';
             document.getElementById('progressSuccessRate').textContent = '-';
-            document.getElementById('progressCurrentBatch').textContent = '-';
             document.getElementById('progressStatus').textContent = 'Initializing...';
             updateProgressBar(0);
             
