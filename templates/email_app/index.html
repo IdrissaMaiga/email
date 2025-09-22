@@ -141,7 +141,7 @@
                 <div class="flex items-center w-full">
                     <div class="p-1.5 bg-purple-100 rounded-lg flex-shrink-0">
                         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
                     </div>
@@ -679,6 +679,53 @@
             document.getElementById('progressStatus').textContent = 'Ready to start campaign';
             document.getElementById('connectionText').textContent = 'Ready';
             document.getElementById('connectionStatus').className = 'w-3 h-3 rounded-full bg-gray-400 mr-2';
+        }
+        
+        function checkAndResumeActiveCampaign() {
+            // Check for active campaigns and resume progress display if found
+            fetch('/api/campaign_status/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.has_active_campaign) {
+                        const campaign = data.campaign;
+                        console.log('🔄 Found active campaign:', campaign);
+                        
+                        // Update progress display
+                        document.getElementById('progressTotalContacts').textContent = campaign.total_contacts;
+                        document.getElementById('progressEmailsSent').textContent = campaign.emails_sent;
+                        document.getElementById('progressSuccessRate').textContent = `${campaign.success_rate}%`;
+                        
+                        // Update progress bar
+                        updateProgressBar(campaign.progress_percentage);
+                        
+                        // Update status
+                        if (campaign.status === 'running') {
+                            document.getElementById('progressStatus').textContent = 'Campaign in progress';
+                            addProgressLog(`🔄 Resumed tracking campaign: ${campaign.emails_sent}/${campaign.total_contacts} emails sent`, 'info');
+                            
+                            // Try to reconnect to WebSocket
+                            connectProgressWebSocket(campaign.session_id);
+                            isEmailCampaignRunning = true;
+                            
+                            // Show control buttons
+                            document.getElementById('pauseCampaign').classList.remove('hidden');
+                            document.getElementById('stopCampaign').classList.remove('hidden');
+                        } else if (campaign.status === 'completed') {
+                            document.getElementById('progressStatus').textContent = 'Campaign completed';
+                            addProgressLog(`✅ Previous campaign completed: ${campaign.emails_sent}/${campaign.total_contacts} emails sent (${campaign.success_rate}%)`, 'success');
+                        }
+                        
+                        // Update timeout setting
+                        document.getElementById('emailTimeout').value = campaign.email_timeout;
+                    } else {
+                        console.log('✅ No active campaign found');
+                        addProgressLog('Ready to start new email campaign...', 'info');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to check campaign status:', error);
+                    addProgressLog('Failed to check for active campaigns', 'warning');
+                });
         }
         
         // Event listeners for progress controls
@@ -1553,26 +1600,9 @@
             console.log(`👤 Loading email senders...`);
             loadEmailSenders(); // Load email senders for management
             
-            // Check for active campaign progress and reconnect if found
-            const activeSender = document.getElementById('activeSenderSelect')?.value || getSavedSender();
-            if (activeSender) {
-                fetch(`/api/campaign-progress/?sender=${encodeURIComponent(activeSender)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.session_id) {
-                            // Reconnect WebSocket to active session
-                            connectProgressWebSocket(data.session_id);
-                            // Replay last progress event
-                            if (data.last_event && data.last_event.type) {
-                                handleProgressMessage({
-                                    message_type: data.last_event.type,
-                                    data: data.last_event.data
-                                });
-                            }
-                        }
-                    })
-                    .catch(err => console.log('No active campaign found:', err));
-            }
+            // Check for active campaign and resume if needed
+            console.log(`🔍 Checking for active campaign...`);
+            checkAndResumeActiveCampaign();
             
             // Set up periodic refresh of contact stats every 30 seconds
             setInterval(loadContactStats, 30000);

@@ -7,7 +7,7 @@ import re
 import os
 import json
 import resend
-from email_monitor.models import Contact, EmailTemplate, CampaignProgress
+from email_monitor.models import Contact, EmailTemplate
 from email_monitor.views import get_sender_email
 
 # Store CSV data in memory (for simplicity; could use database or session for persistence)
@@ -101,11 +101,12 @@ def save_template(request):
 
 def send_emails(request):
     """Send emails using Resend API with click and open tracking enabled and real-time WebSocket progress"""
-    from email_monitor.models import Contact
+    from email_monitor.models import Contact, EmailCampaign
     import uuid
     import time
     from asgiref.sync import async_to_sync
     from channels.layers import get_channel_layer
+    from django.utils import timezone
     
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST method allowed'}, status=405)
@@ -131,20 +132,8 @@ def send_emails(request):
     channel_layer = get_channel_layer()
     room_group_name = f'email_progress_{session_id}'
     
-    def save_campaign_progress(message_type, data_dict):
-        """Save the latest campaign progress to the database"""
-        CampaignProgress.objects.update_or_create(
-            session_id=session_id,
-            defaults={
-                'sender': sender_key,
-                'last_event': {'type': message_type, 'data': data_dict},
-                'is_active': True
-            }
-        )
-
     def broadcast_progress(message_type, data_dict):
-        """Broadcast progress update via WebSocket and save to DB"""
-        save_campaign_progress(message_type, data_dict)
+        """Broadcast progress update via WebSocket"""
         if channel_layer:
             async_to_sync(channel_layer.group_send)(
                 room_group_name,
@@ -289,11 +278,30 @@ def send_emails(request):
         contacts_list = list(contacts)
         total_contacts = len(contacts_list)
         
+        # Create campaign record for persistence
+        campaign = EmailCampaign.objects.create(
+            session_id=session_id,
+            sender_key=sender_key,
+            subject=subject,
+            template=template,
+            total_contacts=total_contacts,
+            email_timeout=email_timeout,
+            contact_selection={
+                'contact_filter': contact_filter,
+                'category_filter': category_filter,
+                'contact_range_start': contact_range_start,
+                'contact_range_end': contact_range_end,
+                'selected_contact_ids': selected_contact_ids
+            }
+        )
+        campaign.mark_as_running()
+        
         # Broadcast campaign start
         broadcast_progress('campaign_start', {
             'total_contacts': total_contacts,
             'sender': f"{sender_name} <{from_email}>",
-            'subject': subject
+            'subject': subject,
+            'session_id': session_id
         })
         
         emails_sent = 0
@@ -392,6 +400,7 @@ def send_emails(request):
                 
                 if response and 'id' in response:
                     emails_sent += 1
+                    campaign.increment_sent()  # Update campaign progress
                     
                     # Broadcast email success
                     broadcast_progress('email_success', {
@@ -405,6 +414,7 @@ def send_emails(request):
                     print(f"✅ EMAIL SENT: Successfully sent to {recipient_email} with Resend ID {response['id']}")
                 else:
                     failed_emails.append(recipient_email)
+                    campaign.increment_failed()  # Update campaign progress
                     broadcast_progress('email_error', {
                         'contact_email': recipient_email,
                         'contact_name': contact.full_name,
@@ -415,6 +425,7 @@ def send_emails(request):
                     
             except Exception as email_error:
                 failed_emails.append(f"{recipient_email}: {str(email_error)}")
+                campaign.increment_failed()  # Update campaign progress
                 broadcast_progress('email_error', {
                     'contact_email': recipient_email,
                     'contact_name': contact.full_name,
@@ -426,13 +437,17 @@ def send_emails(request):
             # Add delay between emails (respecting timeout setting)
             time.sleep(email_timeout)  # Use the actual timeout setting
         
+        # Mark campaign as completed
+        campaign.mark_as_completed()
+        
         # Broadcast campaign complete
         success_rate = round((emails_sent / total_contacts) * 100) if total_contacts > 0 else 0
         broadcast_progress('campaign_complete', {
             'emails_sent': emails_sent,
             'total_contacts': total_contacts,
             'success_rate': success_rate,
-            'failed_count': len(failed_emails)
+            'failed_count': len(failed_emails),
+            'session_id': session_id
         })
         
         message = f'Emails sent successfully! ({emails_sent} emails sent with tracking enabled)'
@@ -455,6 +470,47 @@ def send_emails(request):
     except Exception as e:
         return JsonResponse({
             'error': f'Failed to send emails: {str(e)}'
+        }, status=500)
+
+
+def get_campaign_status(request):
+    """API endpoint to get current campaign status for progress resumption"""
+    from email_monitor.models import EmailCampaign
+    
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Only GET method allowed'}, status=405)
+    
+    try:
+        # Get the most recent active campaign
+        campaign = EmailCampaign.get_active_campaign()
+        
+        if not campaign:
+            return JsonResponse({
+                'has_active_campaign': False,
+                'message': 'No active campaign found'
+            })
+        
+        return JsonResponse({
+            'has_active_campaign': True,
+            'campaign': {
+                'session_id': campaign.session_id,
+                'status': campaign.status,
+                'total_contacts': campaign.total_contacts,
+                'emails_sent': campaign.emails_sent,
+                'emails_failed': campaign.emails_failed,
+                'progress_percentage': campaign.progress_percentage,
+                'success_rate': campaign.success_rate,
+                'subject': campaign.subject,
+                'sender_key': campaign.sender_key,
+                'email_timeout': campaign.email_timeout,
+                'created_at': campaign.created_at.isoformat(),
+                'started_at': campaign.started_at.isoformat() if campaign.started_at else None,
+            }
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': f'Failed to get campaign status: {str(e)}'
         }, status=500)
 
 
@@ -578,26 +634,5 @@ def get_senders_api(request):
         
         return JsonResponse({'senders': senders_dict})
         
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-from django.views.decorators.http import require_GET
-
-@require_GET
-def get_campaign_progress(request):
-    sender = request.GET.get('sender')
-    if not sender:
-        return JsonResponse({'error': 'Sender parameter is required'}, status=400)
-    try:
-        campaign = CampaignProgress.objects.filter(sender=sender, is_active=True).order_by('-started_at').first()
-        if campaign:
-            return JsonResponse({
-                'session_id': campaign.session_id,
-                'last_event': campaign.last_event,
-                'started_at': campaign.started_at,
-                'is_active': campaign.is_active
-            })
-        else:
-            return JsonResponse({'message': 'No active campaign found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

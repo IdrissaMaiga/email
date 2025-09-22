@@ -352,12 +352,96 @@ class EmailSender(models.Model):
         return configs
 
 
-class CampaignProgress(models.Model):
-    sender = models.CharField(max_length=255)
-    session_id = models.CharField(max_length=255, unique=True)
-    started_at = models.DateTimeField(default=timezone.now)
-    last_event = models.JSONField(default=dict)  # Stores the latest progress event
-    is_active = models.BooleanField(default=True)
-
+class EmailCampaign(models.Model):
+    """Model to track email campaign sessions for progress persistence"""
+    
+    CAMPAIGN_STATUS = [
+        ('preparing', 'Preparing'),
+        ('running', 'Running'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('paused', 'Paused'),
+    ]
+    
+    # Campaign identification
+    session_id = models.CharField(max_length=100, unique=True, help_text="WebSocket session ID")
+    campaign_name = models.CharField(max_length=200, blank=True, null=True, help_text="Optional campaign name")
+    
+    # Campaign configuration
+    sender_key = models.CharField(max_length=100, help_text="Sender configuration key")
+    subject = models.TextField(help_text="Email subject")
+    template = models.TextField(help_text="Email template content")
+    
+    # Campaign progress
+    status = models.CharField(max_length=20, choices=CAMPAIGN_STATUS, default='preparing')
+    total_contacts = models.IntegerField(default=0)
+    emails_sent = models.IntegerField(default=0)
+    emails_failed = models.IntegerField(default=0)
+    current_contact_index = models.IntegerField(default=0)
+    
+    # Timestamps
+    created_at = models.DateTimeField(default=timezone.now)
+    started_at = models.DateTimeField(blank=True, null=True)
+    completed_at = models.DateTimeField(blank=True, null=True)
+    
+    # Configuration
+    email_timeout = models.IntegerField(default=30, help_text="Timeout between emails in seconds")
+    
+    # Contact selection (JSON field to store the query parameters)
+    contact_selection = models.JSONField(default=dict, help_text="Contact filter and selection criteria")
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['session_id']),
+            models.Index(fields=['status']),
+            models.Index(fields=['created_at']),
+        ]
+    
     def __str__(self):
-        return f"CampaignProgress(sender={self.sender}, session_id={self.session_id}, active={self.is_active})"
+        return f"Campaign {self.session_id} - {self.status} ({self.emails_sent}/{self.total_contacts})"
+    
+    @property
+    def progress_percentage(self):
+        """Calculate completion percentage"""
+        if self.total_contacts == 0:
+            return 0
+        return round(((self.emails_sent + self.emails_failed) / self.total_contacts) * 100)
+    
+    @property
+    def success_rate(self):
+        """Calculate success rate percentage"""
+        total_processed = self.emails_sent + self.emails_failed
+        if total_processed == 0:
+            return 0
+        return round((self.emails_sent / total_processed) * 100)
+    
+    @classmethod
+    def get_active_campaign(cls):
+        """Get the currently active campaign if any"""
+        return cls.objects.filter(status__in=['preparing', 'running', 'paused']).first()
+    
+    def mark_as_running(self):
+        """Mark campaign as running"""
+        self.status = 'running'
+        if not self.started_at:
+            self.started_at = timezone.now()
+        self.save()
+    
+    def mark_as_completed(self):
+        """Mark campaign as completed"""
+        self.status = 'completed'
+        self.completed_at = timezone.now()
+        self.save()
+    
+    def increment_sent(self):
+        """Increment sent email count"""
+        self.emails_sent += 1
+        self.current_contact_index += 1
+        self.save()
+    
+    def increment_failed(self):
+        """Increment failed email count"""
+        self.emails_failed += 1
+        self.current_contact_index += 1
+        self.save()
