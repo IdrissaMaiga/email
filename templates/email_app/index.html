@@ -536,6 +536,7 @@
         
         function handleProgressMessage(data) {
             const messageType = data.message_type || data.type;
+            console.log('📨 WebSocket message received:', messageType, data);
             
             switch (messageType) {
                 case 'connection':
@@ -543,10 +544,12 @@
                     break;
                     
                 case 'campaign_start':
+                    console.log('🚀 Handling campaign_start:', data.data);
                     handleCampaignStart(data.data);
                     break;
                     
                 case 'batch_start':
+                    console.log('📦 Handling batch_start:', data.data);
                     handleBatchStart(data.data);
                     break;
                     
@@ -563,10 +566,12 @@
                     break;
                     
                 case 'batch_complete':
+                    console.log('✅ Handling batch_complete:', data.data);
                     handleBatchComplete(data.data);
                     break;
                     
                 case 'campaign_complete':
+                    console.log('🎉 Handling campaign_complete:', data.data);
                     handleCampaignComplete(data.data);
                     break;
                     
@@ -625,6 +630,9 @@
         function handleBatchComplete(data) {
             addProgressLog(`✅ Batch ${data.batch_number} complete: ${data.emails_sent_in_batch} emails sent. Total: ${data.total_sent_so_far}`, 'success');
             
+            // Update success rate based on current progress
+            updateSuccessRate();
+            
             if (data.remaining_contacts > 0) {
                 addProgressLog(`⏳ ${data.remaining_contacts} contacts remaining...`, 'info');
             }
@@ -634,6 +642,10 @@
             isEmailCampaignRunning = false;
             updateProgressBar(100);
             document.getElementById('progressStatus').textContent = 'Campaign completed';
+            
+            // Update final statistics
+            document.getElementById('progressEmailsSent').textContent = data.emails_sent;
+            document.getElementById('progressSuccessRate').textContent = `${data.success_rate}%`;
             
             addProgressLog(`🎉 Campaign completed!`, 'success');
             addProgressLog(`📊 Final stats: ${data.emails_sent}/${data.total_contacts} sent (${data.success_rate}%)`, 'success');
