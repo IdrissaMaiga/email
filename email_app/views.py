@@ -237,24 +237,24 @@ def send_emails(request):
         if category_filter:
             contacts = contacts.filter(category_id=category_filter)
         
-        # Apply ID range filter if specified
+        # Apply ID range filter if specified (using contact_id, not database id)
         if contact_range_start or contact_range_end:
             if contact_range_start and contact_range_end:
                 # Both start and end specified
-                contacts = contacts.filter(id__gte=contact_range_start, id__lte=contact_range_end)
+                contacts = contacts.filter(contact_id__gte=contact_range_start, contact_id__lte=contact_range_end)
             elif contact_range_start:
                 # Only start specified (from start onwards)
-                contacts = contacts.filter(id__gte=contact_range_start)
+                contacts = contacts.filter(contact_id__gte=contact_range_start)
             elif contact_range_end:
                 # Only end specified (from 1 to end)
-                contacts = contacts.filter(id__lte=contact_range_end)
+                contacts = contacts.filter(contact_id__lte=contact_range_end)
         
         # Apply legacy limit if specified and no range is used (for backward compatibility)
         elif contact_limit and isinstance(contact_limit, int) and contact_limit > 0:
             contacts = contacts[:contact_limit]
         
-        # Order by ID for consistent results
-        contacts = contacts.order_by('id')
+        # Order by category_id and contact_id for consistent results
+        contacts = contacts.order_by('category_id', 'contact_id')
         
         if not contacts.exists():
             range_info = ""
