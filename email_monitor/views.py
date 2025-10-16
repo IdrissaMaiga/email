@@ -632,15 +632,22 @@ def webhook_handler_view(request, endpoint):
     """
     from .models import EmailSender
     
+    logger.info(f"Webhook received for endpoint: {endpoint}")
+    
     # Find sender where webhook_url ends with '/webhook<endpoint>/'
     try:
         sender = EmailSender.objects.get(
             webhook_url__endswith=f'/webhook{endpoint}/',
             is_active=True
         )
+        logger.info(f"Found sender {sender.key} for endpoint {endpoint}")
         return webhook_handler(request, sender.key)
     except EmailSender.DoesNotExist:
         logger.error(f"No active sender found for webhook endpoint: {endpoint}")
+        # Log all webhook URLs for debugging
+        all_senders = EmailSender.objects.filter(is_active=True)
+        for s in all_senders:
+            logger.error(f"Sender {s.key}: webhook_url = {s.webhook_url}")
         return HttpResponse("Invalid endpoint", status=400)
     except EmailSender.MultipleObjectsReturned:
         logger.error(f"Multiple senders found for webhook endpoint: {endpoint}")

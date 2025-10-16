@@ -13,7 +13,7 @@ urlpatterns = [
     path('', include('email_app.urls')),
     path('monitor/', include('email_monitor.urls')),
     # Direct webhook endpoints (no /monitor/ prefix)
-    path('webhook/<str:endpoint>/', webhook_handler_view, name='webhook_handler'),
+    path('webhook<str:endpoint>/', webhook_handler_view, name='webhook_handler'),
 ]
 
 # Serve static files in all environments (including production)
