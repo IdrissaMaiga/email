@@ -625,19 +625,26 @@ def email_content_by_id_api(request):
         return JsonResponse({'error': f'Failed to retrieve email content: {str(e)}'}, status=500)
 
 
-def webhook_endpoint_1(request):
+def webhook_handler_view(request, endpoint):
     """
-    Webhook endpoint for roland.zonai@horizoneurope.io
-    URL: sender.horizoneurope.io/webhook1
+    Generic webhook endpoint that determines sender from webhook URL path
+    URL: sender.horizoneurope.io/webhook/<endpoint>/
     """
-    return webhook_handler(request, 'horizoneurope')
-
-def webhook_endpoint_2(request):
-    """
-    Webhook endpoint for roland.zonai@horizon.eu.com
-    URL: sender.horizoneurope.io/webhook2
-    """
-    return webhook_handler(request, 'horizon_eu')
+    from .models import EmailSender
+    
+    # Find sender where webhook_url ends with '/<endpoint>/'
+    try:
+        sender = EmailSender.objects.get(
+            webhook_url__endswith=f'/{endpoint}/',
+            is_active=True
+        )
+        return webhook_handler(request, sender.key)
+    except EmailSender.DoesNotExist:
+        logger.error(f"No active sender found for webhook endpoint: {endpoint}")
+        return HttpResponse("Invalid endpoint", status=400)
+    except EmailSender.MultipleObjectsReturned:
+        logger.error(f"Multiple senders found for webhook endpoint: {endpoint}")
+        return HttpResponse("Ambiguous endpoint", status=400)
 
 def webhook_handler(request, sender_key):
     """
