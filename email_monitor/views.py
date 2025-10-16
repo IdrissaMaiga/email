@@ -632,10 +632,10 @@ def webhook_handler_view(request, endpoint):
     """
     from .models import EmailSender
     
-    # Find sender where webhook_url ends with '/<endpoint>/'
+    # Find sender where webhook_url ends with '/webhook<endpoint>/'
     try:
         sender = EmailSender.objects.get(
-            webhook_url__endswith=f'/{endpoint}/',
+            webhook_url__endswith=f'/webhook{endpoint}/',
             is_active=True
         )
         return webhook_handler(request, sender.key)
