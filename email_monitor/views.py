@@ -2479,6 +2479,13 @@ def export_contacts_xls(request):
         # Performance metrics with enhanced styling
         overview_ws.cell(row=15, column=1, value="📈 Performance Metrics").font = section_font
         
+        metrics_data = [
+            ("Open Rate", f"{(status_counts['opened']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
+            ("Click Rate", f"{(status_counts['clicked']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
+            ("Bounce Rate", f"{(status_counts['bounced']/max(status_counts['sent'], 1)*100):.1f}%" if status_counts['sent'] > 0 else "N/A"),
+            ("Success Rate", f"{((status_counts['sent'] + status_counts['delivered'] + status_counts['opened'] + status_counts['clicked'])/max(total_contacts, 1)*100):.1f}%" if total_contacts > 0 else "N/A"),
+        ]
+        
         # Add borders to statistics table
         thin_border = Border(
             left=Side(style='thin', color='000000'),
