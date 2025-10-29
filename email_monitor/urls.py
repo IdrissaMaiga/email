@@ -24,4 +24,6 @@ urlpatterns = [
     # JSON Import/Export APIs
     path('api/email_senders/export/', views.export_email_senders_json, name='export_email_senders_json'),
     path('api/email_senders/import/', views.import_email_senders_json, name='import_email_senders_json'),
+    # Contacts Export API
+    path('api/export_contacts_xls/', views.export_contacts_xls, name='export_contacts_xls'),
 ]

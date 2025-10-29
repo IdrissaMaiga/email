@@ -77,6 +77,24 @@
                         <span id="toggleEditText">Show Edit Controls</span>
                     </button>
                     
+                    <!-- Help Button -->
+                    <button onclick="showHelpOverlay()" 
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Help</span>
+                    </button>
+                    
+                    <!-- Export to XLS Button -->
+                    <button onclick="exportToXLS()" 
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Export XLS</span>
+                    </button>
+                    
                     <!-- Database Reset Button -->
                     <button onclick="showResetDatabaseModal()" 
                             class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
@@ -1687,6 +1705,230 @@ document.addEventListener('click', function(event) {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeResetDatabaseModal();
+    }
+});
+</script>
+
+<!-- Help Overlay Modal -->
+<div id="helpOverlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative bottom-0 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-t-lg bg-white transform transition-transform duration-300 ease-in-out translate-y-full" id="helpOverlayContent">
+        <div class="mt-3">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Email Status Guide
+                </h3>
+                <button onclick="closeHelpOverlay()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Content -->
+            <div class="max-h-96 overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Positive Events -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Good Signs (Positive Events)
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">Sent</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Email Sent</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Your email was successfully sent from the server to the recipient's mail server. This is the first step in the email journey.</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">Delivered</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Email Delivered</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The recipient's mail server accepted your email. The email made it to their inbox successfully.</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">Opened</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Email Opened</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The recipient opened and viewed your email. Tracked using invisible tracking pixels in the email.</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">Clicked</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Link Clicked</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The recipient clicked on a link inside your email. Shows strong engagement with your content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Negative Events -->
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-red-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            Problems (Negative Events)
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border border-red-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">Bounced</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Email Bounced</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The email couldn't be delivered. Reasons include invalid email address, mailbox full, or blocked by recipient's server.</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border border-red-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-semibold rounded-full">Complained</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Spam Complaint</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The recipient marked your email as spam. This seriously damages your sender reputation and deliverability.</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border border-red-200">
+                                <div class="flex items-center mb-2">
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">Failed</span>
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Send Failed</span>
+                                </div>
+                                <p class="text-sm text-gray-600">The email sending failed completely, usually due to technical issues like authentication problems or server errors.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Information -->
+                <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        How It Works
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-medium text-gray-900 mb-2">📧 Email Journey</h5>
+                            <p class="text-sm text-gray-600">Each contact shows their <strong>most recent status</strong> from emails sent by the selected sender. For example, if an email went: Sent → Delivered → Opened → Clicked, the contact will show as "Clicked".</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-medium text-gray-900 mb-2">🎯 Per-Sender Tracking</h5>
+                            <p class="text-sm text-gray-600">Status is tracked <strong>per sender</strong>, meaning the same contact can have different statuses for emails from different senders in your system.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-medium text-gray-900 mb-2">📈 Not Sent</h5>
+                            <p class="text-sm text-gray-600">Contacts with "Not Sent" status exist in your database but no email has been sent to them yet from the selected sender.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-medium text-gray-900 mb-2">🔍 Resend Integration</h5>
+                            <p class="text-sm text-gray-600">Your system uses <strong>Resend</strong> as the email service provider. All events are tracked through Resend's webhook system.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end">
+                <button onclick="closeHelpOverlay()" 
+                        class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Help Overlay Functions
+function showHelpOverlay() {
+    const overlay = document.getElementById('helpOverlay');
+    const content = document.getElementById('helpOverlayContent');
+    
+    overlay.classList.remove('hidden');
+    
+    // Trigger animation after a short delay to ensure the element is visible
+    setTimeout(() => {
+        content.classList.remove('translate-y-full');
+    }, 10);
+    
+    // Prevent body scroll when overlay is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeHelpOverlay() {
+    const overlay = document.getElementById('helpOverlay');
+    const content = document.getElementById('helpOverlayContent');
+    
+    // Start closing animation
+    content.classList.add('translate-y-full');
+    
+    // Hide overlay after animation completes
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }, 300);
+}
+
+// Export to XLS Functions
+function exportToXLS() {
+    const currentSender = getSavedSender();
+    if (!currentSender) {
+        alert('Please select a sender first');
+        return;
+    }
+    
+    // Get current filters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status') || '';
+    const category = urlParams.get('category') || '';
+    const search = urlParams.get('search') || '';
+    const sortBy = urlParams.get('sort_by') || '';
+    
+    // Build export URL with current filters
+    let exportUrl = `/monitor/api/export_contacts_xls/?sender=${currentSender}`;
+    if (status) exportUrl += `&status=${status}`;
+    if (category) exportUrl += `&category=${category}`;
+    if (search) exportUrl += `&search=${encodeURIComponent(search)}`;
+    if (sortBy) exportUrl += `&sort_by=${sortBy}`;
+    
+    // Create a temporary link and trigger download
+    const link = document.createElement('a');
+    link.href = exportUrl;
+    link.download = `contacts_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Close overlay when clicking outside
+document.addEventListener('click', function(event) {
+    const overlay = document.getElementById('helpOverlay');
+    const content = document.getElementById('helpOverlayContent');
+    
+    if (event.target === overlay) {
+        closeHelpOverlay();
+    }
+});
+
+// Close overlay with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const overlay = document.getElementById('helpOverlay');
+        if (!overlay.classList.contains('hidden')) {
+            closeHelpOverlay();
+        }
     }
 });
 </script>

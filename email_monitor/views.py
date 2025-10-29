@@ -2261,3 +2261,211 @@ def import_email_senders_json(request):
             }, status=500)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+def export_contacts_xls(request):
+    """Export contacts list to Excel file with current filters applied"""
+    try:
+        # Get sender parameter
+        sender = request.GET.get('sender')
+        if not sender:
+            return JsonResponse({'error': 'Sender parameter is required'}, status=400)
+            
+        sender_email = get_sender_email(sender)
+        if not sender_email:
+            return JsonResponse({'error': f'Sender "{sender}" not found or not active'}, status=400)
+        
+        # Import required libraries
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill, Alignment
+            from openpyxl.utils import get_column_letter
+            from django.http import HttpResponse
+        except ImportError:
+            return JsonResponse({'error': 'openpyxl library not installed. Please install it with: pip install openpyxl'}, status=500)
+        
+        # Create workbook and worksheet
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Contacts Export"
+        
+        # Define headers
+        headers = [
+            'Category Name', 'Category ID', 'Contact ID', 'Full Name', 'First Name', 'Last Name', 
+            'Job Title', 'Email', 'Company Name', 'Company Industry', 'Location City', 
+            'Location Country', 'LinkedIn URL', 'Phone Number', 'Lead Score', 'ESP',
+            'Email Status', 'Last Email Sent', 'Last Opened', 'Last Clicked', 'Created At', 'Updated At'
+        ]
+        
+        # Style headers
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        # Write headers
+        for col_num, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col_num, value=header)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_alignment
+        
+        # Get filtered contacts (same logic as contacts_list view)
+        from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
+        
+        # Subquery to get the most recent email event for each contact FROM THIS SENDER
+        latest_event_subquery = EmailEvent.objects.filter(
+            to_email=OuterRef('email'),
+            from_email__icontains=sender_email
+        ).order_by('-created_at').values('event_type')[:1]
+        
+        # Base queryset with annotations for email status
+        contacts = Contact.objects.annotate(
+            latest_event_type=Subquery(latest_event_subquery),
+            # Map event types to display status
+            email_status=Case(
+                When(latest_event_type='email.clicked', then=Value('Clicked')),
+                When(latest_event_type='email.opened', then=Value('Opened')),
+                When(latest_event_type='email.delivered', then=Value('Delivered')),
+                When(latest_event_type='email.sent', then=Value('Sent')),
+                When(latest_event_type='email.bounced', then=Value('Bounced')),
+                When(latest_event_type='email.complained', then=Value('Complained')),
+                When(latest_event_type='email.failed', then=Value('Failed')),
+                default=Value('Not Sent'),
+                output_field=CharField()
+            ),
+            # Activity tracking annotations
+            last_email_sent=Subquery(
+                EmailEvent.objects.filter(
+                    to_email=OuterRef('email'),
+                    from_email__icontains=sender_email,
+                    event_type='email.sent'
+                ).order_by('-created_at').values('created_at')[:1]
+            ),
+            last_opened=Subquery(
+                EmailEvent.objects.filter(
+                    to_email=OuterRef('email'),
+                    from_email__icontains=sender_email,
+                    event_type='email.opened'
+                ).order_by('-created_at').values('created_at')[:1]
+            ),
+            last_clicked=Subquery(
+                EmailEvent.objects.filter(
+                    to_email=OuterRef('email'),
+                    from_email__icontains=sender_email,
+                    event_type='email.clicked'
+                ).order_by('-created_at').values('created_at')[:1]
+            )
+        )
+        
+        # Apply filters (same as contacts_list view)
+        status_filter = request.GET.get('status')
+        if status_filter and status_filter != 'all':
+            if status_filter == 'not_sent':
+                contacts = contacts.filter(latest_event_type__isnull=True)
+            else:
+                event_type_map = {
+                    'sent': 'email.sent',
+                    'delivered': 'email.delivered', 
+                    'opened': 'email.opened',
+                    'clicked': 'email.clicked',
+                    'bounced': 'email.bounced',
+                    'complained': 'email.complained',
+                    'failed': 'email.failed'
+                }
+                target_event_type = event_type_map.get(status_filter)
+                if target_event_type:
+                    contacts = contacts.filter(latest_event_type=target_event_type)
+        
+        category_filter = request.GET.get('category')
+        if category_filter and category_filter != 'all':
+            contacts = contacts.filter(category_id=category_filter)
+        
+        search = request.GET.get('search')
+        if search:
+            contacts = contacts.filter(
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(email__icontains=search) |
+                Q(company_name__icontains=search)
+            )
+        
+        # Apply sorting (same as contacts_list view)
+        sort_by = request.GET.get('sort_by')
+        if sort_by == 'name_asc':
+            contacts = contacts.order_by('first_name', 'last_name')
+        elif sort_by == 'name_desc':
+            contacts = contacts.order_by('-first_name', '-last_name')
+        elif sort_by == 'id_asc':
+            contacts = contacts.order_by('id')
+        elif sort_by == 'id_desc':
+            contacts = contacts.order_by('-id')
+        elif sort_by == 'date_asc':
+            contacts = contacts.order_by('created_at')
+        elif sort_by == 'date_desc':
+            contacts = contacts.order_by('-created_at')
+        elif sort_by == 'email_asc':
+            contacts = contacts.order_by('email')
+        elif sort_by == 'email_desc':
+            contacts = contacts.order_by('-email')
+        else:
+            contacts = contacts.order_by('-created_at')
+        
+        # Write contact data
+        for row_num, contact in enumerate(contacts, 2):
+            ws.cell(row=row_num, column=1, value=contact.category_name or '')
+            ws.cell(row=row_num, column=2, value=contact.category_id or '')
+            ws.cell(row=row_num, column=3, value=contact.contact_id or '')
+            ws.cell(row=row_num, column=4, value=contact.full_name or '')
+            ws.cell(row=row_num, column=5, value=contact.first_name or '')
+            ws.cell(row=row_num, column=6, value=contact.last_name or '')
+            ws.cell(row=row_num, column=7, value=contact.job_title or '')
+            ws.cell(row=row_num, column=8, value=contact.email or '')
+            ws.cell(row=row_num, column=9, value=contact.company_name or '')
+            ws.cell(row=row_num, column=10, value=contact.company_industry or '')
+            ws.cell(row=row_num, column=11, value=contact.location_city or '')
+            ws.cell(row=row_num, column=12, value=contact.location_country or '')
+            ws.cell(row=row_num, column=13, value=contact.linkedin_url or '')
+            ws.cell(row=row_num, column=14, value=contact.phone_number or '')
+            ws.cell(row=row_num, column=15, value=contact.leadscore or '')
+            ws.cell(row=row_num, column=16, value=contact.esp or '')
+            ws.cell(row=row_num, column=17, value=contact.email_status or '')
+            
+            # Format dates
+            if contact.last_email_sent:
+                ws.cell(row=row_num, column=18, value=contact.last_email_sent.strftime('%Y-%m-%d %H:%M:%S'))
+            if contact.last_opened:
+                ws.cell(row=row_num, column=19, value=contact.last_opened.strftime('%Y-%m-%d %H:%M:%S'))
+            if contact.last_clicked:
+                ws.cell(row=row_num, column=20, value=contact.last_clicked.strftime('%Y-%m-%d %H:%M:%S'))
+            
+            ws.cell(row=row_num, column=21, value=contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '')
+            ws.cell(row=row_num, column=22, value=contact.updated_at.strftime('%Y-%m-%d %H:%M:%S') if contact.updated_at else '')
+        
+        # Auto-adjust column widths
+        for col_num, column in enumerate(ws.columns, 1):
+            max_length = 0
+            column_letter = get_column_letter(col_num)
+            
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            
+            adjusted_width = min(max_length + 2, 50)  # Max width of 50 characters
+            ws.column_dimensions[column_letter].width = adjusted_width
+        
+        # Create response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = f'attachment; filename=contacts_export_{timezone.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+        
+        # Save workbook to response
+        wb.save(response)
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error exporting contacts to XLS: {str(e)}")
+        return JsonResponse({'error': f'Failed to export contacts: {str(e)}'}, status=500)
