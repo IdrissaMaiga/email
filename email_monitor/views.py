@@ -2278,39 +2278,24 @@ def export_contacts_xls(request):
         # Import required libraries
         try:
             import openpyxl
-            from openpyxl.styles import Font, PatternFill, Alignment
+            from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
             from openpyxl.utils import get_column_letter
             from django.http import HttpResponse
         except ImportError:
             return JsonResponse({'error': 'openpyxl library not installed. Please install it with: pip install openpyxl'}, status=500)
         
-        # Create workbook and worksheet
+        # Create workbook and worksheets
         wb = openpyxl.Workbook()
-        ws = wb.active
-        ws.title = "Contacts Export"
         
-        # Define headers
-        headers = [
-            'Category Name', 'Category ID', 'Contact ID', 'Full Name', 'First Name', 'Last Name', 
-            'Job Title', 'Email', 'Company Name', 'Company Industry', 'Location City', 
-            'Location Country', 'LinkedIn URL', 'Phone Number', 'Lead Score', 'ESP',
-            'Email Status', 'Last Email Sent', 'Last Opened', 'Last Clicked', 'Created At', 'Updated At'
-        ]
+        # Overview/Statistics sheet
+        overview_ws = wb.active
+        overview_ws.title = "Overview & Statistics"
         
-        # Style headers
-        header_font = Font(bold=True, color="FFFFFF")
-        header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
-        header_alignment = Alignment(horizontal="center", vertical="center")
-        
-        # Write headers
-        for col_num, header in enumerate(headers, 1):
-            cell = ws.cell(row=1, column=col_num, value=header)
-            cell.font = header_font
-            cell.fill = header_fill
-            cell.alignment = header_alignment
+        # Contacts sheet
+        contacts_ws = wb.create_sheet("Contacts Export")
         
         # Get filtered contacts (same logic as contacts_list view)
-        from django.db.models import OuterRef, Subquery, Case, When, Value, CharField
+        from django.db.models import OuterRef, Subquery, Case, When, Value, CharField, Count
         
         # Subquery to get the most recent email event for each contact FROM THIS SENDER
         latest_event_subquery = EmailEvent.objects.filter(
@@ -2410,51 +2395,221 @@ def export_contacts_xls(request):
         else:
             contacts = contacts.order_by('-created_at')
         
+        # Calculate statistics for overview
+        total_contacts = contacts.count()
+        
+        # Count contacts by status
+        status_counts = {}
+        status_counts['not_sent'] = contacts.filter(latest_event_type__isnull=True).count()
+        status_counts['sent'] = contacts.filter(latest_event_type='email.sent').count()
+        status_counts['delivered'] = contacts.filter(latest_event_type='email.delivered').count()
+        status_counts['opened'] = contacts.filter(latest_event_type='email.opened').count()
+        status_counts['clicked'] = contacts.filter(latest_event_type='email.clicked').count()
+        status_counts['bounced'] = contacts.filter(latest_event_type='email.bounced').count()
+        status_counts['complained'] = contacts.filter(latest_event_type='email.complained').count()
+        status_counts['failed'] = contacts.filter(latest_event_type='email.failed').count()
+        
+        # Create Overview Sheet
+        # Title
+        title_font = Font(size=16, bold=True, color="1F497D")
+        title_cell = overview_ws.cell(row=1, column=1, value="Email Campaign Report")
+        title_cell.font = title_font
+        
+        # Export info
+        info_font = Font(size=10, color="666666")
+        overview_ws.cell(row=2, column=1, value=f"Generated on: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        overview_ws.cell(row=2, column=1).font = info_font
+        overview_ws.cell(row=3, column=1, value=f"Sender: {sender_email}")
+        overview_ws.cell(row=3, column=1).font = info_font
+        
+        # Statistics section
+        section_font = Font(size=12, bold=True, color="2E75B6")
+        overview_ws.cell(row=5, column=1, value="📊 Campaign Statistics").font = section_font
+        
+        # Statistics headers
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        stat_headers = ["Status", "Count", "Percentage"]
+        for col_num, header in enumerate(stat_headers, 1):
+            cell = overview_ws.cell(row=6, column=col_num, value=header)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_alignment
+        
+        # Statistics data
+        stats_data = [
+            ("Total Contacts", total_contacts, "100%"),
+            ("Not Sent", status_counts['not_sent'], f"{(status_counts['not_sent']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Sent", status_counts['sent'], f"{(status_counts['sent']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Delivered", status_counts['delivered'], f"{(status_counts['delivered']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Opened", status_counts['opened'], f"{(status_counts['opened']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Clicked", status_counts['clicked'], f"{(status_counts['clicked']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Bounced", status_counts['bounced'], f"{(status_counts['bounced']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Complained", status_counts['complained'], f"{(status_counts['complained']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+            ("Failed", status_counts['failed'], f"{(status_counts['failed']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
+        ]
+        
+        for row_num, (status, count, percentage) in enumerate(stats_data, 7):
+            overview_ws.cell(row=row_num, column=1, value=status)
+            overview_ws.cell(row=row_num, column=2, value=count)
+            overview_ws.cell(row=row_num, column=3, value=percentage)
+        
+        # Performance metrics
+        overview_ws.cell(row=15, column=1, value="📈 Performance Metrics").font = section_font
+        
+        metrics_data = [
+            ("Open Rate", f"{(status_counts['opened']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
+            ("Click Rate", f"{(status_counts['clicked']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
+            ("Bounce Rate", f"{(status_counts['bounced']/max(status_counts['sent'], 1)*100):.1f}%" if status_counts['sent'] > 0 else "N/A"),
+            ("Success Rate", f"{((status_counts['sent'] + status_counts['delivered'] + status_counts['opened'] + status_counts['clicked'])/max(total_contacts, 1)*100):.1f}%" if total_contacts > 0 else "N/A"),
+        ]
+        
+        for row_num, (metric, value) in enumerate(metrics_data, 16):
+            overview_ws.cell(row=row_num, column=1, value=metric)
+            overview_ws.cell(row=row_num, column=2, value=value)
+        
+        # Auto-adjust overview column widths
+        for col_num in range(1, 4):
+            max_length = 0
+            column_letter = get_column_letter(col_num)
+            
+            for row_num in range(1, 20):
+                cell_value = overview_ws.cell(row=row_num, column=col_num).value
+                if cell_value:
+                    max_length = max(max_length, len(str(cell_value)))
+            
+            overview_ws.column_dimensions[column_letter].width = min(max_length + 2, 30)
+        
+        # Create Contacts Sheet
+        # Define headers (added Email Content column)
+        headers = [
+            'Category Name', 'Category ID', 'Contact ID', 'Full Name', 'First Name', 'Last Name', 
+            'Job Title', 'Email', 'Company Name', 'Company Industry', 'Location City', 
+            'Location Country', 'LinkedIn URL', 'Phone Number', 'Lead Score', 'ESP',
+            'Email Status', 'Last Email Sent', 'Last Opened', 'Last Clicked', 'Email Content',
+            'Created At', 'Updated At'
+        ]
+        
+        # Style headers
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        # Write headers
+        for col_num, header in enumerate(headers, 1):
+            cell = contacts_ws.cell(row=1, column=col_num, value=header)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_alignment
+        
         # Write contact data
         for row_num, contact in enumerate(contacts, 2):
-            ws.cell(row=row_num, column=1, value=contact.category_name or '')
-            ws.cell(row=row_num, column=2, value=contact.category_id or '')
-            ws.cell(row=row_num, column=3, value=contact.contact_id or '')
-            ws.cell(row=row_num, column=4, value=contact.full_name or '')
-            ws.cell(row=row_num, column=5, value=contact.first_name or '')
-            ws.cell(row=row_num, column=6, value=contact.last_name or '')
-            ws.cell(row=row_num, column=7, value=contact.job_title or '')
-            ws.cell(row=row_num, column=8, value=contact.email or '')
-            ws.cell(row=row_num, column=9, value=contact.company_name or '')
-            ws.cell(row=row_num, column=10, value=contact.company_industry or '')
-            ws.cell(row=row_num, column=11, value=contact.location_city or '')
-            ws.cell(row=row_num, column=12, value=contact.location_country or '')
-            ws.cell(row=row_num, column=13, value=contact.linkedin_url or '')
-            ws.cell(row=row_num, column=14, value=contact.phone_number or '')
-            ws.cell(row=row_num, column=15, value=contact.leadscore or '')
-            ws.cell(row=row_num, column=16, value=contact.esp or '')
-            ws.cell(row=row_num, column=17, value=contact.email_status or '')
+            contacts_ws.cell(row=row_num, column=1, value=contact.category_name or '')
+            contacts_ws.cell(row=row_num, column=2, value=contact.category_id or '')
+            contacts_ws.cell(row=row_num, column=3, value=contact.contact_id or '')
+            contacts_ws.cell(row=row_num, column=4, value=contact.full_name or '')
+            contacts_ws.cell(row=row_num, column=5, value=contact.first_name or '')
+            contacts_ws.cell(row=row_num, column=6, value=contact.last_name or '')
+            contacts_ws.cell(row=row_num, column=7, value=contact.job_title or '')
+            contacts_ws.cell(row=row_num, column=8, value=contact.email or '')
+            contacts_ws.cell(row=row_num, column=9, value=contact.company_name or '')
+            contacts_ws.cell(row=row_num, column=10, value=contact.company_industry or '')
+            contacts_ws.cell(row=row_num, column=11, value=contact.location_city or '')
+            contacts_ws.cell(row=row_num, column=12, value=contact.location_country or '')
+            contacts_ws.cell(row=row_num, column=13, value=contact.linkedin_url or '')
+            contacts_ws.cell(row=row_num, column=14, value=contact.phone_number or '')
+            contacts_ws.cell(row=row_num, column=15, value=contact.leadscore or '')
+            contacts_ws.cell(row=row_num, column=16, value=contact.esp or '')
+            contacts_ws.cell(row=row_num, column=17, value=contact.email_status or '')
             
             # Format dates
             if contact.last_email_sent:
-                ws.cell(row=row_num, column=18, value=contact.last_email_sent.strftime('%Y-%m-%d %H:%M:%S'))
+                contacts_ws.cell(row=row_num, column=18, value=contact.last_email_sent.strftime('%Y-%m-%d %H:%M:%S'))
             if contact.last_opened:
-                ws.cell(row=row_num, column=19, value=contact.last_opened.strftime('%Y-%m-%d %H:%M:%S'))
+                contacts_ws.cell(row=row_num, column=19, value=contact.last_opened.strftime('%Y-%m-%d %H:%M:%S'))
             if contact.last_clicked:
-                ws.cell(row=row_num, column=20, value=contact.last_clicked.strftime('%Y-%m-%d %H:%M:%S'))
+                contacts_ws.cell(row=row_num, column=20, value=contact.last_clicked.strftime('%Y-%m-%d %H:%M:%S'))
             
-            ws.cell(row=row_num, column=21, value=contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '')
-            ws.cell(row=row_num, column=22, value=contact.updated_at.strftime('%Y-%m-%d %H:%M:%S') if contact.updated_at else '')
+            # Get email content for contacts that have been sent emails
+            email_content = ""
+            if contact.email_status != 'Not Sent':
+                try:
+                    # Find the most recent email event with email_id for this contact
+                    recent_event = EmailEvent.objects.filter(
+                        to_email=contact.email,
+                        from_email__icontains=sender_email,
+                        email_id__isnull=False
+                    ).exclude(email_id='').order_by('-created_at').first()
+                    
+                    if recent_event and recent_event.email_id:
+                        # Get API key for this sender
+                        sender_obj = EmailSender.objects.get(email__iexact=extract_email_from_sender_string(recent_event.from_email), is_active=True)
+                        if sender_obj and sender_obj.api_key:
+                            # Fetch email content from Resend API
+                            import requests
+                            headers = {
+                                'Authorization': f'Bearer {sender_obj.api_key}',
+                                'Content-Type': 'application/json'
+                            }
+                            
+                            resend_url = f'https://api.resend.com/emails/{recent_event.email_id}'
+                            response = requests.get(resend_url, headers=headers, timeout=10)
+                            
+                            if response.status_code == 200:
+                                email_data = response.json()
+                                html_content = email_data.get('html', '')
+                                text_content = email_data.get('text', '')
+                                
+                                # Use HTML content if available, otherwise text content
+                                if html_content:
+                                    # Clean up HTML for Excel (remove tags, keep text)
+                                    import re
+                                    email_content = re.sub(r'<[^>]+>', '', html_content).strip()
+                                    # Limit to first 1000 characters to avoid huge cells
+                                    if len(email_content) > 1000:
+                                        email_content = email_content[:997] + "..."
+                                elif text_content:
+                                    email_content = text_content.strip()
+                                    if len(email_content) > 1000:
+                                        email_content = email_content[:997] + "..."
+                                else:
+                                    email_content = "Content not available"
+                            else:
+                                email_content = f"Failed to fetch content (HTTP {response.status_code})"
+                        else:
+                            email_content = "API key not configured"
+                    else:
+                        email_content = "No email content available"
+                except Exception as e:
+                    email_content = f"Error fetching content: {str(e)}"
+            
+            contacts_ws.cell(row=row_num, column=21, value=email_content)
+            
+            contacts_ws.cell(row=row_num, column=22, value=contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '')
+            contacts_ws.cell(row=row_num, column=23, value=contact.updated_at.strftime('%Y-%m-%d %H:%M:%S') if contact.updated_at else '')
         
-        # Auto-adjust column widths
-        for col_num, column in enumerate(ws.columns, 1):
+        # Auto-adjust contacts column widths
+        for col_num, column in enumerate(contacts_ws.columns, 1):
             max_length = 0
             column_letter = get_column_letter(col_num)
             
             for cell in column:
                 try:
-                    if len(str(cell.value)) > max_length:
-                        max_length = len(str(cell.value))
+                    cell_value = str(cell.value) if cell.value is not None else ""
+                    if len(cell_value) > max_length:
+                        max_length = len(cell_value)
                 except:
                     pass
             
-            adjusted_width = min(max_length + 2, 50)  # Max width of 50 characters
-            ws.column_dimensions[column_letter].width = adjusted_width
+            # Special handling for email content column (column 21)
+            if col_num == 21:
+                adjusted_width = min(max(max_length + 2, 50), 100)  # Wider for email content
+            else:
+                adjusted_width = min(max_length + 2, 30)  # Standard width for other columns
+            
+            contacts_ws.column_dimensions[column_letter].width = adjusted_width
         
         # Create response
         response = HttpResponse(
