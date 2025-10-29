@@ -2438,7 +2438,7 @@ def export_contacts_xls(request):
             cell.fill = header_fill
             cell.alignment = header_alignment
         
-        # Statistics data
+        # Statistics data with colors
         stats_data = [
             ("Total Contacts", total_contacts, "100%"),
             ("Not Sent", status_counts['not_sent'], f"{(status_counts['not_sent']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
@@ -2451,24 +2451,71 @@ def export_contacts_xls(request):
             ("Failed", status_counts['failed'], f"{(status_counts['failed']/total_contacts*100):.1f}%" if total_contacts > 0 else "0%"),
         ]
         
-        for row_num, (status, count, percentage) in enumerate(stats_data, 7):
-            overview_ws.cell(row=row_num, column=1, value=status)
-            overview_ws.cell(row=row_num, column=2, value=count)
-            overview_ws.cell(row=row_num, column=3, value=percentage)
+        # Define status colors for overview sheet
+        status_colors = {
+            "Total Contacts": "E6E6FA",  # Light purple
+            "Not Sent": "F5F5F5",      # Light gray
+            "Sent": "FFFACD",          # Light yellow
+            "Delivered": "E0FFFF",     # Light cyan
+            "Opened": "F0FFF0",        # Light green
+            "Clicked": "E6E6FA",       # Light purple
+            "Bounced": "FFE4E1",       # Light red
+            "Complained": "FFA07A",    # Light orange
+            "Failed": "FFB6C1",        # Light pink
+        }
         
-        # Performance metrics
+        for row_num, (status, count, percentage) in enumerate(stats_data, 7):
+            status_cell = overview_ws.cell(row=row_num, column=1, value=status)
+            count_cell = overview_ws.cell(row=row_num, column=2, value=count)
+            percentage_cell = overview_ws.cell(row=row_num, column=3, value=percentage)
+            
+            # Apply background color based on status
+            if status in status_colors:
+                fill = PatternFill(start_color=status_colors[status], end_color=status_colors[status], fill_type="solid")
+                status_cell.fill = fill
+                count_cell.fill = fill
+                percentage_cell.fill = fill
+        
+        # Performance metrics with enhanced styling
         overview_ws.cell(row=15, column=1, value="📈 Performance Metrics").font = section_font
         
-        metrics_data = [
-            ("Open Rate", f"{(status_counts['opened']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
-            ("Click Rate", f"{(status_counts['clicked']/max(status_counts['delivered'], 1)*100):.1f}%" if status_counts['delivered'] > 0 else "N/A"),
-            ("Bounce Rate", f"{(status_counts['bounced']/max(status_counts['sent'], 1)*100):.1f}%" if status_counts['sent'] > 0 else "N/A"),
-            ("Success Rate", f"{((status_counts['sent'] + status_counts['delivered'] + status_counts['opened'] + status_counts['clicked'])/max(total_contacts, 1)*100):.1f}%" if total_contacts > 0 else "N/A"),
-        ]
+        # Add borders to statistics table
+        thin_border = Border(
+            left=Side(style='thin', color='000000'),
+            right=Side(style='thin', color='000000'),
+            top=Side(style='thin', color='000000'),
+            bottom=Side(style='thin', color='000000')
+        )
+        
+        # Apply borders to statistics table
+        for row_num in range(6, 16):  # Header row + data rows
+            for col_num in range(1, 4):
+                cell = overview_ws.cell(row=row_num, column=col_num)
+                cell.border = thin_border
+        
+        # Apply borders to metrics section
+        for row_num in range(16, 21):  # Metrics rows
+            for col_num in range(1, 3):
+                cell = overview_ws.cell(row=row_num, column=col_num)
+                cell.border = thin_border
+        
+        # Style metrics with colors
+        metrics_colors = {
+            "Open Rate": "F0FFF0",      # Light green
+            "Click Rate": "E6E6FA",     # Light purple  
+            "Bounce Rate": "FFE4E1",    # Light red
+            "Success Rate": "FFFACD",   # Light yellow
+        }
         
         for row_num, (metric, value) in enumerate(metrics_data, 16):
-            overview_ws.cell(row=row_num, column=1, value=metric)
-            overview_ws.cell(row=row_num, column=2, value=value)
+            metric_cell = overview_ws.cell(row=row_num, column=1, value=metric)
+            value_cell = overview_ws.cell(row=row_num, column=2, value=value)
+            
+            # Apply background color based on metric
+            if metric in metrics_colors:
+                fill = PatternFill(start_color=metrics_colors[metric], end_color=metrics_colors[metric], fill_type="solid")
+                metric_cell.fill = fill
+                value_cell.fill = fill
         
         # Auto-adjust overview column widths
         for col_num in range(1, 4):
@@ -2483,112 +2530,126 @@ def export_contacts_xls(request):
             overview_ws.column_dimensions[column_letter].width = min(max_length + 2, 30)
         
         # Create Contacts Sheet
-        # Define headers (added Email Content column)
+        # Define headers (removed Email Content column to avoid API calls)
         headers = [
-            'Category Name', 'Category ID', 'Contact ID', 'Full Name', 'First Name', 'Last Name', 
-            'Job Title', 'Email', 'Company Name', 'Company Industry', 'Location City', 
+            'Category Name', 'Category ID', 'Contact ID', 'Full Name', 'First Name', 'Last Name',
+            'Job Title', 'Email', 'Company Name', 'Company Industry', 'Location City',
             'Location Country', 'LinkedIn URL', 'Phone Number', 'Lead Score', 'ESP',
-            'Email Status', 'Last Email Sent', 'Last Opened', 'Last Clicked', 'Email Content',
+            'Email Status', 'Last Email Sent', 'Last Opened', 'Last Clicked',
             'Created At', 'Updated At'
         ]
         
-        # Style headers
+        # Style headers with enhanced colors
         header_font = Font(bold=True, color="FFFFFF")
-        header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+        header_fill = PatternFill(start_color="2E75B6", end_color="2E75B6", fill_type="solid")  # Darker blue
         header_alignment = Alignment(horizontal="center", vertical="center")
+        header_border = Border(
+            left=Side(style='medium', color='000000'),
+            right=Side(style='medium', color='000000'),
+            top=Side(style='medium', color='000000'),
+            bottom=Side(style='medium', color='000000')
+        )
         
-        # Write headers
+        # Write headers with enhanced styling
         for col_num, header in enumerate(headers, 1):
             cell = contacts_ws.cell(row=1, column=col_num, value=header)
             cell.font = header_font
             cell.fill = header_fill
             cell.alignment = header_alignment
+            cell.border = header_border
         
-        # Write contact data
+        # Write contact data with color coding
+        # Define status colors for contacts sheet
+        contact_status_colors = {
+            'Not Sent': 'F5F5F5',      # Light gray
+            'Sent': 'FFFACD',          # Light yellow
+            'Delivered': 'E0FFFF',     # Light cyan
+            'Opened': 'F0FFF0',        # Light green
+            'Clicked': 'DDA0DD',       # Light purple
+            'Bounced': 'FFE4E1',       # Light red
+            'Complained': 'FFA07A',    # Light orange
+            'Failed': 'FFB6C1',        # Light pink
+        }
+        
+        # Alternating row colors for better readability
+        alt_row_colors = ['FFFFFF', 'F9F9F9']  # White and light gray
+        
         for row_num, contact in enumerate(contacts, 2):
-            contacts_ws.cell(row=row_num, column=1, value=contact.category_name or '')
-            contacts_ws.cell(row=row_num, column=2, value=contact.category_id or '')
-            contacts_ws.cell(row=row_num, column=3, value=contact.contact_id or '')
-            contacts_ws.cell(row=row_num, column=4, value=contact.full_name or '')
-            contacts_ws.cell(row=row_num, column=5, value=contact.first_name or '')
-            contacts_ws.cell(row=row_num, column=6, value=contact.last_name or '')
-            contacts_ws.cell(row=row_num, column=7, value=contact.job_title or '')
-            contacts_ws.cell(row=row_num, column=8, value=contact.email or '')
-            contacts_ws.cell(row=row_num, column=9, value=contact.company_name or '')
-            contacts_ws.cell(row=row_num, column=10, value=contact.company_industry or '')
-            contacts_ws.cell(row=row_num, column=11, value=contact.location_city or '')
-            contacts_ws.cell(row=row_num, column=12, value=contact.location_country or '')
-            contacts_ws.cell(row=row_num, column=13, value=contact.linkedin_url or '')
-            contacts_ws.cell(row=row_num, column=14, value=contact.phone_number or '')
-            contacts_ws.cell(row=row_num, column=15, value=contact.leadscore or '')
-            contacts_ws.cell(row=row_num, column=16, value=contact.esp or '')
-            contacts_ws.cell(row=row_num, column=17, value=contact.email_status or '')
+            # Determine row background color
+            status_color = contact_status_colors.get(contact.email_status, 'FFFFFF')
             
-            # Format dates
+            # Apply alternating row color as base, then overlay status color
+            base_color = alt_row_colors[(row_num - 2) % 2]
+            
+            # Create fill for the entire row
+            if contact.email_status and contact.email_status != 'Not Sent':
+                row_fill = PatternFill(start_color=status_color, end_color=status_color, fill_type="solid")
+            else:
+                row_fill = PatternFill(start_color=base_color, end_color=base_color, fill_type="solid")
+            
+            # Write data with styling
+            cells_data = [
+                (1, contact.category_name or ''),
+                (2, contact.category_id or ''),
+                (3, contact.contact_id or ''),
+                (4, contact.full_name or ''),
+                (5, contact.first_name or ''),
+                (6, contact.last_name or ''),
+                (7, contact.job_title or ''),
+                (8, contact.email or ''),
+                (9, contact.company_name or ''),
+                (10, contact.company_industry or ''),
+                (11, contact.location_city or ''),
+                (12, contact.location_country or ''),
+                (13, contact.linkedin_url or ''),
+                (14, contact.phone_number or ''),
+                (15, contact.leadscore or ''),
+                (16, contact.esp or ''),
+                (17, contact.email_status or ''),
+            ]
+            
+            # Apply styling to each cell in the row
+            for col_num, value in cells_data:
+                cell = contacts_ws.cell(row=row_num, column=col_num, value=value)
+                cell.fill = row_fill
+                
+                # Special styling for email column
+                if col_num == 8:  # Email column
+                    cell.font = Font(color="0000FF")  # Blue text for emails
+            
+            # Format dates with special styling
             if contact.last_email_sent:
-                contacts_ws.cell(row=row_num, column=18, value=contact.last_email_sent.strftime('%Y-%m-%d %H:%M:%S'))
+                cell = contacts_ws.cell(row=row_num, column=18, value=contact.last_email_sent.strftime('%Y-%m-%d %H:%M:%S'))
+                cell.fill = row_fill
+                cell.font = Font(color="008000")  # Green for sent dates
             if contact.last_opened:
-                contacts_ws.cell(row=row_num, column=19, value=contact.last_opened.strftime('%Y-%m-%d %H:%M:%S'))
+                cell = contacts_ws.cell(row=row_num, column=19, value=contact.last_opened.strftime('%Y-%m-%d %H:%M:%S'))
+                cell.fill = row_fill
+                cell.font = Font(color="FF8C00")  # Orange for opened dates
             if contact.last_clicked:
-                contacts_ws.cell(row=row_num, column=20, value=contact.last_clicked.strftime('%Y-%m-%d %H:%M:%S'))
+                cell = contacts_ws.cell(row=row_num, column=20, value=contact.last_clicked.strftime('%Y-%m-%d %H:%M:%S'))
+                cell.fill = row_fill
+                cell.font = Font(color="800080")  # Purple for clicked dates
             
-            # Get email content for contacts that have been sent emails
-            email_content = ""
-            if contact.email_status != 'Not Sent':
-                try:
-                    # Find the most recent email event with email_id for this contact
-                    recent_event = EmailEvent.objects.filter(
-                        to_email=contact.email,
-                        from_email__icontains=sender_email,
-                        email_id__isnull=False
-                    ).exclude(email_id='').order_by('-created_at').first()
-                    
-                    if recent_event and recent_event.email_id:
-                        # Get API key for this sender
-                        sender_obj = EmailSender.objects.get(email__iexact=extract_email_from_sender_string(recent_event.from_email), is_active=True)
-                        if sender_obj and sender_obj.api_key:
-                            # Fetch email content from Resend API
-                            import requests
-                            headers = {
-                                'Authorization': f'Bearer {sender_obj.api_key}',
-                                'Content-Type': 'application/json'
-                            }
-                            
-                            resend_url = f'https://api.resend.com/emails/{recent_event.email_id}'
-                            response = requests.get(resend_url, headers=headers, timeout=10)
-                            
-                            if response.status_code == 200:
-                                email_data = response.json()
-                                html_content = email_data.get('html', '')
-                                text_content = email_data.get('text', '')
-                                
-                                # Use HTML content if available, otherwise text content
-                                if html_content:
-                                    # Clean up HTML for Excel (remove tags, keep text)
-                                    import re
-                                    email_content = re.sub(r'<[^>]+>', '', html_content).strip()
-                                    # Limit to first 1000 characters to avoid huge cells
-                                    if len(email_content) > 1000:
-                                        email_content = email_content[:997] + "..."
-                                elif text_content:
-                                    email_content = text_content.strip()
-                                    if len(email_content) > 1000:
-                                        email_content = email_content[:997] + "..."
-                                else:
-                                    email_content = "Content not available"
-                            else:
-                                email_content = f"Failed to fetch content (HTTP {response.status_code})"
-                        else:
-                            email_content = "API key not configured"
-                    else:
-                        email_content = "No email content available"
-                except Exception as e:
-                    email_content = f"Error fetching content: {str(e)}"
+            # Created and Updated dates
+            contacts_ws.cell(row=row_num, column=21, value=contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '')
+            contacts_ws.cell(row=row_num, column=21).fill = row_fill
             
-            contacts_ws.cell(row=row_num, column=21, value=email_content)
+            contacts_ws.cell(row=row_num, column=22, value=contact.updated_at.strftime('%Y-%m-%d %H:%M:%S') if contact.updated_at else '')
+            contacts_ws.cell(row=row_num, column=22).fill = row_fill
             
-            contacts_ws.cell(row=row_num, column=22, value=contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '')
-            contacts_ws.cell(row=row_num, column=23, value=contact.updated_at.strftime('%Y-%m-%d %H:%M:%S') if contact.updated_at else '')
+            # Apply thin borders to all cells in the row
+            thin_border = Border(
+                left=Side(style='thin', color='CCCCCC'),
+                right=Side(style='thin', color='CCCCCC'),
+                top=Side(style='thin', color='CCCCCC'),
+                bottom=Side(style='thin', color='CCCCCC')
+            )
+            
+            # Apply borders to all cells in this row
+            for col_num in range(1, 23):  # Updated to 23 columns (removed email content)
+                cell = contacts_ws.cell(row=row_num, column=col_num)
+                cell.border = thin_border
         
         # Auto-adjust contacts column widths
         for col_num, column in enumerate(contacts_ws.columns, 1):
@@ -2603,11 +2664,8 @@ def export_contacts_xls(request):
                 except:
                     pass
             
-            # Special handling for email content column (column 21)
-            if col_num == 21:
-                adjusted_width = min(max(max_length + 2, 50), 100)  # Wider for email content
-            else:
-                adjusted_width = min(max_length + 2, 30)  # Standard width for other columns
+            # Standard width for all columns (removed special handling for email content)
+            adjusted_width = min(max_length + 2, 30)  # Standard width for all columns
             
             contacts_ws.column_dimensions[column_letter].width = adjusted_width
         
